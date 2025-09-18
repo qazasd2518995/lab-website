@@ -285,6 +285,93 @@ document.addEventListener('DOMContentLoaded', function() {
         this.style.boxShadow = '0 4px 12px rgba(21, 101, 192, 0.3)';
     });
 
+    // Image modal for research visualizations
+    function createImageModal() {
+        const modal = document.createElement('div');
+        modal.className = 'image-modal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            cursor: pointer;
+        `;
+
+        const modalImage = document.createElement('img');
+        modalImage.style.cssText = `
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        `;
+
+        const closeButton = document.createElement('button');
+        closeButton.innerHTML = '×';
+        closeButton.style.cssText = `
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 3rem;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        `;
+
+        modal.appendChild(modalImage);
+        modal.appendChild(closeButton);
+        document.body.appendChild(modal);
+
+        return { modal, modalImage, closeButton };
+    }
+
+    const { modal, modalImage, closeButton } = createImageModal();
+
+    // Add click handlers for visualization images
+    const vizImages = document.querySelectorAll('.viz-card img');
+    vizImages.forEach(img => {
+        img.addEventListener('click', function() {
+            modalImage.src = this.src;
+            modalImage.alt = this.alt;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    // Close modal handlers
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal || e.target === closeButton) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    closeButton.addEventListener('click', function() {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    });
+
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+
     // Loading animation for the page
     document.body.style.opacity = '0';
     window.addEventListener('load', function() {
