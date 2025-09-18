@@ -284,8 +284,8 @@ body {
 
 .research-highlights {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
     margin-top: 3rem;
 }
 
@@ -756,6 +756,11 @@ body {
     .members-grid {
         grid-template-columns: 1fr;
     }
+    
+    .research-highlights {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -769,5 +774,9 @@ body {
     
     .container {
         padding: 0 15px;
+    }
+    
+    .research-highlights {
+        grid-template-columns: 1fr;
     }
 }
