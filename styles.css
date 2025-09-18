@@ -748,6 +748,7 @@ body {
     font-size: 1.5rem;
     width: 40px;
     text-align: center;
+    color: var(--primary-blue);
 }
 
 .info-content {
@@ -772,11 +773,23 @@ body {
     margin-bottom: 2.5rem;
 }
 
+.description-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.description-header .material-icons {
+    color: var(--primary-blue);
+    font-size: 1.5rem;
+}
+
 .description-header h5 {
     font-size: 1.3rem;
     font-weight: 600;
     color: var(--dark-blue);
-    margin-bottom: 1rem;
+    margin: 0;
 }
 
 .description-text {
@@ -812,6 +825,7 @@ body {
     font-size: 1.2rem;
     width: 30px;
     text-align: center;
+    color: var(--primary-blue);
 }
 
 /* Purchase Button */
