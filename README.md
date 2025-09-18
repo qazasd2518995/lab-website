@@ -1,6 +1,6 @@
-# Research Lab of Data Analytics in Social Science
+# Lab of Data Analytics in Human Science
 
-A professional academic website for the Research Lab of Data Analytics in Social Science, directed by Professor Wen-Tsung Tseng.
+A professional academic website for the Lab of Data Analytics in Human Science, directed by Professor Wen-Tsung Tseng.
 
 ## Features
 
