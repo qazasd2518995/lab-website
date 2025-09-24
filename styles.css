@@ -315,51 +315,67 @@ body {
     margin-bottom: 0.5rem;
 }
 
-/* Director Section */
-.director {
+/* Leadership Section */
+.leadership {
     padding: 80px 0;
     background: var(--background-light);
 }
 
-.director-card {
+.directors-grid {
     display: grid;
-    grid-template-columns: 250px 1fr;
-    gap: 3rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.director-card {
     background: var(--background-white);
-    padding: 3rem;
+    padding: 2rem;
     border-radius: 16px;
     box-shadow: 0 10px 40px var(--shadow-light);
-    max-width: 900px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.director-photo {
+    margin-bottom: 1.5rem;
 }
 
 .profile-img {
-    width: 100%;
-    border-radius: 12px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
     box-shadow: 0 8px 25px var(--shadow-medium);
 }
 
+.director-info {
+    text-align: center;
+    width: 100%;
+}
+
 .director-info h3 {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: 700;
     color: var(--dark-blue);
     margin-bottom: 0.5rem;
 }
 
 .director-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--primary-blue);
     font-weight: 500;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .director-info h4 {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--dark-blue);
-    margin: 2rem 0 1rem 0;
+    margin: 1.5rem 0 0.8rem 0;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
 }
 
@@ -374,6 +390,7 @@ body {
 .research-tags {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 0.5rem;
 }
 
@@ -1163,9 +1180,13 @@ body {
         font-size: 2.5rem;
     }
     
-    .director-card {
+    .directors-grid {
         grid-template-columns: 1fr;
-        text-align: center;
+    }
+
+    .director-card {
+        max-width: 500px;
+        margin: 0 auto;
     }
     
     .contact-grid {
