@@ -327,6 +327,12 @@ body {
     gap: 2rem;
 }
 
+.directors-grid.single-director {
+    grid-template-columns: 1fr;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
 .director-card {
     background: var(--background-white);
     padding: 2rem;
