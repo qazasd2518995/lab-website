@@ -3,54 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab of Data Analytics in Human Science</title>
+    <title>L-DAHS | Lab of Data Analytics in Human Science</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="L-DAHS: Lab of Data Analytics in Human Science at NTUST. Advanced quantitative research in foreign language acquisition, structural equation modeling, item response theory, and statistical analysis.">
+    <meta name="keywords" content="data analytics, human science, SEM, IRT, meta-analysis, language acquisition, NTUST, research lab">
+    <meta name="author" content="Prof. Wen-Ta Tseng">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://l-dahs.ntust.edu.tw/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://l-dahs.ntust.edu.tw/">
+    <meta property="og:title" content="L-DAHS | Lab of Data Analytics in Human Science">
+    <meta property="og:description" content="Advancing quantitative research in foreign language acquisition through innovative statistical modeling and data analytics at NTUST.">
+    <meta property="og:image" content="https://l-dahs.ntust.edu.tw/images/og-image.jpg">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="L-DAHS Lab">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://l-dahs.ntust.edu.tw/">
+    <meta name="twitter:title" content="L-DAHS | Lab of Data Analytics in Human Science">
+    <meta name="twitter:description" content="Advancing quantitative research in foreign language acquisition through innovative statistical modeling and data analytics.">
+    <meta name="twitter:image" content="https://l-dahs.ntust.edu.tw/images/og-image.jpg">
+
+    <!-- Mobile Theme Color -->
+    <meta name="theme-color" content="#1a1f2e">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ResearchOrganization",
+        "name": "L-DAHS - Lab of Data Analytics in Human Science",
+        "alternateName": "L-DAHS",
+        "url": "https://l-dahs.ntust.edu.tw",
+        "logo": "https://l-dahs.ntust.edu.tw/favicon.svg",
+        "description": "Advanced quantitative research in foreign language acquisition through innovative statistical modeling and data analytics.",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "No. 43, Section 4, Keelung Road, T4-816",
+            "addressLocality": "Taipei",
+            "addressRegion": "Da'an District",
+            "postalCode": "10607",
+            "addressCountry": "TW"
+        },
+        "parentOrganization": {
+            "@type": "CollegeOrUniversity",
+            "name": "National Taiwan University of Science and Technology",
+            "alternateName": "NTUST"
+        },
+        "founder": {
+            "@type": "Person",
+            "name": "Prof. Wen-Ta Tseng",
+            "jobTitle": "Director & Principal Investigator",
+            "email": "wenta.tseng@mail.ntust.edu.tw"
+        },
+        "knowsAbout": [
+            "Structural Equation Modeling",
+            "Item Response Theory",
+            "Meta-Analysis",
+            "Multilevel Modeling",
+            "Foreign Language Acquisition",
+            "Multivariate Statistics"
+        ]
+    }
+    </script>
+
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="favicon.svg">
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Typography: Fraunces, Source Serif 4, DM Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
             <div class="nav-logo">
                 <h2>L-DAHS</h2>
                 <span>Lab of Data Analytics in Human Science</span>
             </div>
-            <ul class="nav-menu">
-                <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#research" class="nav-link">Research</a></li>
-                <li><a href="#outputs" class="nav-link">Research Outputs</a></li>
-                <li><a href="#members" class="nav-link">Members</a></li>
-                <li><a href="#books" class="nav-link">Published Works</a></li>
-                <li><a href="#publications" class="nav-link">Publications</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
+            <ul class="nav-menu" id="nav-menu" role="menubar">
+                <li><a href="#home" class="nav-link active" data-i18n="nav-home">Home</a></li>
+                <li><a href="#about" class="nav-link" data-i18n="nav-about">About</a></li>
+                <li><a href="#research" class="nav-link" data-i18n="nav-research">Research</a></li>
+                <li><a href="#outputs" class="nav-link" data-i18n="nav-outputs">Outputs</a></li>
+                <li><a href="#members" class="nav-link" data-i18n="nav-team">Team</a></li>
+                <li><a href="#books" class="nav-link" data-i18n="nav-books">Books</a></li>
+                <li><a href="#publications" class="nav-link" data-i18n="nav-publications">Publications</a></li>
+                <li><a href="#contact" class="nav-link" data-i18n="nav-contact">Contact</a></li>
             </ul>
-            <div class="hamburger">
+            <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
+            </button>
         </div>
     </nav>
 
     <!-- Hero Section -->
+    <main id="main-content">
     <section id="home" class="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <h1 class="hero-title">Lab of Data Analytics in Human Science</h1>
-                <p class="hero-subtitle">Advancing quantitative research in foreign language acquisition through innovative statistical modeling and data analytics</p>
+                <span class="hero-label" data-i18n="hero-label">Research Excellence</span>
+                <h1 class="hero-title"><span data-i18n="hero-title">Lab of Data Analytics in</span> <span class="hero-title-highlight" data-i18n="hero-title-highlight">Human Science</span></h1>
+                <p class="hero-subtitle" data-i18n="hero-subtitle">Advancing quantitative research in foreign language acquisition through innovative statistical modeling and data analytics</p>
                 <div class="hero-buttons">
-                    <a href="#research" class="btn btn-primary">Explore Research</a>
-                    <a href="#members" class="btn btn-secondary">Meet Our Team</a>
+                    <a href="#research" class="btn btn-primary" data-i18n="hero-btn-research">Explore Research</a>
+                    <a href="#members" class="btn btn-secondary" data-i18n="hero-btn-team">Meet Our Team</a>
                 </div>
             </div>
             <div class="hero-visual">
                 <div class="data-visualization">
-                    <div class="chart-element"></div>
-                    <div class="chart-element"></div>
-                    <div class="chart-element"></div>
+                    <!-- Abstract data mesh pattern -->
+                    <svg class="data-mesh" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Connection lines - drawn first so nodes appear on top -->
+                        <!-- Top layer connections -->
+                        <line class="mesh-line" x1="60" y1="80" x2="200" y2="60" />
+                        <line class="mesh-line" x1="200" y1="60" x2="340" y2="100" />
+                        <line class="mesh-line" x1="60" y1="80" x2="340" y2="100" />
+                        <!-- Top to middle connections -->
+                        <line class="mesh-line" x1="60" y1="80" x2="100" y2="200" />
+                        <line class="mesh-line" x1="200" y1="60" x2="200" y2="200" />
+                        <line class="mesh-line" x1="340" y1="100" x2="300" y2="200" />
+                        <!-- Middle layer connections -->
+                        <line class="mesh-line" x1="100" y1="200" x2="200" y2="200" />
+                        <line class="mesh-line" x1="200" y1="200" x2="300" y2="200" />
+                        <line class="mesh-line" x1="100" y1="200" x2="300" y2="200" />
+                        <!-- Middle to bottom connections -->
+                        <line class="mesh-line" x1="100" y1="200" x2="140" y2="320" />
+                        <line class="mesh-line" x1="200" y1="200" x2="200" y2="340" />
+                        <line class="mesh-line" x1="300" y1="200" x2="260" y2="320" />
+                        <!-- Bottom layer connections -->
+                        <line class="mesh-line" x1="140" y1="320" x2="200" y2="340" />
+                        <line class="mesh-line" x1="200" y1="340" x2="260" y2="320" />
+                        <line class="mesh-line" x1="140" y1="320" x2="260" y2="320" />
+                        <!-- Cross connections for more mesh effect -->
+                        <line class="mesh-line" x1="60" y1="80" x2="200" y2="200" />
+                        <line class="mesh-line" x1="340" y1="100" x2="200" y2="200" />
+                        <line class="mesh-line" x1="100" y1="200" x2="200" y2="340" />
+                        <line class="mesh-line" x1="300" y1="200" x2="200" y2="340" />
+                        <!-- Nodes - drawn last to appear on top of lines -->
+                        <circle class="mesh-node" cx="60" cy="80" r="8" />
+                        <circle class="mesh-node" cx="200" cy="60" r="12" />
+                        <circle class="mesh-node" cx="340" cy="100" r="8" />
+                        <circle class="mesh-node" cx="100" cy="200" r="10" />
+                        <circle class="mesh-node" cx="200" cy="200" r="14" />
+                        <circle class="mesh-node" cx="300" cy="200" r="10" />
+                        <circle class="mesh-node" cx="140" cy="320" r="8" />
+                        <circle class="mesh-node" cx="200" cy="340" r="10" />
+                        <circle class="mesh-node" cx="260" cy="320" r="8" />
+                    </svg>
+                    <!-- Floating stat cards -->
+                    <div class="stat-card">
+                        <div class="stat-value">31+</div>
+                        <div class="stat-label">Publications</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Research Areas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Interactive Tools</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -59,31 +189,38 @@
     <!-- About Section -->
     <section id="about" class="about">
         <div class="container">
-            <h2 class="section-title">About Our Lab</h2>
+            <div class="section-header">
+                <span class="section-number">01</span>
+                <span class="section-label" data-i18n="about-label">About Us</span>
+                <h2 class="section-title" data-i18n="about-title">Our Research Mission</h2>
+            </div>
             <div class="about-grid">
-                <div class="about-text">
-                    <p>Our research lab focuses on quantitative methods in social science research, with particular emphasis on foreign language acquisition studies. We employ cutting-edge statistical techniques and data analytics to understand complex patterns in language learning and social phenomena.</p>
-                    <div class="research-highlights">
-                        <div class="highlight-item">
-                            <span class="material-icons">analytics</span>
-                            <h3>Advanced Analytics</h3>
-                            <p>Structural equation modeling and multivariate statistics</p>
-                        </div>
-                        <div class="highlight-item">
-                            <span class="material-icons">psychology</span>
-                            <h3>Language Research</h3>
-                            <p>Quantitative approaches to foreign language acquisition</p>
-                        </div>
-                        <div class="highlight-item">
-                            <span class="material-icons">model_training</span>
-                            <h3>Statistical Modeling</h3>
-                            <p>Item response theory and multilevel modeling</p>
-                        </div>
-                        <div class="highlight-item">
-                            <span class="material-icons">computer</span>
-                            <h3>CAT</h3>
-                            <p>Computerized Adaptive Testing</p>
-                        </div>
+                <div class="about-content">
+                    <p class="about-text" data-i18n="about-text">Our research lab focuses on quantitative methods in social science research, with particular emphasis on foreign language acquisition studies. We employ cutting-edge statistical techniques and data analytics to understand complex patterns in language learning and social phenomena.</p>
+                    <blockquote class="about-quote" data-i18n="about-quote">
+                        Bridging the gap between advanced statistical methodology and meaningful insights in human science research.
+                    </blockquote>
+                </div>
+                <div class="research-highlights">
+                    <div class="highlight-item fade-in">
+                        <span class="material-icons">analytics</span>
+                        <h3 data-i18n="highlight-analytics">Advanced Analytics</h3>
+                        <p data-i18n="highlight-analytics-desc">Structural equation modeling and multivariate statistics</p>
+                    </div>
+                    <div class="highlight-item fade-in stagger-1">
+                        <span class="material-icons">psychology</span>
+                        <h3 data-i18n="highlight-language">Language Research</h3>
+                        <p data-i18n="highlight-language-desc">Quantitative approaches to foreign language acquisition</p>
+                    </div>
+                    <div class="highlight-item fade-in stagger-2">
+                        <span class="material-icons">model_training</span>
+                        <h3 data-i18n="highlight-modeling">Statistical Modeling</h3>
+                        <p data-i18n="highlight-modeling-desc">Item response theory and multilevel modeling</p>
+                    </div>
+                    <div class="highlight-item fade-in stagger-3">
+                        <span class="material-icons">computer</span>
+                        <h3 data-i18n="highlight-cat">CAT Development</h3>
+                        <p data-i18n="highlight-cat-desc">Computerized Adaptive Testing systems</p>
                     </div>
                 </div>
             </div>
@@ -93,21 +230,32 @@
     <!-- Leadership Section -->
     <section id="leadership" class="leadership">
         <div class="container">
-            <h2 class="section-title">Lab Leadership</h2>
-            <div class="directors-grid single-director">
-                <!-- Lab Director -->
+            <div class="section-header">
+                <span class="section-number">02</span>
+                <span class="section-label" data-i18n="leadership-label">Leadership</span>
+                <h2 class="section-title" data-i18n="leadership-title">Lab Director</h2>
+            </div>
+            <div class="directors-grid">
                 <div class="director-card">
-                    <div class="director-photo">
-                        <img src="images/professor-tseng.jpg" alt="Professor Wen-Ta Tseng" class="profile-img">
+                    <div class="director-photo-section">
+                        <div class="director-photo">
+                            <img src="images/professor-tseng.jpg" alt="Professor Wen-Ta Tseng" class="profile-img">
+                        </div>
+                        <div class="director-name-mobile">
+                            <h3>Professor Wen-Ta Tseng</h3>
+                            <p class="director-title">Director & Principal Investigator</p>
+                        </div>
                     </div>
                     <div class="director-info">
-                        <h3>Professor Wen-Ta Tseng</h3>
-                        <p class="director-title">Director & Principal Investigator</p>
-                        <div class="education">
+                        <div class="director-header">
+                            <h3>Professor Wen-Ta Tseng</h3>
+                            <p class="director-title">Director & Principal Investigator</p>
+                        </div>
+                        <div class="info-section education">
                             <h4>Education</h4>
                             <p><span class="material-icons">school</span>Ph.D., University of Nottingham, United Kingdom</p>
                         </div>
-                        <div class="research-areas">
+                        <div class="info-section">
                             <h4>Research Areas</h4>
                             <div class="research-tags">
                                 <span class="tag">Structural Equation Modeling</span>
@@ -118,7 +266,7 @@
                                 <span class="tag">Foreign Language Acquisition</span>
                             </div>
                         </div>
-                        <div class="contact-info">
+                        <div class="info-section contact-info">
                             <h4>Contact Information</h4>
                             <p><span class="material-icons">location_on</span>Office: T4-816, 4th Teaching Building</p>
                             <p><span class="material-icons">phone</span>Phone: (02) 2737-6268</p>
@@ -133,44 +281,55 @@
     <!-- Research Areas -->
     <section id="research" class="research">
         <div class="container">
-            <h2 class="section-title">Research Areas</h2>
+            <div class="section-header">
+                <span class="section-number">03</span>
+                <span class="section-label" data-i18n="research-label">Research</span>
+                <h2 class="section-title" data-i18n="research-title">Research Areas</h2>
+                <p class="section-description" data-i18n="research-desc">Our lab specializes in advanced quantitative methods to understand complex phenomena in human science and language acquisition.</p>
+            </div>
             <div class="research-grid">
-                <div class="research-card">
+                <div class="research-card featured fade-in">
+                    <span class="research-number">01</span>
                     <div class="research-icon">
                         <span class="material-icons">functions</span>
                     </div>
                     <h3>Structural Equation Modeling</h3>
                     <p>Advanced statistical techniques for analyzing complex relationships between latent and observed variables in social science research.</p>
                 </div>
-                <div class="research-card">
+                <div class="research-card fade-in stagger-1">
+                    <span class="research-number">02</span>
                     <div class="research-icon">
                         <span class="material-icons">bar_chart</span>
                     </div>
                     <h3>Multivariate Statistics</h3>
                     <p>Comprehensive analysis of multiple variables simultaneously to understand complex data patterns in educational and social contexts.</p>
                 </div>
-                <div class="research-card">
+                <div class="research-card featured fade-in stagger-2">
+                    <span class="research-number">03</span>
                     <div class="research-icon">
                         <span class="material-icons">quiz</span>
                     </div>
                     <h3>Item Response Theory</h3>
                     <p>Mathematical framework for designing, analyzing, and scoring tests and questionnaires in educational assessment.</p>
                 </div>
-                <div class="research-card">
+                <div class="research-card fade-in stagger-3">
+                    <span class="research-number">04</span>
                     <div class="research-icon">
                         <span class="material-icons">layers</span>
                     </div>
                     <h3>Multilevel Modeling</h3>
                     <p>Statistical analysis of hierarchical data structures to account for nested relationships in social science research.</p>
                 </div>
-                <div class="research-card">
+                <div class="research-card fade-in stagger-4">
+                    <span class="research-number">05</span>
                     <div class="research-icon">
                         <span class="material-icons">summarize</span>
                     </div>
                     <h3>Meta-Analysis</h3>
                     <p>Systematic review and synthesis of research findings across multiple studies to provide comprehensive evidence.</p>
                 </div>
-                <div class="research-card">
+                <div class="research-card fade-in stagger-5">
+                    <span class="research-number">06</span>
                     <div class="research-icon">
                         <span class="material-icons">translate</span>
                     </div>
@@ -184,46 +343,53 @@
     <!-- Research Outputs -->
     <section id="outputs" class="research-outputs">
         <div class="container">
-            <h2 class="section-title">Research Outputs</h2>
-            
+            <div class="section-header">
+                <span class="section-number">04</span>
+                <span class="section-label" data-i18n="outputs-label">Outputs</span>
+                <h2 class="section-title" data-i18n="outputs-title">Research Outputs</h2>
+            </div>
+
             <!-- Interactive Tools -->
             <div class="outputs-category">
-                <h3>Interactive Educational Tools</h3>
-                <div class="tools-grid">
+                <div class="category-header">
+                    <h3>Interactive Educational Tools</h3>
+                    <div class="category-line"></div>
+                </div>
+                <div class="tools-carousel">
                     <div class="tool-card">
                         <div class="tool-icon">
                             <span class="material-icons">text_fields</span>
                         </div>
                         <h4>Text Mining Tutorial</h4>
                         <p>Interactive tutorial for learning text mining techniques and applications in language research.</p>
-                        <a href="https://justincheng.shinyapps.io/text-mining-tutorial-complete/" target="_blank" class="btn btn-primary">Launch Tool</a>
+                        <a href="https://justincheng.shinyapps.io/text-mining-tutorial-complete/" target="_blank" class="btn btn-primary btn-small">Launch Tool</a>
                     </div>
-                    
+
                     <div class="tool-card">
                         <div class="tool-icon">
                             <span class="material-icons">school</span>
                         </div>
                         <h4>SLA Course App</h4>
                         <p>Comprehensive Second Language Acquisition course materials and interactive learning modules.</p>
-                        <a href="https://justincheng.shinyapps.io/sla-course-app/" target="_blank" class="btn btn-primary">Launch Tool</a>
+                        <a href="https://justincheng.shinyapps.io/sla-course-app/" target="_blank" class="btn btn-primary btn-small">Launch Tool</a>
                     </div>
-                    
+
                     <div class="tool-card">
                         <div class="tool-icon">
                             <span class="material-icons">edit</span>
                         </div>
                         <h4>Academic Writing App</h4>
                         <p>Interactive application for improving academic writing skills and understanding writing processes.</p>
-                        <a href="https://justincheng.shinyapps.io/academic-writing-app/" target="_blank" class="btn btn-primary">Launch Tool</a>
+                        <a href="https://justincheng.shinyapps.io/academic-writing-app/" target="_blank" class="btn btn-primary btn-small">Launch Tool</a>
                     </div>
-                    
+
                     <div class="tool-card">
                         <div class="tool-icon">
                             <span class="material-icons">psychology</span>
                         </div>
                         <h4>First Language Acquisition</h4>
                         <p>Interactive educational tool exploring theories and stages of first language development.</p>
-                        <a href="https://justincheng.shinyapps.io/first-language-acquisition-theories/" target="_blank" class="btn btn-primary">Launch Tool</a>
+                        <a href="https://justincheng.shinyapps.io/first-language-acquisition-theories/" target="_blank" class="btn btn-primary btn-small">Launch Tool</a>
                     </div>
 
                     <div class="tool-card">
@@ -232,9 +398,9 @@
                         </div>
                         <h4>Critical Period Neurolinguistics</h4>
                         <p>Interactive tool exploring the critical period hypothesis and neurolinguistic aspects of language acquisition.</p>
-                        <div style="display: flex; gap: 8px; margin-top: 12px;">
-                            <a href="https://justincheng.shinyapps.io/critical-period-neurolinguistics/" target="_blank" class="btn btn-primary" style="flex: 1;">Version 1</a>
-                            <a href="https://justincheng.shinyapps.io/critical-period-neurolinguistics-v2/" target="_blank" class="btn btn-primary" style="flex: 1;">Version 2</a>
+                        <div class="tool-buttons">
+                            <a href="https://justincheng.shinyapps.io/critical-period-neurolinguistics/" target="_blank" class="btn btn-primary btn-small">V1</a>
+                            <a href="https://justincheng.shinyapps.io/critical-period-neurolinguistics-v2/" target="_blank" class="btn btn-primary btn-small">V2</a>
                         </div>
                     </div>
 
@@ -242,107 +408,114 @@
                         <div class="tool-icon">
                             <span class="material-icons">biotech</span>
                         </div>
-                        <h4>N400-P600 Morpheme Analysis</h4>
+                        <h4>N400-P600 Analysis</h4>
                         <p>Interactive tool for analyzing event-related potentials (N400 and P600) in morphological processing research.</p>
-                        <a href="https://justincheng.shinyapps.io/n400-p600-morpheme-analysis/" target="_blank" class="btn btn-primary">Launch Tool</a>
+                        <a href="https://justincheng.shinyapps.io/n400-p600-morpheme-analysis/" target="_blank" class="btn btn-primary btn-small">Launch Tool</a>
                     </div>
                 </div>
             </div>
 
             <!-- Software Development -->
             <div class="outputs-category">
-                <h3>Research Software Development</h3>
-                
+                <div class="category-header">
+                    <h3>Research Software Development</h3>
+                    <div class="category-line"></div>
+                </div>
+
                 <div class="software-section">
-                    <h4>Enhanced MetaSEM</h4>
-                    <p class="software-description">Advanced meta-analytic structural equation modeling software with interactive web interface for comprehensive statistical analysis.</p>
-                    
+                    <div class="software-header">
+                        <h4>Enhanced MetaSEM</h4>
+                        <p class="software-description">Advanced meta-analytic structural equation modeling software with interactive web interface for comprehensive statistical analysis.</p>
+                    </div>
+
                     <div class="viz-grid">
-                        <div class="viz-card">
-                            <img src="images/research-outputs/metasem-software/data-input.jpg" alt="MetaSEM Data Input Interface">
+                        <div class="viz-card fade-in">
+                            <img src="images/research-outputs/metasem-software/data-input.jpg" alt="MetaSEM Data Input Interface" loading="lazy">
                             <div class="viz-info">
                                 <h5>Data Input Module</h5>
                                 <p>User-friendly data input interface with multiple import options and validation features.</p>
                             </div>
                         </div>
-                        
-                        <div class="viz-card">
-                            <img src="images/research-outputs/metasem-software/sample-datasets.jpg" alt="Sample Datasets">
+
+                        <div class="viz-card fade-in stagger-1">
+                            <img src="images/research-outputs/metasem-software/sample-datasets.jpg" alt="Sample Datasets" loading="lazy">
                             <div class="viz-info">
                                 <h5>Built-in Datasets</h5>
                                 <p>Comprehensive collection of sample datasets for meta-analysis and SEM practice.</p>
                             </div>
                         </div>
-                        
-                        <div class="viz-card">
-                            <img src="images/research-outputs/metasem-software/publication-bias-tests.jpg" alt="Publication Bias Tests">
+
+                        <div class="viz-card fade-in stagger-2">
+                            <img src="images/research-outputs/metasem-software/publication-bias-tests.jpg" alt="Publication Bias Tests" loading="lazy">
                             <div class="viz-info">
                                 <h5>Publication Bias Analysis</h5>
                                 <p>Advanced statistical tests for detecting and correcting publication bias in meta-analyses.</p>
                             </div>
                         </div>
-                        
-                        <div class="viz-card">
-                            <img src="images/research-outputs/metasem-software/cluster-analysis.jpg" alt="Cluster Analysis">
+
+                        <div class="viz-card fade-in stagger-3">
+                            <img src="images/research-outputs/metasem-software/cluster-analysis.jpg" alt="Cluster Analysis" loading="lazy">
                             <div class="viz-info">
                                 <h5>Cluster Analysis Tools</h5>
                                 <p>Sophisticated clustering algorithms for identifying patterns in meta-analytic data.</p>
                             </div>
                         </div>
-                        
-                        <div class="viz-card">
-                            <img src="images/research-outputs/metasem-software/process-mining.jpg" alt="Process Mining">
+
+                        <div class="viz-card fade-in stagger-4">
+                            <img src="images/research-outputs/metasem-software/process-mining.jpg" alt="Process Mining" loading="lazy">
                             <div class="viz-info">
                                 <h5>Process Mining Network</h5>
                                 <p>Interactive network visualization for process mining and transition analysis.</p>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
             </div>
 
             <!-- Research Visualizations -->
             <div class="outputs-category">
-                <h3>Research Visualizations</h3>
-                
+                <div class="category-header">
+                    <h3>Research Visualizations</h3>
+                    <div class="category-line"></div>
+                </div>
+
                 <div class="visualization-section">
                     <h4>Language Acquisition Theory Analysis</h4>
                     <div class="viz-grid">
-                        <div class="viz-card">
-                            <img src="images/research-outputs/language-theories/evolution-timeline.jpg" alt="Evolution of Language Acquisition Theories">
+                        <div class="viz-card fade-in">
+                            <img src="images/research-outputs/language-theories/evolution-timeline.jpg" alt="Evolution of Language Acquisition Theories" loading="lazy">
                             <div class="viz-info">
                                 <h5>Evolution Timeline</h5>
                                 <p>Historical development of language acquisition theories from behaviorism to modern approaches.</p>
                             </div>
                         </div>
-                        
-                        <div class="viz-card">
-                            <img src="images/research-outputs/language-theories/comprehensive-comparison.jpg" alt="Comprehensive Theory Comparison">
+
+                        <div class="viz-card fade-in stagger-1">
+                            <img src="images/research-outputs/language-theories/comprehensive-comparison.jpg" alt="Comprehensive Theory Comparison" loading="lazy">
                             <div class="viz-info">
                                 <h5>Theory Comparison</h5>
                                 <p>Comprehensive comparison of major language acquisition theories across key dimensions.</p>
                             </div>
                         </div>
-                        
-                        <div class="viz-card">
-                            <img src="images/research-outputs/language-theories/theory-details.jpg" alt="Theory Details Analysis">
+
+                        <div class="viz-card fade-in stagger-2">
+                            <img src="images/research-outputs/language-theories/theory-details.jpg" alt="Theory Details Analysis" loading="lazy">
                             <div class="viz-info">
                                 <h5>Detailed Analysis</h5>
                                 <p>In-depth analysis of core mechanisms and principles in language acquisition theories.</p>
                             </div>
                         </div>
-                        
-                        <div class="viz-card">
-                            <img src="images/research-outputs/language-theories/additional-comparison.jpg" alt="Additional Theory Comparison">
+
+                        <div class="viz-card fade-in stagger-3">
+                            <img src="images/research-outputs/language-theories/additional-comparison.jpg" alt="Additional Theory Comparison" loading="lazy">
                             <div class="viz-info">
                                 <h5>Cross-Theory Analysis</h5>
                                 <p>Additional comparative analysis of language acquisition theories and their applications.</p>
                             </div>
                         </div>
-                        
-                        <div class="viz-card">
-                            <img src="images/research-outputs/language-theories/theory-analysis.jpg" alt="Comprehensive Theory Analysis">
+
+                        <div class="viz-card fade-in stagger-4">
+                            <img src="images/research-outputs/language-theories/theory-analysis.jpg" alt="Comprehensive Theory Analysis" loading="lazy">
                             <div class="viz-info">
                                 <h5>Theory Framework</h5>
                                 <p>Comprehensive theoretical framework analysis and methodological comparisons.</p>
@@ -354,48 +527,48 @@
                 <div class="visualization-section">
                     <h4>Statistical Learning in Language</h4>
                     <div class="viz-grid">
-                        <div class="viz-card">
-                            <img src="images/research-outputs/statistical-learning/overview.jpg" alt="Statistical Learning Overview">
+                        <div class="viz-card fade-in">
+                            <img src="images/research-outputs/statistical-learning/overview.jpg" alt="Statistical Learning Overview" loading="lazy">
                             <div class="viz-info">
                                 <h5>Statistical Learning Overview</h5>
                                 <p>Core concepts and mechanisms of statistical learning in language acquisition.</p>
                             </div>
                         </div>
-                        
-                        <div class="viz-card">
-                            <img src="images/research-outputs/statistical-learning/phenomena-explanations.jpg" alt="Language Phenomena Explanations">
+
+                        <div class="viz-card fade-in stagger-1">
+                            <img src="images/research-outputs/statistical-learning/phenomena-explanations.jpg" alt="Language Phenomena Explanations" loading="lazy">
                             <div class="viz-info">
                                 <h5>Phenomena Explanations</h5>
                                 <p>How different theories explain specific language learning phenomena and patterns.</p>
                             </div>
                         </div>
-                        
-                        <div class="viz-card">
-                            <img src="images/research-outputs/statistical-learning/teaching-applications.jpg" alt="Teaching Applications">
+
+                        <div class="viz-card fade-in stagger-2">
+                            <img src="images/research-outputs/statistical-learning/teaching-applications.jpg" alt="Teaching Applications" loading="lazy">
                             <div class="viz-info">
                                 <h5>Teaching Applications</h5>
                                 <p>Practical applications of usage-based theory in language teaching and intervention.</p>
                             </div>
                         </div>
-                        
-                        <div class="viz-card">
-                            <img src="images/research-outputs/statistical-learning/concepts.jpg" alt="Statistical Learning Concepts">
+
+                        <div class="viz-card fade-in stagger-3">
+                            <img src="images/research-outputs/statistical-learning/concepts.jpg" alt="Statistical Learning Concepts" loading="lazy">
                             <div class="viz-info">
                                 <h5>Core Concepts</h5>
                                 <p>Fundamental concepts and principles underlying statistical learning mechanisms.</p>
                             </div>
                         </div>
-                        
-                        <div class="viz-card">
-                            <img src="images/research-outputs/statistical-learning/mechanisms.jpg" alt="Learning Mechanisms">
+
+                        <div class="viz-card fade-in stagger-4">
+                            <img src="images/research-outputs/statistical-learning/mechanisms.jpg" alt="Learning Mechanisms" loading="lazy">
                             <div class="viz-info">
                                 <h5>Learning Mechanisms</h5>
                                 <p>Detailed exploration of statistical learning mechanisms in language acquisition.</p>
                             </div>
                         </div>
-                        
-                        <div class="viz-card">
-                            <img src="images/research-outputs/statistical-learning/research-evidence.jpg" alt="Research Evidence">
+
+                        <div class="viz-card fade-in stagger-5">
+                            <img src="images/research-outputs/statistical-learning/research-evidence.jpg" alt="Research Evidence" loading="lazy">
                             <div class="viz-info">
                                 <h5>Empirical Evidence</h5>
                                 <p>Research findings and empirical evidence supporting statistical learning theories.</p>
@@ -410,22 +583,26 @@
     <!-- Lab Members -->
     <section id="members" class="members">
         <div class="container">
-            <h2 class="section-title">Lab Members</h2>
-            
+            <div class="section-header">
+                <span class="section-number">05</span>
+                <span class="section-label" data-i18n="members-label">Team</span>
+                <h2 class="section-title" data-i18n="members-title">Lab Members</h2>
+            </div>
+
             <!-- International Research Fellow -->
             <div class="members-category">
-                <h3>International Research Fellow</h3>
+                <h3 data-i18n="fellow-title">International Research Fellow</h3>
                 <div class="members-grid">
-                    <div class="member-card">
+                    <div class="member-card featured fade-in">
                         <div class="member-photo">
-                            <img src="images/luna-huynh.jpg" alt="Luna Huynh" class="profile-img">
+                            <img src="images/luna-huynh.jpg" alt="Luna Huynh" class="profile-img" loading="lazy">
                         </div>
                         <div class="member-info">
                             <h4>Luna Huynh</h4>
                             <p class="member-position">Post-Doctoral Researcher, University of Oulu</p>
-                            <p class="member-research">Research Focus: Human–AI collaboration in education, Language development in AI-supported learning, Assessment of learning with AI</p>
+                            <p class="member-research">Research Focus: Human-AI collaboration in education, Language development in AI-supported learning, Assessment of learning with AI</p>
                             <div class="member-tags">
-                                <span class="tag">Human–AI Collaboration</span>
+                                <span class="tag">Human-AI Collaboration</span>
                                 <span class="tag">Technology-Enhanced Learning</span>
                                 <span class="tag">Complex Dynamic Systems Theory</span>
                                 <span class="tag">Learning Analytics</span>
@@ -439,11 +616,11 @@
 
             <!-- Research Assistants -->
             <div class="members-category">
-                <h3>Research Assistants</h3>
+                <h3 data-i18n="assistant-title">Research Assistants</h3>
                 <div class="members-grid">
-                    <div class="member-card">
+                    <div class="member-card fade-in">
                         <div class="member-photo">
-                            <img src="images/cheng-chao-hsiang.jpg" alt="Cheng, Chao-Hsiang" class="profile-img">
+                            <img src="images/cheng-chao-hsiang.jpg" alt="Cheng, Chao-Hsiang" class="profile-img" loading="lazy">
                         </div>
                         <div class="member-info">
                             <h4>Cheng, Chao-Hsiang</h4>
@@ -459,75 +636,65 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Additional member cards will be added here -->
                 </div>
             </div>
 
-            <!-- Alumni -->
-            <div class="members-category">
-                <h3>Alumni</h3>
-                <div class="alumni-list">
-                    <div class="alumni-item">
-                        <h4>[Alumni Name]</h4>
-                        <p>Current Position: [Current Role] at [Institution/Company]</p>
-                        <p>Research Focus: [Research Area during time in lab]</p>
-                    </div>
-                    <!-- Additional alumni items will be added here -->
-                </div>
-            </div>
         </div>
     </section>
 
     <!-- Published Works -->
     <section id="books" class="published-works">
         <div class="container">
-            <h2 class="section-title">Published Works</h2>
-            
+            <div class="section-header">
+                <span class="section-number">06</span>
+                <span class="section-label" data-i18n="books-label">Publications</span>
+                <h2 class="section-title" data-i18n="books-title">Published Works</h2>
+            </div>
+
             <div class="book-showcase">
-                <div class="book-hero">
+                <div class="book-hero fade-in">
                     <div class="book-cover-container">
-                        <div class="book-cover-3d">
-                            <img src="images/books/text-analysis-book.jpg" alt="社會科學的文本分析：R的應用" class="book-cover-img">
-                            <div class="book-spine"></div>
+                        <div class="book-cover-wrapper">
+                            <img src="images/books/text-analysis-book.jpg" alt="Text Analysis in Social Sciences" class="book-cover-img" loading="lazy">
                         </div>
                     </div>
-                    
+
                     <div class="book-details">
                         <div class="book-header">
                             <h3 class="book-title-zh">社會科學的文本分析：R的應用</h3>
                             <h4 class="book-title-en">Text Analysis in Social Sciences: Applications of R</h4>
                             <div class="book-author">
-                                <span class="author-label">作者</span>
-                                <span class="author-name">曾文鐽 教授</span>
-                                <span class="author-affiliation">國立台灣科技大學應用外語系</span>
+                                <span class="author-label">Author</span>
+                                <span class="author-name">Prof. Wen-Ta Tseng</span>
+                                <span class="author-affiliation">Department of Applied Foreign Languages, NTUST</span>
                             </div>
                         </div>
-                        
+
                         <div class="book-info-grid">
                             <div class="info-card">
                                 <span class="material-icons info-icon">business</span>
                                 <div class="info-content">
-                                    <div class="info-label">出版社</div>
-                                    <div class="info-value">五南圖書出版股份有限公司</div>
+                                    <div class="info-label">Publisher</div>
+                                    <div class="info-value">Wu-Nan Book Inc.</div>
                                 </div>
                             </div>
-                            
+
                             <div class="info-card">
                                 <span class="material-icons info-icon">event</span>
                                 <div class="info-content">
-                                    <div class="info-label">出版日期</div>
-                                    <div class="info-value">2025年8月</div>
+                                    <div class="info-label">Publication Date</div>
+                                    <div class="info-value">August 2025</div>
                                 </div>
                             </div>
-                            
+
                             <div class="info-card">
                                 <span class="material-icons info-icon">auto_stories</span>
                                 <div class="info-content">
-                                    <div class="info-label">頁數</div>
-                                    <div class="info-value">196頁</div>
+                                    <div class="info-label">Pages</div>
+                                    <div class="info-value">196</div>
                                 </div>
                             </div>
-                            
+
                             <div class="info-card">
                                 <span class="material-icons info-icon">tag</span>
                                 <div class="info-content">
@@ -536,47 +703,46 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="book-description-modern">
                             <div class="description-header">
                                 <span class="material-icons">description</span>
-                                <h5>內容簡介</h5>
+                                <h5>About This Book</h5>
                             </div>
-                            <p class="description-text">本書系統性介紹如何使用R語言進行文本分析，涵蓋文本語料結構與前處理、聚類與相似性分析、情感分析及機器學習等主題。採用問題導向的實務解釋，適用於社會科學、文學及商業領域的文本數據分析。</p>
-                            
+                            <p class="description-text">This book systematically introduces how to use R programming for text analysis, covering text corpus structure and preprocessing, clustering and similarity analysis, sentiment analysis, and machine learning. Using a problem-oriented practical approach, it is suitable for text data analysis in social sciences, literature, and business fields.</p>
+
                             <div class="contents-grid">
                                 <div class="content-item">
                                     <span class="material-icons content-icon">build</span>
-                                    <span>文本語料結構與資料前處理</span>
+                                    <span>Text Corpus Structure & Preprocessing</span>
                                 </div>
                                 <div class="content-item">
                                     <span class="material-icons content-icon">visibility</span>
-                                    <span>文本可視化技術</span>
+                                    <span>Text Visualization Techniques</span>
                                 </div>
                                 <div class="content-item">
                                     <span class="material-icons content-icon">group_work</span>
-                                    <span>聚類分析與相似性計算</span>
+                                    <span>Clustering & Similarity Analysis</span>
                                 </div>
                                 <div class="content-item">
                                     <span class="material-icons content-icon">sentiment_satisfied</span>
-                                    <span>情感分析方法</span>
+                                    <span>Sentiment Analysis Methods</span>
                                 </div>
                                 <div class="content-item">
                                     <span class="material-icons content-icon">smart_toy</span>
-                                    <span>文本分類的機器學習技術</span>
+                                    <span>ML for Text Classification</span>
                                 </div>
                                 <div class="content-item">
                                     <span class="material-icons content-icon">work</span>
-                                    <span>實務應用案例分析</span>
+                                    <span>Practical Case Studies</span>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="book-actions">
                             <a href="https://www.wunan.com.tw/bookdetail?NO=17408" target="_blank" class="purchase-btn">
                                 <span class="material-icons btn-icon">shopping_cart</span>
-                                <span class="btn-text">立即購買</span>
-                                <span class="btn-subtext">Purchase Now</span>
+                                <span class="btn-text">Purchase Now</span>
                             </a>
                         </div>
                     </div>
@@ -588,284 +754,470 @@
     <!-- Publications -->
     <section id="publications" class="publications">
         <div class="container">
-            <h2 class="section-title">Publications</h2>
-            <div class="publications-list">
-                <div class="publication-item">
-                    <h4>Voices Beyond the Screen: Charting Language Learning with Digital Storytelling</h4>
-                    <p class="authors">Dong, T. H., Chen, S., Tseng, W.-T., & Gao, X.</p>
-                    <p class="journal"><em>Language Teaching Research</em> (in press)</p>
-                    <div class="publication-links">
-                        <span class="btn btn-small" style="background: #ccc; cursor: not-allowed;">DOI (incoming)</span>
+            <div class="section-header">
+                <span class="section-number">07</span>
+                <span class="section-label" data-i18n="publications-label">Research</span>
+                <h2 class="section-title" data-i18n="publications-title">Publications</h2>
+                <p class="section-description" data-i18n="publications-desc">A comprehensive collection of peer-reviewed research publications from our lab.</p>
+            </div>
+
+            <div class="publications-timeline">
+                <!-- In Press / 2025 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2025</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">2 papers</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item featured fade-in">
+                            <h4>Voices Beyond the Screen: Charting Language Learning with Digital Storytelling</h4>
+                            <p class="authors">Dong, T. H., Chen, S., Tseng, W.-T., & Gao, X.</p>
+                            <p class="journal"><em>Language Teaching Research</em> (in press)</p>
+                            <div class="publication-links">
+                                <span class="btn btn-small" style="background: var(--paper-300); cursor: not-allowed;">DOI (incoming)</span>
+                            </div>
+                        </div>
+
+                        <div class="publication-item fade-in stagger-1">
+                            <h4>Massive Online Multiplayer Games as an Environment for English Learning Among Iranian EFL Students</h4>
+                            <p class="authors">Soyoof, A., Reynolds, B. L., Chan, K. K., Tseng, W.-T., & McLay, K.</p>
+                            <p class="journal"><em>Computer Assisted Language Learning</em>, 38(1-2), 128-171 (2025)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1080/09588221.2022.2159297" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>Massive Online Multiplayer Games as an Environment for English Learning Among Iranian EFL Students</h4>
-                    <p class="authors">Soyoof, A., Reynolds, B. L., Chan, K. K., Tseng, W.-T., & McLay, K.</p>
-                    <p class="journal"><em>Computer Assisted Language Learning</em>, 38(1–2), 128–171 (2025)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1080/09588221.2022.2159297" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2024 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2024</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">3 papers</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>Seeing to Understand Better? The Interplay Between Cognitive Traits and Nonverbal Visual Cues in L2 Video Comprehension</h4>
+                            <p class="authors">Liu, Y.-T., & Tseng, W.-T.</p>
+                            <p class="journal"><em>System</em> (in press 2024)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1016/j.system.2024.xxxxxx" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
+
+                        <div class="publication-item fade-in stagger-1">
+                            <h4>The Relationship Between Neuroticism and L2 Anxiety: A Meta-Analysis</h4>
+                            <p class="authors">Dong, T. H., Chen, S., & Tseng, W.-T.</p>
+                            <p class="journal"><em>System</em>, 123, 103293 (2024)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1016/j.system.2024.103293" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
+
+                        <div class="publication-item fade-in stagger-2">
+                            <h4>Effects of Internal and External Attentional Manipulations and Working Memory on Second Language Vocabulary Learning</h4>
+                            <p class="authors">Liu, Y.-T., Nassaji, H., & Tseng, W.-T.</p>
+                            <p class="journal"><em>Language Teaching Research</em>, 28(4), 1701-1741 (2024)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1177/13621688211030130" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
+
+                        <div class="publication-item fade-in stagger-3">
+                            <h4>Revisiting the Effectiveness of Study Abroad Language Programs: A Multi-Level Meta-Analysis</h4>
+                            <p class="authors">Tseng, W.-T., & Liu, Y.-T.</p>
+                            <p class="journal"><em>Language Teaching Research</em>, 28(1), 156-200 (2024)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1177/13621688231157717" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>Seeing to Understand Better? The Interplay Between Cognitive Traits and Nonverbal Visual Cues in L2 Video Comprehension</h4>
-                    <p class="authors">Liu, Y.-T., & Tseng, W.-T.</p>
-                    <p class="journal"><em>System</em> (in press 2024)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1016/j.system.2024.xxxxxx" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2023 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2023</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">2 papers</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>Language Learning Motivation, Learner Agency, and the Medium of Instruction</h4>
+                            <p class="authors">Hennebry-Leung, M., Tseng, W.-T., & Gao, X.</p>
+                            <p class="journal"><em>Psychology in the Schools</em>, 60(9), 3575-3591 (2023)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1002/pits.22935" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
+
+                        <div class="publication-item fade-in stagger-1">
+                            <h4>Multimodal Instruction and Mentor-Tutoring in an Intensive English Program</h4>
+                            <p class="authors">Wang, S.-P., Chen, Y.-L., & Tseng, W.-T.</p>
+                            <p class="journal"><em>SAGE Open</em>, 13(4), 1-26 (2023)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1177/21582440231200151" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>The Relationship Between Neuroticism and L2 Anxiety: A Meta-Analysis</h4>
-                    <p class="authors">Dong, T. H., Chen, S., & Tseng, W.-T.</p>
-                    <p class="journal"><em>System</em>, 123, 103293 (2024)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1016/j.system.2024.103293" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2022 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2022</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">2 papers</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>The Early the Better? Or, the More the Merrier? The Relative Effects of Onset Age and Exposure Hours on EFL Learners' Implicit and Explicit Grammatical Attainment</h4>
+                            <p class="authors">Liu, Y.-T., & Tseng, W.-T.</p>
+                            <p class="journal"><em>Applied Linguistics Review</em>, 15(3), 391-422 (2022)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1515/applirev-2022-0008" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
+
+                        <div class="publication-item fade-in stagger-1">
+                            <h4>The Effects of MALL on L2 Pronunciation Learning: A Meta-Analysis</h4>
+                            <p class="authors">Chen, S., Tseng, W.-T., Wang, S.-P., Cheng, H.-F., Yang, P.-S., & Gao, X.</p>
+                            <p class="journal"><em>Journal of Educational Computing Research</em>, 60(1), 3-35 (2022)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1177/07356331211058662" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>Effects of Internal and External Attentional Manipulations and Working Memory on Second Language Vocabulary Learning</h4>
-                    <p class="authors">Liu, Y.-T., Nassaji, H., & Tseng, W.-T.</p>
-                    <p class="journal"><em>Language Teaching Research</em>, 28(4), 1701–1741 (2024)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1177/13621688211030130" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2021 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2021</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">3 papers</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>Individual Differences in Second Language Learning: The Road Ahead</h4>
+                            <p class="authors">Tseng, W.-T., & Gao, X.</p>
+                            <p class="journal"><em>English Teaching & Learning</em>, 45(3), 237-244 (2021)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1007/s42321-021-00097-z" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
+
+                        <div class="publication-item fade-in stagger-1">
+                            <h4>A Meta-Analysis of Test-Retest Reliability in Language Anxiety Research: Is Language Anxiety Stable or Variable?</h4>
+                            <p class="authors">Hsiao, T.-Y., & Tseng, W.-T.</p>
+                            <p class="journal"><em>SAGE Open</em>, 11(4), 1-15 (2021)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1177/21582440211023172" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
+
+                        <div class="publication-item fade-in stagger-2">
+                            <h4>One Size Fits All? In Search of the Desirable Caption Display for L2 Learners with Different Caption Reliance in Listening Comprehension</h4>
+                            <p class="authors">Lee, P.-J., Liu, Y.-T., & Tseng, W.-T.</p>
+                            <p class="journal"><em>Language Teaching Research</em>, 25(3), 400-430 (2021)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1177/1362168819837288" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>Revisiting the Effectiveness of Study Abroad Language Programs: A Multi-Level Meta-Analysis</h4>
-                    <p class="authors">Tseng, W.-T., & Liu, Y.-T.</p>
-                    <p class="journal"><em>Language Teaching Research</em>, 28(1), 156–200 (2024)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1177/13621688231157717" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2020 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2020</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">2 papers</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>Validating a Motivational Self-Guide Scale for Language Learners</h4>
+                            <p class="authors">Tseng, W.-T., Cheng, H.-F., & Gao, X.</p>
+                            <p class="journal"><em>Sustainability</em>, 12(16), 6468 (2020)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.3390/su12166468" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
+
+                        <div class="publication-item fade-in stagger-1">
+                            <h4>Mining Text in Online News Reports of COVID-19 Virus: Key Phrase Extractions and Graphic Modeling</h4>
+                            <p class="authors">Tseng, W.-T.</p>
+                            <p class="journal"><em>English Teaching & Learning</em>, 44(4), 439-449 (2020)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1007/s42321-020-00070-2" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>Language Learning Motivation, Learner Agency, and the Medium of Instruction</h4>
-                    <p class="authors">Hennebry-Leung, M., Tseng, W.-T., & Gao, X.</p>
-                    <p class="journal"><em>Psychology in the Schools</em>, 60(9), 3575–3591 (2023)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1002/pits.22935" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2019 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2019</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">3 papers</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>Vocabulary Learning in Virtual Environments: Learner Autonomy and Collaboration</h4>
+                            <p class="authors">Tseng, W.-T., Liou, H.-J., & Chu, H.-C.</p>
+                            <p class="journal"><em>System</em>, 88, Article 102190 (2019)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1016/j.system.2019.102190" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
+
+                        <div class="publication-item fade-in stagger-1">
+                            <h4>Optimal Implementation of Speech Visualization Notation Cues for Enhancing Intonation in L2 Running Speech</h4>
+                            <p class="authors">Liu, Y.-T., & Tseng, W.-T.</p>
+                            <p class="journal"><em>System</em>, 87, Article 102157 (2019)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1016/j.system.2019.102157" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
+
+                        <div class="publication-item fade-in stagger-2">
+                            <h4>Classroom Interactions in the Target Language: Learners' Perceptions, Willingness to Communicate, and Communication Behavior</h4>
+                            <p class="authors">Wang, C., Tseng, W.-T., Chen, Y.-L., & Cheng, H.-F.</p>
+                            <p class="journal"><em>The Asia-Pacific Education Researcher</em>, 28(5), 393-404 (2019)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1007/s40299-019-00492-y" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>Multimodal Instruction and Mentor-Tutoring in an Intensive English Program</h4>
-                    <p class="authors">Wang, S.-P., Chen, Y.-L., & Tseng, W.-T.</p>
-                    <p class="journal"><em>SAGE Open</em>, 13(4), 1–26 (2023)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1177/21582440231200151" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2018 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2018</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">2 papers</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>The Effectiveness of Digital Game-Based Vocabulary Learning: A Framework-Based View of Meta-Analysis</h4>
+                            <p class="authors">Chen, M.-H., Tseng, W.-T., & Hsiao, T.-Y.</p>
+                            <p class="journal"><em>British Journal of Educational Technology</em>, 49(1), 69-83 (2018)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1111/bjet.12526" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
+
+                        <div class="publication-item fade-in stagger-1">
+                            <h4>Validating Translation Test Items via the Many-Facet Rasch Model</h4>
+                            <p class="authors">Tseng, W.-T., Su, T.-Y., & Nix, J.-M. L.</p>
+                            <p class="journal"><em>Psychological Reports</em>, 122(2), 748-772 (2018)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1177/0033294118768664" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>The Early the Better? Or, the More the Merrier? The Relative Effects of Onset Age and Exposure Hours on EFL Learners' Implicit and Explicit Grammatical Attainment</h4>
-                    <p class="authors">Liu, Y.-T., & Tseng, W.-T.</p>
-                    <p class="journal"><em>Applied Linguistics Review</em>, 15(3), 391–422 (2022)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1515/applirev-2022-0008" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2017 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2017</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">2 papers</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>Self-Regulation in Language Learning: Scale Validation and Gender Effects</h4>
+                            <p class="authors">Tseng, W.-T., Liu, H.-C., & Nix, J.-M. L.</p>
+                            <p class="journal"><em>Perceptual and Motor Skills</em>, 124(2), 531-548 (2017)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1177/0031512516684293" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
+
+                        <div class="publication-item fade-in stagger-1">
+                            <h4>The Effects of Writing Anxiety and Motivation on EFL College Students' Self-Evaluative Judgments of Corrective Feedback</h4>
+                            <p class="authors">Tsao, J.-J., Tseng, W.-T., & Wang, C.</p>
+                            <p class="journal"><em>Psychological Reports</em>, 120(2), 219-241 (2017)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1177/0033294116687123" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>The Effects of MALL on L2 Pronunciation Learning: A Meta-Analysis</h4>
-                    <p class="authors">Chen, S., Tseng, W.-T., Wang, S.-P., Cheng, H.-F., Yang, P.-S., & Gao, X.</p>
-                    <p class="journal"><em>Journal of Educational Computing Research</em>, 60(1), 3–35 (2022)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1177/07356331211058662" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2016 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2016</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">1 paper</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>Measuring English Vocabulary Size via Computerized Adaptive Testing</h4>
+                            <p class="authors">Tseng, W.-T.</p>
+                            <p class="journal"><em>Computers & Education</em>, 97, 69-85 (2016)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1016/j.compedu.2016.02.018" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>Individual Differences in Second Language Learning: The Road Ahead</h4>
-                    <p class="authors">Tseng, W.-T., & Gao, X.</p>
-                    <p class="journal"><em>English Teaching & Learning</em>, 45(3), 237–244 (2021)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1007/s42321-021-00097-z" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2015 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2015</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">1 paper</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>Effects of L2 Learning Orientations and Implementation Intentions on Self-Regulation</h4>
+                            <p class="authors">Tseng, W.-T., Chang, Y.-J., & Cheng, H.-F.</p>
+                            <p class="journal"><em>Psychological Reports</em>, 117(1), 319-339 (2015)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.2466/11.04.PR0.117c15z2" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>A Meta-Analysis of Test-Retest Reliability in Language Anxiety Research: Is Language Anxiety Stable or Variable?</h4>
-                    <p class="authors">Hsiao, T.-Y., & Tseng, W.-T.</p>
-                    <p class="journal"><em>SAGE Open</em>, 11(4), 1–15 (2021)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1177/21582440211023172" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2014 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2014</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">1 paper</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>Towards the Measurement of EFL Listening Beliefs with Item Response Theory Methods</h4>
+                            <p class="authors">Nix, J.-M. L., & Tseng, W.-T.</p>
+                            <p class="journal"><em>International Journal of Listening</em>, 28(2), 112-130 (2014)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1080/10904018.2013.833351" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>One Size Fits All? In Search of the Desirable Caption Display for L2 Learners with Different Caption Reliance in Listening Comprehension</h4>
-                    <p class="authors">Lee, P.-J., Liu, Y.-T., & Tseng, W.-T.</p>
-                    <p class="journal"><em>Language Teaching Research</em>, 25(3), 400–430 (2021)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1177/1362168819837288" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2013 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2013</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">1 paper</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>Validating a Pictorial Vocabulary Size Test via the 3PL-IRT Model</h4>
+                            <p class="authors">Tseng, W.-T.</p>
+                            <p class="journal"><em>Vocabulary Learning and Instruction</em>, 2(1), 64-73 (2013)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.7820/vli.v02.1.tseng" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>Validating a Motivational Self-Guide Scale for Language Learners</h4>
-                    <p class="authors">Tseng, W.-T., Cheng, H.-F., & Gao, X.</p>
-                    <p class="journal"><em>Sustainability</em>, 12(16), 6468 (2020)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.3390/su12166468" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2011 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2011</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">1 paper</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>Measuring Intention in Language Learning: A Confirmatory Factor Analysis</h4>
+                            <p class="authors">Dai, M.-H., & Tseng, W.-T.</p>
+                            <p class="journal"><em>Psychological Reports</em>, 108(3), 766-778 (2011)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.2466/09.07.PR0.108.3.766-778" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>Mining Text in Online News Reports of COVID-19 Virus: Key Phrase Extractions and Graphic Modeling</h4>
-                    <p class="authors">Tseng, W.-T.</p>
-                    <p class="journal"><em>English Teaching & Learning</em>, 44(4), 439–449 (2020)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1007/s42321-020-00070-2" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2010 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2010</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">1 paper</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>Multidimensionality and Hierarchical Structure of the English Vocabulary Learning Attitude Scale</h4>
+                            <p class="authors">Tseng, W.-T.</p>
+                            <p class="journal"><em>Social Behavior and Personality</em>, 38(7), 907-918 (2010)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.2224/sbp.2010.38.7.907" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>Vocabulary Learning in Virtual Environments: Learner Autonomy and Collaboration</h4>
-                    <p class="authors">Tseng, W.-T., Liou, H.-J., & Chu, H.-C.</p>
-                    <p class="journal"><em>System</em>, 88, Article 102190 (2019)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1016/j.system.2019.102190" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2009 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2009</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">1 paper</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>Tracking the Stability and Change of Volition of Foreign Language Learners</h4>
+                            <p class="authors">Tseng, W.-T.</p>
+                            <p class="journal"><em>Social Behavior and Personality</em>, 37(10), 1405-1418 (2009)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.2224/sbp.2009.37.10.1405" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>Optimal Implementation of Speech Visualization Notation Cues for Enhancing Intonation in L2 Running Speech</h4>
-                    <p class="authors">Liu, Y.-T., & Tseng, W.-T.</p>
-                    <p class="journal"><em>System</em>, 87, Article 102157 (2019)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1016/j.system.2019.102157" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2008 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2008</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">1 paper</span>
+                    </div>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>Toward a Model of Motivated Vocabulary Learning: A Structural Equation Modeling Approach</h4>
+                            <p class="authors">Tseng, W.-T., & Schmitt, N.</p>
+                            <p class="journal"><em>Language Learning</em>, 58(2), 357-400 (2008)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1111/j.1467-9922.2008.00444.x" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="publication-item">
-                    <h4>Classroom Interactions in the Target Language: Learners' Perceptions, Willingness to Communicate, and Communication Behavior</h4>
-                    <p class="authors">Wang, C., Tseng, W.-T., Chen, Y.-L., & Cheng, H.-F.</p>
-                    <p class="journal"><em>The Asia-Pacific Education Researcher</em>, 28(5), 393–404 (2019)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1007/s40299-019-00492-y" target="_blank" class="btn btn-small">DOI</a>
+                <!-- 2006 -->
+                <div class="year-group">
+                    <div class="year-header">
+                        <span class="year-label">2006</span>
+                        <div class="year-line"></div>
+                        <span class="year-count">1 paper</span>
                     </div>
-                </div>
-
-                <div class="publication-item">
-                    <h4>The Effectiveness of Digital Game-Based Vocabulary Learning: A Framework-Based View of Meta-Analysis</h4>
-                    <p class="authors">Chen, M.-H., Tseng, W.-T., & Hsiao, T.-Y.</p>
-                    <p class="journal"><em>British Journal of Educational Technology</em>, 49(1), 69–83 (2018)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1111/bjet.12526" target="_blank" class="btn btn-small">DOI</a>
-                    </div>
-                </div>
-
-                <div class="publication-item">
-                    <h4>Validating Translation Test Items via the Many-Facet Rasch Model</h4>
-                    <p class="authors">Tseng, W.-T., Su, T.-Y., & Nix, J.-M. L.</p>
-                    <p class="journal"><em>Psychological Reports</em>, 122(2), 748–772 (2018)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1177/0033294118768664" target="_blank" class="btn btn-small">DOI</a>
-                    </div>
-                </div>
-
-                <div class="publication-item">
-                    <h4>Self-Regulation in Language Learning: Scale Validation and Gender Effects</h4>
-                    <p class="authors">Tseng, W.-T., Liu, H.-C., & Nix, J.-M. L.</p>
-                    <p class="journal"><em>Perceptual and Motor Skills</em>, 124(2), 531–548 (2017)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1177/0031512516684293" target="_blank" class="btn btn-small">DOI</a>
-                    </div>
-                </div>
-
-                <div class="publication-item">
-                    <h4>The Effects of Writing Anxiety and Motivation on EFL College Students' Self-Evaluative Judgments of Corrective Feedback</h4>
-                    <p class="authors">Tsao, J.-J., Tseng, W.-T., & Wang, C.</p>
-                    <p class="journal"><em>Psychological Reports</em>, 120(2), 219–241 (2017)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1177/0033294116687123" target="_blank" class="btn btn-small">DOI</a>
-                    </div>
-                </div>
-
-                <div class="publication-item">
-                    <h4>Measuring English Vocabulary Size via Computerized Adaptive Testing</h4>
-                    <p class="authors">Tseng, W.-T.</p>
-                    <p class="journal"><em>Computers & Education</em>, 97, 69–85 (2016)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1016/j.compedu.2016.02.018" target="_blank" class="btn btn-small">DOI</a>
-                    </div>
-                </div>
-
-                <div class="publication-item">
-                    <h4>Effects of L2 Learning Orientations and Implementation Intentions on Self-Regulation</h4>
-                    <p class="authors">Tseng, W.-T., Chang, Y.-J., & Cheng, H.-F.</p>
-                    <p class="journal"><em>Psychological Reports</em>, 117(1), 319–339 (2015)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.2466/11.04.PR0.117c15z2" target="_blank" class="btn btn-small">DOI</a>
-                    </div>
-                </div>
-
-                <div class="publication-item">
-                    <h4>Towards the Measurement of EFL Listening Beliefs with Item Response Theory Methods</h4>
-                    <p class="authors">Nix, J.-M. L., & Tseng, W.-T.</p>
-                    <p class="journal"><em>International Journal of Listening</em>, 28(2), 112–130 (2014)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1080/10904018.2013.833351" target="_blank" class="btn btn-small">DOI</a>
-                    </div>
-                </div>
-
-                <div class="publication-item">
-                    <h4>Validating a Pictorial Vocabulary Size Test via the 3PL-IRT Model</h4>
-                    <p class="authors">Tseng, W.-T.</p>
-                    <p class="journal"><em>Vocabulary Learning and Instruction</em>, 2(1), 64–73 (2013)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.7820/vli.v02.1.tseng" target="_blank" class="btn btn-small">DOI</a>
-                    </div>
-                </div>
-
-                <div class="publication-item">
-                    <h4>Measuring Intention in Language Learning: A Confirmatory Factor Analysis</h4>
-                    <p class="authors">Dai, M.-H., & Tseng, W.-T.</p>
-                    <p class="journal"><em>Psychological Reports</em>, 108(3), 766–778 (2011)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.2466/09.07.PR0.108.3.766-778" target="_blank" class="btn btn-small">DOI</a>
-                    </div>
-                </div>
-
-                <div class="publication-item">
-                    <h4>Multidimensionality and Hierarchical Structure of the English Vocabulary Learning Attitude Scale</h4>
-                    <p class="authors">Tseng, W.-T.</p>
-                    <p class="journal"><em>Social Behavior and Personality</em>, 38(7), 907–918 (2010)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.2224/sbp.2010.38.7.907" target="_blank" class="btn btn-small">DOI</a>
-                    </div>
-                </div>
-
-                <div class="publication-item">
-                    <h4>Tracking the Stability and Change of Volition of Foreign Language Learners</h4>
-                    <p class="authors">Tseng, W.-T.</p>
-                    <p class="journal"><em>Social Behavior and Personality</em>, 37(10), 1405–1418 (2009)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.2224/sbp.2009.37.10.1405" target="_blank" class="btn btn-small">DOI</a>
-                    </div>
-                </div>
-
-                <div class="publication-item">
-                    <h4>Toward a Model of Motivated Vocabulary Learning: A Structural Equation Modeling Approach</h4>
-                    <p class="authors">Tseng, W.-T., & Schmitt, N.</p>
-                    <p class="journal"><em>Language Learning</em>, 58(2), 357–400 (2008)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1111/j.1467-9922.2008.00444.x" target="_blank" class="btn btn-small">DOI</a>
-                    </div>
-                </div>
-
-                <div class="publication-item">
-                    <h4>A New Approach to Assessing Strategic Learning: The Case of Self‐Regulation in Vocabulary Acquisition</h4>
-                    <p class="authors">Tseng, W.-T., Dörnyei, Z., & Schmitt, N.</p>
-                    <p class="journal"><em>Applied Linguistics</em>, 27(1), 78–102 (2006)</p>
-                    <div class="publication-links">
-                        <a href="https://doi.org/10.1093/applin/ami046" target="_blank" class="btn btn-small">DOI</a>
+                    <div class="publications-list">
+                        <div class="publication-item fade-in">
+                            <h4>A New Approach to Assessing Strategic Learning: The Case of Self-Regulation in Vocabulary Acquisition</h4>
+                            <p class="authors">Tseng, W.-T., Dornyei, Z., & Schmitt, N.</p>
+                            <p class="journal"><em>Applied Linguistics</em>, 27(1), 78-102 (2006)</p>
+                            <div class="publication-links">
+                                <a href="https://doi.org/10.1093/applin/ami046" target="_blank" class="btn btn-small">DOI</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -875,45 +1227,52 @@
     <!-- Contact -->
     <section id="contact" class="contact">
         <div class="container">
-            <h2 class="section-title">Contact Us</h2>
+            <div class="section-header">
+                <span class="section-number">08</span>
+                <span class="section-label" data-i18n="contact-label">Connect</span>
+                <h2 class="section-title" data-i18n="contact-title">Contact Us</h2>
+            </div>
             <div class="contact-grid">
                 <div class="contact-info">
-                    <h3>Lab Information</h3>
+                    <h3 data-i18n="lab-info">Lab Information</h3>
                     <div class="contact-item">
                         <span class="material-icons">location_on</span>
                         <div>
-                            <h4>Location</h4>
-                            <p>T4-816, 4th Teaching Building</p>
+                            <h4 data-i18n="location">Location</h4>
+                            <p>T4-816, 4th Teaching Building<br>
+                            National Taiwan University of Science and Technology<br>
+                            No. 43, Section 4, Keelung Road, Da'an District<br>
+                            Taipei City 10607, Taiwan</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <span class="material-icons">phone</span>
                         <div>
-                            <h4>Phone</h4>
+                            <h4 data-i18n="phone">Phone</h4>
                             <p>(02) 2737-6268</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <span class="material-icons">email</span>
                         <div>
-                            <h4>Email</h4>
+                            <h4 data-i18n="email">Email</h4>
                             <p>wenta.tseng@mail.ntust.edu.tw</p>
                         </div>
                     </div>
                 </div>
                 <div class="contact-form">
-                    <h3>Get in Touch</h3>
-                    <form>
+                    <h3 data-i18n="get-in-touch">Get in Touch</h3>
+                    <form id="contact-form">
                         <div class="form-group">
-                            <input type="text" placeholder="Your Name" required>
+                            <input type="text" id="contact-name" data-i18n="your-name" placeholder="Your Name" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" placeholder="Your Email" required>
+                            <input type="email" id="contact-email" data-i18n="your-email" placeholder="Your Email" required>
                         </div>
                         <div class="form-group">
-                            <textarea placeholder="Your Message" rows="5" required></textarea>
+                            <textarea id="contact-message" data-i18n="your-message" placeholder="Your Message" rows="5" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Send Message</button>
+                        <button type="submit" class="btn btn-primary" data-i18n="send-message">Send Message</button>
                     </form>
                 </div>
             </div>
@@ -926,14 +1285,14 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h4>Lab of Data Analytics in Human Science</h4>
-                    <p>Advancing quantitative research in human science through innovative statistical methods and data analytics.</p>
+                    <p data-i18n="footer-desc">Advancing quantitative research in human science through innovative statistical methods and data analytics at National Taiwan University of Science and Technology.</p>
                 </div>
                 <div class="footer-section">
-                    <h4>Quick Links</h4>
+                    <h4 data-i18n="quick-links">Quick Links</h4>
                     <ul>
                         <li><a href="#research">Research</a></li>
                         <li><a href="#outputs">Research Outputs</a></li>
-                        <li><a href="#members">Members</a></li>
+                        <li><a href="#members">Team</a></li>
                         <li><a href="#books">Published Works</a></li>
                         <li><a href="#publications">Publications</a></li>
                         <li><a href="#contact">Contact</a></li>
@@ -941,7 +1300,10 @@
                 </div>
                 <div class="footer-section">
                     <h4>Contact</h4>
-                    <p>T4-816, 4th Teaching Building</p>
+                    <p>T4-816, 4th Teaching Building<br>
+                    National Taiwan University of Science and Technology<br>
+                    No. 43, Sec. 4, Keelung Rd., Da'an Dist.<br>
+                    Taipei City 10607, Taiwan</p>
                     <p>Phone: (02) 2737-6268</p>
                     <p>Email: wenta.tseng@mail.ntust.edu.tw</p>
                 </div>
@@ -951,6 +1313,17 @@
             </div>
         </div>
     </footer>
+
+    <!-- Scroll to top button -->
+    <button class="scroll-top" aria-label="Scroll to top">
+        <span class="material-icons">keyboard_arrow_up</span>
+    </button>
+
+    <!-- Image Modal -->
+    <div class="image-modal">
+        <span class="modal-close material-icons">close</span>
+        <img src="" alt="Modal Image">
+    </div>
 
     <script src="script.js"></script>
 </body>
