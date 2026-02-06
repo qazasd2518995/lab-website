@@ -758,13 +758,7 @@ img {
     }
 
     .hero-visual {
-        margin-top: var(--space-4);
-    }
-
-    .data-visualization {
-        width: 220px;
-        height: 220px;
-        margin: 0 auto;
+        display: none;
     }
 
     .stat-card {
