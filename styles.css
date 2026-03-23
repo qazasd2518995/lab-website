@@ -979,8 +979,9 @@ section[id] {
 
 .directors-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    max-width: 960px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
+    max-width: 1100px;
     margin: 0 auto;
 }
 
@@ -990,8 +991,8 @@ section[id] {
     border-radius: var(--radius-2xl);
     overflow: hidden;
     box-shadow: var(--shadow-lg);
-    display: grid;
-    grid-template-columns: 280px 1fr;
+    display: flex;
+    flex-direction: column;
 }
 
 .director-photo-section {
@@ -1099,9 +1100,16 @@ section[id] {
     gap: var(--space-2);
 }
 
+@media (max-width: 900px) {
+    .directors-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+}
+
 @media (max-width: 768px) {
     .director-card {
-        grid-template-columns: 1fr;
+        /* Already column layout */
     }
 
     .director-photo-section {
