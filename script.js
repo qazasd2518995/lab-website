@@ -713,7 +713,7 @@ function initLanguageToggle() {
             'director-office': 'Office: T4-816, 4th Teaching Building',
             'director-phone': 'Phone: (02) 2737-6268',
             'director-email': 'Email: wenta.tseng@mail.ntust.edu.tw',
-            'codirector-name': 'Professor Tzu-Yang Hsiao',
+            'codirector-name': 'Professor Tsung-Yuan Hsiao',
             'codirector-title': 'Co-Principal Investigator',
             'codirector-edu': 'Ph.D. in Foreign Language Education, University of Texas at Austin, USA',
             'tag-tesol': 'TESOL',
