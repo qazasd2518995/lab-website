@@ -817,6 +817,13 @@ function initLanguageToggle() {
             'tag-data-analytics': 'Data Analytics',
             'tag-ml': 'Machine Learning',
             'tag-nlp': 'Natural Language Processing',
+            'chen-name': 'Chen, Zhi-Wei',
+            'chen-position': 'Research Assistant, National Taiwan University of Science and Technology',
+            'chen-research': 'Research Focus: Second Language Acquisition, Language Pedagogy, Instructional Design',
+            'tag-pedagogy': 'Language Pedagogy',
+            'tag-instructional': 'Instructional Design',
+            'tag-curriculum': 'Curriculum Development',
+            'tag-elearning': 'E-Learning',
 
             // Books
             'books-label': 'Publications',
@@ -1031,6 +1038,13 @@ function initLanguageToggle() {
             'tag-data-analytics': '資料分析',
             'tag-ml': '機器學習',
             'tag-nlp': '自然語言處理',
+            'chen-name': '陳致瑋',
+            'chen-position': '研究助理，國立臺灣科技大學',
+            'chen-research': '研究方向：第二語言習得、語言教學、教學設計',
+            'tag-pedagogy': '語言教學',
+            'tag-instructional': '教學設計',
+            'tag-curriculum': '課程發展',
+            'tag-elearning': '數位學習',
 
             // Books
             'books-label': '出版品',
