@@ -1038,7 +1038,7 @@ function initLanguageToggle() {
             'tag-data-analytics': '資料分析',
             'tag-ml': '機器學習',
             'tag-nlp': '自然語言處理',
-            'chen-name': '陳致瑋',
+            'chen-name': '陳子維',
             'chen-position': '研究助理，國立臺灣科技大學',
             'chen-research': '研究方向：第二語言習得、語言教學、教學設計',
             'tag-pedagogy': '語言教學',
