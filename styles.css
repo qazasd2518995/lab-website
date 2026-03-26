@@ -984,7 +984,8 @@ section[id] {
 
 .directors-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(450px, 550px));
+    justify-content: center;
     gap: var(--space-8);
     max-width: 1100px;
     margin: 0 auto;
