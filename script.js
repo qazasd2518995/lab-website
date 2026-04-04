@@ -832,6 +832,12 @@ function initLanguageToggle() {
             'tag-instructional': 'Instructional Design',
             'tag-curriculum': 'Curriculum Development',
             'tag-elearning': 'E-Learning',
+            'chang-name': 'Chang, Chih-Chin',
+            'chang-position': 'Master Student, University of Nottingham, School of English',
+            'chang-research': 'Research Focus: Psycholinguistic Approaches to Vocabulary Acquisition and Processing, Chinese-English Bilingualism, Corpus Linguistics',
+            'tag-psycholinguistics': 'Psycholinguistics',
+            'tag-bilingualism': 'Bilingualism',
+            'tag-corpus': 'Corpus Linguistics',
 
             // Books
             'books-label': 'Publications',
@@ -1061,6 +1067,12 @@ function initLanguageToggle() {
             'tag-instructional': '教學設計',
             'tag-curriculum': '課程發展',
             'tag-elearning': '數位學習',
+            'chang-name': '張芷芩',
+            'chang-position': '碩士生，諾丁漢大學英語學院',
+            'chang-research': '研究方向：詞彙習得與處理的心理語言學方法、中英雙語、語料庫語言學',
+            'tag-psycholinguistics': '心理語言學',
+            'tag-bilingualism': '雙語研究',
+            'tag-corpus': '語料庫語言學',
 
             // Books
             'books-label': '出版品',
