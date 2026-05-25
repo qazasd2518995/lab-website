@@ -39,23 +39,27 @@
   </nav>
 
   <main id="main">
-    <section id="foci" style="padding-top:120px">
+    <section id="foci" class="section-lg" style="padding-top:140px">
       <div class="wrap">
+        <div class="section-marker" data-rise><span class="marker-dot"></span><span class="marker-id">§ 02</span> Research foci · six method families</div>
         <div class="sec-head" data-rise>
-          <div class="eyebrow">What we work on</div>
-          <h2>Research foci</h2>
-          <p class="lead">Six method families, each an instance of the same framework. Read across the equations and the family resemblance is the point.</p>
+          <div class="sec-index">§ 02</div>
+          <div class="sec-body">
+            <div class="eyebrow">What we work on</div>
+            <h2>Research foci</h2>
+            <p class="lead">Six method families, each an instance of the same framework. Read across the equations and the family resemblance is the point.</p>
+          </div>
         </div>
 
         <div class="foci">
-          <div class="focus" style="--c:var(--d1)" data-rise>
+          <div class="focus span-3" style="--c:var(--d1)" data-rise>
             <div class="k">Multilevel SEM</div>
             <h3>Nested latent structure</h3>
             <p>Separating within- and between-cluster covariance so classroom, learner, and item effects are not confounded.</p>
             <code class="mini">\( \boldsymbol{\Sigma}_T=\boldsymbol{\Sigma}_W+\boldsymbol{\Sigma}_B \)</code>
           </div>
 
-          <div class="focus" style="--c:var(--eig)" data-rise>
+          <div class="focus span-3" style="--c:var(--eig)" data-rise>
             <div class="k">HLM</div>
             <h3>Random-coefficient models</h3>
             <p>Slopes and intercepts that vary across higher-level units, capturing context as a source of systematic variation.</p>
@@ -83,10 +87,10 @@
             <code class="mini">\( \boldsymbol{\theta}\leftarrow\boldsymbol{\theta}-\eta\,\nabla_{\boldsymbol{\theta}}\mathcal{L} \)</code>
           </div>
 
-          <div class="focus" style="--c:var(--eig)" data-rise>
+          <div class="focus span-4" style="--c:var(--eig)" data-rise>
             <div class="k">Dynamical modelling</div>
             <h3>Affect over time</h3>
-            <p>Differential-equation models of how motivation, engagement, and anxiety drive one another along a learning trajectory.</p>
+            <p>Differential-equation models of how motivation, engagement, and anxiety drive one another along a learning trajectory. Coupled ODEs let us trace regime shifts that snapshots miss.</p>
             <code class="mini">\( \dot{\mathbf{x}}=\mathbf{f}(\mathbf{x};\boldsymbol{\theta}) \)</code>
           </div>
         </div>

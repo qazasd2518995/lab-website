@@ -40,16 +40,20 @@
 
   <main id="main">
     <!-- 3D HERO FIGURES -->
-    <section id="figures" style="padding-top:120px">
+    <section id="figures" class="section-lg" style="padding-top:140px">
       <div class="wrap">
+        <div class="section-marker" data-rise><span class="marker-dot"></span><span class="marker-id">§ 03</span> Figures · three 3D scenes</div>
         <div class="sec-head" data-rise>
-          <div class="eyebrow">Simulated illustrations · fully synthetic data</div>
-          <h2>Seeing in three dimensions</h2>
-          <p class="lead">
-            Three interactive figures, each generated from a simulated 3D social-science dataset.
-            Rotate, zoom, and hover. Every parameter lives in the page source, so you can re-simulate
-            with your own structure.
-          </p>
+          <div class="sec-index">§ 03</div>
+          <div class="sec-body">
+            <div class="eyebrow">Simulated illustrations · fully synthetic data</div>
+            <h2>Seeing in three dimensions</h2>
+            <p class="lead">
+              Three interactive figures, each generated from a simulated 3D social-science dataset.
+              Rotate, zoom, and hover. Every parameter lives in the page source, so you can re-simulate
+              with your own structure.
+            </p>
+          </div>
         </div>
 
         <!-- Figure 1 -->
@@ -131,14 +135,18 @@
     <!-- GALLERY -->
     <section id="gallery">
       <div class="wrap">
+        <div class="section-marker" data-rise><span class="marker-dot"></span><span class="marker-id">§ 04</span> Gallery · eight more figures</div>
         <div class="sec-head" data-rise>
-          <div class="eyebrow">Additional figures · one or two per research focus</div>
-          <h2>A <em style="background:linear-gradient(100deg,var(--d1),var(--eig) 45%,var(--d3));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-style:italic;font-weight:500">gallery</em> of figures.</h2>
-          <p class="lead">Eight more publication-style figures, all from fully synthetic data. Each is tagged by the focus it serves and whether it is 2D or 3D.</p>
+          <div class="sec-index">§ 04</div>
+          <div class="sec-body">
+            <div class="eyebrow">Additional figures · one or two per research focus</div>
+            <h2>A <em style="background:linear-gradient(100deg,var(--d1),var(--eig) 45%,var(--d3));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-style:italic;font-weight:500">gallery</em> of figures.</h2>
+            <p class="lead">Eight more publication-style figures, all from fully synthetic data. Each is tagged by the focus it serves and whether it is 2D or 3D.</p>
+          </div>
         </div>
 
         <div class="gallery-grid">
-          <div class="card" data-rise>
+          <div class="card featured" data-rise>
             <div class="top"><div><div class="fignum">Fig A</div><h3>Test information surface</h3></div>
               <div class="badges"><span class="badge">CAT · IRT</span><span class="badge dim">3-D</span></div></div>
             <p class="cap">Where a multidimensional test measures most precisely. Each item contributes a ridge of Fisher information; their sum is the landscape an adaptive algorithm climbs when choosing the next item.</p>
@@ -146,31 +154,31 @@
             <div class="eq">\[ \mathcal{I}(\boldsymbol{\theta})=\sum_i \big(a_{1i}^2+a_{2i}^2\big)\,P_i(\boldsymbol{\theta})\big[1-P_i(\boldsymbol{\theta})\big] \]</div>
           </div>
 
-          <div class="card" data-rise>
-            <div class="top"><div><div class="fignum">Fig B</div><h3>Adaptive test convergence</h3></div>
-              <div class="badges"><span class="badge">CAT</span><span class="badge">2-D</span></div></div>
-            <p class="cap">A single simulated examinee. The ability estimate (teal) and its shrinking 95% band close in on the true value (rose dashed) as each information-maximizing item is administered.</p>
+          <div class="card minor" data-rise>
+            <div class="top"><div><div class="fignum">Fig B</div><h3>CAT convergence</h3></div>
+              <div class="badges"><span class="badge">CAT</span></div></div>
+            <p class="cap">A simulated examinee. The ability estimate and its shrinking 95% band close in on the true value as items are administered.</p>
             <div id="gB" class="plot"></div>
-            <div class="eq">\[ \hat{\theta}_{k}\leftarrow\hat{\theta}_{k}+\frac{\sum_j a_j\,[u_j-P_j]}{\sum_j a_j^2P_j(1-P_j)+1},\quad \mathrm{SE}=\mathcal{I}^{-1/2} \]</div>
+            <div class="eq">\[ \mathrm{SE}=\mathcal{I}^{-1/2} \]</div>
           </div>
 
-          <div class="card" data-rise>
-            <div class="top"><div><div class="fignum">Fig C</div><h3>Forest plot</h3></div>
+          <div class="card wide" data-rise>
+            <div class="top"><div><div class="fignum">Fig C</div><h3>Forest plot — meta-analytic synthesis</h3></div>
               <div class="badges"><span class="badge">Meta-analysis</span><span class="badge">2-D</span></div></div>
             <p class="cap">Twelve simulated studies with marker size scaled to precision, and the random-effects pooled estimate as a diamond at the foot. The canonical synthesis figure.</p>
             <div id="gC" class="plot"></div>
             <div class="eq">\[ \hat{\delta}_{\text{RE}}=\frac{\sum_i w_i\,d_i}{\sum_i w_i},\qquad w_i=\frac{1}{\,s_i^2+\hat{\tau}^2\,} \]</div>
           </div>
 
-          <div class="card" data-rise>
+          <div class="card minor" data-rise>
             <div class="top"><div><div class="fignum">Fig D</div><h3>Funnel plot</h3></div>
-              <div class="badges"><span class="badge">Meta · bias</span><span class="badge">2-D</span></div></div>
-            <p class="cap">Effect size against its standard error, with the 95% pseudo-confidence funnel. Asymmetry at the wide base is the visual signature of small-study or publication bias.</p>
+              <div class="badges"><span class="badge">Bias</span></div></div>
+            <p class="cap">Effect size against its standard error. Asymmetry at the base is the visual signature of small-study or publication bias.</p>
             <div id="gD" class="plot"></div>
-            <div class="eq">\[ \text{funnel: } \hat{\delta}\pm 1.96\,s,\quad s\in[0,\,s_{\max}] \]</div>
+            <div class="eq">\[ \hat{\delta}\pm 1.96\,s \]</div>
           </div>
 
-          <div class="card" data-rise>
+          <div class="card featured" data-rise>
             <div class="top"><div><div class="fignum">Fig E</div><h3>Random-slope spaghetti plot</h3></div>
               <div class="badges"><span class="badge">HLM · multilevel</span><span class="badge">2-D</span></div></div>
             <p class="cap">Twenty classrooms, each its own regression line coloured by intercept, scattered around the fixed-effect line (white). Exactly the picture random intercepts and slopes are meant to capture.</p>
@@ -180,10 +188,10 @@
 
           <div class="card" data-rise>
             <div class="top"><div><div class="fignum">Fig F</div><h3>Correlation matrix heatmap</h3></div>
-              <div class="badges"><span class="badge">SEM · matrix algebra</span><span class="badge">2-D</span></div></div>
+              <div class="badges"><span class="badge">SEM</span><span class="badge">2-D</span></div></div>
             <p class="cap">The block structure that a measurement model assumes, made visible: high within-construct correlations on the diagonal blocks, low cross-construct correlations off them.</p>
             <div id="gF" class="plot"></div>
-            <div class="eq">\[ \mathbf{R}=\mathbf{D}^{-1/2}\,\boldsymbol{\Sigma}\,\mathbf{D}^{-1/2},\qquad \mathbf{D}=\operatorname{diag}(\boldsymbol{\Sigma}) \]</div>
+            <div class="eq">\[ \mathbf{R}=\mathbf{D}^{-1/2}\,\boldsymbol{\Sigma}\,\mathbf{D}^{-1/2} \]</div>
           </div>
 
           <div class="card" data-rise>
@@ -191,10 +199,10 @@
               <div class="badges"><span class="badge">Matrix calculus</span><span class="badge dim">3-D</span></div></div>
             <p class="cap">Estimation as a walk downhill. The path zig-zags down an elongated quadratic valley toward the minimum, the geometric reason ill-conditioned problems are slow to converge.</p>
             <div id="gG" class="plot"></div>
-            <div class="eq">\[ \mathbf{w}_{t+1}=\mathbf{w}_t-\eta\,\nabla\mathcal{L}(\mathbf{w}_t),\quad \nabla\mathcal{L}=\mathbf{M}\mathbf{w} \]</div>
+            <div class="eq">\[ \mathbf{w}_{t+1}=\mathbf{w}_t-\eta\,\nabla\mathcal{L}(\mathbf{w}_t) \]</div>
           </div>
 
-          <div class="card" data-rise>
+          <div class="card wide" data-rise>
             <div class="top"><div><div class="fignum">Fig H</div><h3>Phase portrait with vector field</h3></div>
               <div class="badges"><span class="badge">Dynamical systems</span><span class="badge">2-D</span></div></div>
             <p class="cap">A two-state affect system: the arrows are the flow, the dashed lines the nullclines, and the bright curves are trajectories spiralling into a stable equilibrium, a planar companion to the 3D attractor.</p>
