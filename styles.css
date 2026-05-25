@@ -494,7 +494,11 @@ section.section-page-top { padding-top: clamp(40px, 8vw, 120px); }
   border-top: 1px dashed var(--line);
   padding-top: 14px;
   color: var(--ink);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
+.pillar .eqn .katex-display,
+.pillar .eqn .katex { max-width: 100%; }
 .pillar.p1 { border-top: 3px solid var(--d1); }
 .pillar.p2 { border-top: 3px solid var(--d2); }
 .pillar.p3 { border-top: 3px solid var(--d3); }
@@ -563,8 +567,10 @@ section.section-page-top { padding-top: clamp(40px, 8vw, 120px); }
   padding: 9px 11px;
   display: block;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   font-family: "JetBrains Mono", monospace;
 }
+.focus .mini .katex { max-width: 100%; }
 
 /* viz blocks */
 .viz {
@@ -667,6 +673,12 @@ section.section-page-top { padding-top: clamp(40px, 8vw, 120px); }
   padding: 0 26px 22px;
   font-size: 0.95rem;
   color: var(--ink);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.viz-eq .katex-display,
+.viz-eq .katex {
+  max-width: 100%;
 }
 
 /* gallery — asymmetric 12-column */
@@ -741,6 +753,12 @@ section.section-page-top { padding-top: clamp(40px, 8vw, 120px); }
   padding: 6px 24px 20px;
   border-top: 1px solid var(--line);
   margin-top: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.card .eq .katex-display,
+.card .eq .katex {
+  max-width: 100%;
 }
 
 /* note block */
@@ -1432,6 +1450,13 @@ footer.site-footer .placeholder {
   .sec-head h2 { margin-top: 4px; }
   .director-card { padding: 22px 20px; gap: 22px; }
   .book-hero { padding: 22px 20px; gap: 22px; }
+
+  /* Equations: shrink so most fit a 375px viewport without horizontal scroll */
+  .viz-eq, .card .eq { font-size: 0.78rem; padding-left: 18px; padding-right: 18px; }
+  .pillar .eqn { font-size: 0.82rem; }
+  .focus .mini { font-size: 0.78rem; padding: 8px 10px; }
+  .viz-eq .katex, .card .eq .katex,
+  .pillar .eqn .katex, .focus .mini .katex { font-size: 0.92em; }
 
   /* Footer — compact 2x2 grid */
   footer.site-footer {
