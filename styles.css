@@ -250,27 +250,10 @@ header.hero::after {
 }
 .hero-grid {
   display: grid;
-  grid-template-columns: clamp(50px, 6vw, 88px) 1fr 0.78fr;
-  gap: clamp(20px, 3.5vw, 56px);
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(28px, 4vw, 56px);
   align-items: center;
 }
-.hero-stamp {
-  font-family: "JetBrains Mono", monospace;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  font-size: 0.68rem;
-  letter-spacing: 0.32em;
-  color: var(--ink-faint);
-  text-transform: uppercase;
-  align-self: stretch;
-  padding: clamp(14px, 2.5vw, 32px) 0;
-  border-left: 1px solid var(--line);
-  padding-left: 14px;
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-}
-.hero-stamp .stamp-accent { color: var(--d1); }
 .hero-title {
   font-family: "Fraunces", serif;
   font-weight: 600;
@@ -1302,23 +1285,7 @@ footer.site-footer .placeholder {
 @media (max-width: 1100px) {
   .hero-grid {
     grid-template-columns: 1fr 0.85fr;
-    grid-template-areas: "stamp stamp" "main eq";
     gap: 24px;
-  }
-  .hero-grid > div:not(.hero-stamp):not(.eq-card) { grid-area: main; }
-  .hero-grid .eq-card { grid-area: eq; }
-  .hero-stamp {
-    grid-area: stamp;
-    writing-mode: horizontal-tb;
-    transform: none;
-    border-left: none;
-    border-bottom: 1px solid var(--line);
-    padding: 0 0 14px;
-    display: flex;
-    align-items: center;
-    white-space: normal;
-    font-size: 0.62rem;
-    letter-spacing: 0.22em;
   }
   .members-grid { grid-template-columns: repeat(2, 1fr); }
   .director-card { grid-template-columns: 1fr; padding: 28px; }
@@ -1381,10 +1348,8 @@ footer.site-footer .placeholder {
 
 /* ─── Phone landscape & smaller (≤ 760px) ─── */
 @media (max-width: 760px) {
-  .hero-stamp { display: none; }
   .hero-grid {
     grid-template-columns: 1fr;
-    grid-template-areas: "main" "eq";
     gap: 28px;
   }
   .frame-grid { grid-template-columns: 1fr; gap: 16px; }
