@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Framework · L-DAHS</title>
+  <meta name="description" content="The unifying mathematical framework of L-DAHS: one master operator equation and three axes of decomposition (measurement, hierarchy, and dynamics).">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@300;400;500&family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-brand">
+      <span class="brand-mark">L-DAHS<span>/</span></span>
+      <span class="brand-tag">Quantitative Inference</span>
+    </a>
+    <ul class="nav-menu" id="nav-menu">
+      <li><a href="index.html" data-i18n="nav-home">Home</a></li>
+      <li><a href="framework.html" data-i18n="nav-framework">Framework</a></li>
+      <li><a href="research.html" data-i18n="nav-research">Research</a></li>
+      <li><a href="visuals.html" data-i18n="nav-visuals">Visuals</a></li>
+      <li><a href="team.html" data-i18n="nav-team">Team</a></li>
+      <li><a href="publications.html" data-i18n="nav-publications">Publications</a></li>
+    </ul>
+    <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <main id="main">
+    <section class="section-block framework reveal" id="framework" style="margin-top: 4rem;">
+      <div class="section-tag" data-i18n="framework-tag">§ 02</div>
+      <div class="section-label" data-i18n="framework-label">The Unifying Framework</div>
+      <div class="section-head reveal">
+        <h2 class="section-h2" data-i18n="framework-title">One <em>operator equation</em>. Three axes of decomposition.</h2>
+        <p class="section-intro" data-i18n="framework-intro">
+          Every method this lab deploys is a particular instance of a single mathematical object: a <em>composed operator</em> that maps latent structure to observed data through three independent axes of variation: measurement, hierarchy, and dynamics. The methodological diversity below is not a list of techniques. It is a coordinate system.
+        </p>
+      </div>
+
+      <!-- ── Master Equation Plate ── -->
+      <div class="master-plate reveal">
+        <div class="master-eq">
+          <span class="vec">y</span> &nbsp;=&nbsp; <span class="op">𝓜</span>[<span class="op">θ</span>] &nbsp;<span class="vec">x</span> &nbsp;+&nbsp; <span class="op">ε</span>
+        </div>
+        <div class="master-decomp">
+          where &nbsp;&nbsp; <span class="op">𝓜</span> &nbsp;=&nbsp; <span class="op">𝓛</span>(Λ) &nbsp;∘&nbsp; <span class="op">𝓗</span>(Z, G) &nbsp;∘&nbsp; <span class="op">𝓓</span>(∂/∂t)
+        </div>
+        <div class="master-where">
+          <span class="sym">y</span><span>observed multivariate response: vector, matrix, or tensor of measurements</span>
+          <span class="sym">x</span><span>design or predictor structure governing input</span>
+          <span class="sym">𝓛</span><span>measurement operator with loadings Λ; projects latent η onto observables</span>
+          <span class="sym">𝓗</span><span>hierarchical operator with design Z and variance components G, R; propagates nesting</span>
+          <span class="sym">𝓓</span><span>dynamical operator (∂/∂t, ∫dt, stochastic dW); governs change and flow</span>
+          <span class="sym">θ</span><span>full parameter vector subject to estimation by matrix-calculus derivatives</span>
+        </div>
+      </div>
+
+      <!-- ── Three Axes ── -->
+      <div class="axes-grid reveal">
+        <div class="axis-card">
+          <div class="axis-num">— AXIS I</div>
+          <div class="axis-symbol">Λ</div>
+          <h3 class="axis-title" data-i18n="axis-i-title">Measurement / <em>Dimensionality</em></h3>
+          <p class="axis-desc" data-i18n="axis-i-desc">The projection from latent η onto observed y. Determines how many constructs the data express, and how variance distributes across them. Multivariate by default, tensor-valued when needed.</p>
+          <div class="axis-eq">
+            <span class="label">— Canonical form</span>
+            y = Λη + ε
+          </div>
+        </div>
+
+        <div class="axis-card">
+          <div class="axis-num">— AXIS II</div>
+          <div class="axis-symbol">Z</div>
+          <h3 class="axis-title" data-i18n="axis-ii-title">Hierarchy / <em>Nesting</em></h3>
+          <p class="axis-desc" data-i18n="axis-ii-desc">The architecture of clustering. Within-cluster covariance R and between-cluster covariance G are propagated through design matrix Z to yield the marginal variance of the response.</p>
+          <div class="axis-eq">
+            <span class="label">— Canonical form</span>
+            V = ZGZ⊤ + R
+          </div>
+        </div>
+
+        <div class="axis-card">
+          <div class="axis-num">— AXIS III</div>
+          <div class="axis-symbol">∂/∂t</div>
+          <h3 class="axis-title" data-i18n="axis-iii-title">Dynamics / <em>Time</em></h3>
+          <p class="axis-desc" data-i18n="axis-iii-desc">The temporal evolution operator. Encodes change, growth, coupling, and stochastic perturbation through ordinary or stochastic differential equations on the latent state.</p>
+          <div class="axis-eq">
+            <span class="label">— Canonical form</span>
+            dη = Aη dt + σ dW
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Method-to-Operator Mapping ── -->
+      <div class="mapping-section reveal">
+        <h3 class="mapping-title" data-i18n="mapping-title">Each method as a <em>coordinate</em> in the operator space</h3>
+        <div class="mapping-table">
+          <div class="m-row m-header">
+            <div class="m-method">— Method</div>
+            <div class="m-dot">Λ</div>
+            <div class="m-dot">Z</div>
+            <div class="m-dot">∂/∂t</div>
+            <div class="m-form">— Operative form</div>
+          </div>
+
+          <div class="m-row">
+            <div class="m-method">Multilevel SEM</div>
+            <div class="m-dot full">●</div>
+            <div class="m-dot full">●</div>
+            <div class="m-dot half">◐</div>
+            <div class="m-form">Σ<span style="font-size:.7em">W</span> + Σ<span style="font-size:.7em">B</span> &nbsp;with&nbsp; Σ = Λ(I − B)⁻¹Ψ(I − B)⁻⊤Λ⊤ + Θ</div>
+          </div>
+
+          <div class="m-row">
+            <div class="m-method">Hierarchical Linear Modeling</div>
+            <div class="m-dot half">◐</div>
+            <div class="m-dot full">●</div>
+            <div class="m-dot half">◐</div>
+            <div class="m-form">y = Xβ + Zu + ε , &nbsp; u ∼ 𝒩(0, G)</div>
+          </div>
+
+          <div class="m-row">
+            <div class="m-method">Computerized Adaptive Testing</div>
+            <div class="m-dot full">●</div>
+            <div class="m-dot half">◐</div>
+            <div class="m-dot full">●</div>
+            <div class="m-form">θ̂<span style="font-size:.7em">k+1</span> = θ̂<span style="font-size:.7em">k</span> + I(θ̂<span style="font-size:.7em">k</span>)⁻¹ ∂ℓ/∂θ</div>
+          </div>
+
+          <div class="m-row">
+            <div class="m-method">Meta-Analysis</div>
+            <div class="m-dot half">◐</div>
+            <div class="m-dot full">●</div>
+            <div class="m-dot half">◐</div>
+            <div class="m-form">θ̂ = (X⊤WX)⁻¹X⊤Wy , &nbsp; W = diag(1 / (vᵢ + τ²))</div>
+          </div>
+
+          <div class="m-row">
+            <div class="m-method">Multivariate Data Mining</div>
+            <div class="m-dot full">●</div>
+            <div class="m-dot half">◐</div>
+            <div class="m-dot half">◐</div>
+            <div class="m-form">X = UDV⊤ ;&nbsp; β̂ = arg min ‖y − Xβ‖² + λ‖β‖</div>
+          </div>
+
+          <div class="m-row">
+            <div class="m-method">Matrix Calculus &amp; Differential Eq.</div>
+            <div class="m-dot full">●</div>
+            <div class="m-dot full">●</div>
+            <div class="m-dot full">●</div>
+            <div class="m-form">∂vec(Σ)/∂θ⊤ ;&nbsp; dη/dt = f(η, ξ, t)</div>
+          </div>
+        </div>
+        <p class="legend-note" data-i18n="mapping-note">● primary &nbsp;&nbsp; ◐ active when applicable &nbsp;&nbsp; ○ inert</p>
+      </div>
+
+      <!-- ── Synthesis: Model-Implied Covariance ── -->
+      <div class="synthesis-plate reveal">
+        <div class="synthesis-eq">
+          Σ(<span style="color:var(--gold);">θ</span>) &nbsp;=&nbsp;
+          <span class="t1">Λ(I − B)⁻¹Ψ(I − B)<span class="sup">−⊤</span>Λ<span class="sup">⊤</span> + Θ</span>
+          &nbsp;+&nbsp;
+          <span class="t2">ZGZ<span class="sup">⊤</span></span>
+          &nbsp;+&nbsp;
+          <span class="t3">∫<span class="sub">0</span><span class="sup">T</span> Φ(t) Q Φ(t)<span class="sup">⊤</span> dt</span>
+        </div>
+
+        <div class="synthesis-legend">
+          <div class="legend-item">
+            <span class="name" data-i18n="legend-1-name"><span class="sw1">■</span> Measurement term: Λ, B, Ψ, Θ</span>
+            <span data-i18n="legend-1-desc">Latent-construct covariance under SEM. Originates from Axis I and supplies the structure that all observed variability is read against.</span>
+          </div>
+          <div class="legend-item">
+            <span class="name" data-i18n="legend-2-name"><span class="sw2">■</span> Hierarchy term: ZGZ⊤</span>
+            <span data-i18n="legend-2-desc">Variance contributed by nested random effects. Originates from Axis II and partitions covariance into within- and between-cluster components.</span>
+          </div>
+          <div class="legend-item">
+            <span class="name" data-i18n="legend-3-name"><span class="sw3">■</span> Dynamics term: ∫ ΦQΦ⊤ dt</span>
+            <span data-i18n="legend-3-desc">Integrated covariance accumulated along the dynamical flow. Originates from Axis III. Recovers static models in the limit dt → 0.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span><span id="copyright-year">2026</span> Lab of Data Analytics in Human Science · L-DAHS · NTUST</span>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="script.js"></script>
+</body>
+</html>

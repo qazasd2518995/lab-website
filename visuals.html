@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visual Suite I · L-DAHS</title>
+  <meta name="description" content="Visual Suite I. A simulated 2D social-science dataset rendered through the master operator and each of its decompositions.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@300;400;500&family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-brand">
+      <span class="brand-mark">L-DAHS<span>/</span></span>
+      <span class="brand-tag">Quantitative Inference</span>
+    </a>
+    <ul class="nav-menu" id="nav-menu">
+      <li><a href="index.html" data-i18n="nav-home">Home</a></li>
+      <li><a href="framework.html" data-i18n="nav-framework">Framework</a></li>
+      <li><a href="research.html" data-i18n="nav-research">Research</a></li>
+      <li><a href="visuals.html" data-i18n="nav-visuals">Visuals</a></li>
+      <li><a href="team.html" data-i18n="nav-team">Team</a></li>
+      <li><a href="publications.html" data-i18n="nav-publications">Publications</a></li>
+    </ul>
+    <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <main id="main">
+
+    <!-- ════════════ MASTHEAD ════════════ -->
+    <section class="masthead reveal">
+      <div class="running-head" data-i18n="visuals-running">VISUAL SUITE I &nbsp;·&nbsp; № 01 / 2026</div>
+      <h1 data-i18n="visuals-h1">One dataset.<br><em>Six methodological lenses.</em></h1>
+      <div class="subtitle" data-i18n="visuals-subtitle">
+        A simulated two-dimensional social-science dataset, rendered through the master operator and each of its decompositions.
+      </div>
+      <div class="meta">
+        <span>N = 400 students</span>
+        <span>K = 10 schools</span>
+        <span>T = 5 occasions</span>
+        <span>2 variables · 6 views</span>
+      </div>
+    </section>
+
+    <!-- ════════════ ABSTRACT ════════════ -->
+    <section class="abstract reveal">
+      <div class="label" data-i18n="visuals-abstract-label">— Note from the lab</div>
+      <p data-i18n="visuals-abstract">
+        The figures that follow take a single simulated joint distribution: student socioeconomic status (X) against academic achievement (Y), with nesting in schools and observation across time. Each figure illustrates what one axis of the master operator <em>𝓜 = 𝓛(Λ) ∘ 𝓗(Z, G) ∘ 𝓓(∂/∂t)</em> brings into view. The same 400 points are read first as a pooled cloud, then as a hierarchy, then as cluster-specific covariance ellipses, then as a density field, then as a rotation onto principal axes, and finally as a dynamical flow. Each rendering is a coordinate. Together they describe what the literature too often summarizes as a single regression coefficient.
+      </p>
+    </section>
+
+    <!-- ════════════ FIGURES ════════════ -->
+    <div class="figures-stack">
+
+      <!-- FIG 1 -->
+      <article class="figure-block reveal">
+        <div class="caption">
+          <div class="cap-num">— Fig. 01</div>
+          <h2 class="cap-title" data-i18n="fig1-title">The multilevel reality, in two variables.</h2>
+          <p class="cap-body" data-i18n="fig1-body">Four hundred students, ten schools, two variables. The pooled regression line cuts through a structure it cannot see. The <em>between-school</em> gradient is steeper than the <em>within-school</em> slopes that constitute it. This is Simpson's paradox in its quietest form.</p>
+          <div class="cap-eq">
+            <span class="label">Pooled OLS</span>
+            Yᵢ = β₀ + β₁ Xᵢ + εᵢ
+          </div>
+        </div>
+        <div class="figure-img">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <img src="images/figures/fig1_multilevel.png" alt="Multilevel scatterplot: pooled regression vs within-school slopes" loading="lazy" width="900" height="675">
+        </div>
+      </article>
+
+      <!-- FIG 2 -->
+      <article class="figure-block reveal">
+        <div class="caption">
+          <div class="cap-num">— Fig. 02</div>
+          <h2 class="cap-title" data-i18n="fig2-title">Decomposing heterogeneity: within and between.</h2>
+          <p class="cap-body" data-i18n="fig2-body">The same 400 points, now split into ten <em>within-school</em> regressions and ten <em>school-mean</em> coordinates. The between-school slope (2.77) far exceeds any within-school slope. A multilevel model that ignored this distinction would mis-attribute variance from school context to student-level SES.</p>
+          <div class="cap-eq">
+            <span class="label">Hierarchical form</span>
+            y = Xβ + Zu + ε &nbsp;,&nbsp; u ∼ 𝒩(0, G)
+          </div>
+        </div>
+        <div class="figure-img">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <img src="images/figures/fig2_within_between.png" alt="Within vs between decomposition: school-level regressions and school-mean coordinates" loading="lazy" width="900" height="450">
+        </div>
+      </article>
+
+      <!-- FIG 3 -->
+      <article class="figure-block reveal">
+        <div class="caption">
+          <div class="cap-num">— Fig. 03</div>
+          <h2 class="cap-title" data-i18n="fig3-title">Cluster-specific covariance, ten times over.</h2>
+          <p class="cap-body" data-i18n="fig3-body">Each school carries its own bivariate covariance with a unique <em>orientation</em>, <em>elongation</em>, and <em>location</em>. The dashed pooled ellipse hides this variation. Methods that assume covariance homogeneity across clusters discard the very information multilevel SEM was built to recover.</p>
+          <div class="cap-eq">
+            <span class="label">Cluster covariance</span>
+            Σⱼ = Cov(Xⱼ, Yⱼ) &nbsp;,&nbsp; j = 1, …, 10
+          </div>
+        </div>
+        <div class="figure-img">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <img src="images/figures/fig3_ellipses.png" alt="Confidence ellipses by school: ten cluster-specific covariance ellipses" loading="lazy" width="900" height="720">
+        </div>
+      </article>
+
+      <!-- FIG 4 -->
+      <article class="figure-block reveal">
+        <div class="caption">
+          <div class="cap-num">— Fig. 04</div>
+          <h2 class="cap-title" data-i18n="fig4-title">The joint distribution as a density field.</h2>
+          <p class="cap-body" data-i18n="fig4-body">A bivariate kernel density with hexbinned counts and contour lines, flanked by the two marginal distributions. The joint density f(X, Y) carries more information than either marginal alone, and considerably more than the correlation coefficient that often substitutes for it.</p>
+          <div class="cap-eq">
+            <span class="label">Joint density</span>
+            f(x, y) = ∂²F / ∂x ∂y
+          </div>
+        </div>
+        <div class="figure-img">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <img src="images/figures/fig4_density.png" alt="Bivariate density with marginal distributions" loading="lazy" width="900" height="720">
+        </div>
+      </article>
+
+      <!-- FIG 5 -->
+      <article class="figure-block reveal">
+        <div class="caption">
+          <div class="cap-num">— Fig. 05</div>
+          <h2 class="cap-title" data-i18n="fig5-title">Rotation to principal axes. The matrix at work.</h2>
+          <p class="cap-body" data-i18n="fig5-body">Eigendecomposition of the sample covariance matrix produces the orthogonal basis along which variance is maximized. PC1 absorbs roughly three-quarters of the joint variance. PC2 captures what remains. Matrix algebra is not an abstraction here. It is the <em>physical rotation</em> of the data into its own preferred coordinate system.</p>
+          <div class="cap-eq">
+            <span class="label">Spectral form</span>
+            Σ = V Λ V⊤ &nbsp;,&nbsp; Σ vₖ = λₖ vₖ
+          </div>
+        </div>
+        <div class="figure-img">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <img src="images/figures/fig5_pca.png" alt="Principal axes and eigendecomposition" loading="lazy" width="900" height="720">
+        </div>
+      </article>
+
+      <!-- FIG 6 -->
+      <article class="figure-block reveal">
+        <div class="caption">
+          <div class="cap-num">— Fig. 06</div>
+          <h2 class="cap-title" data-i18n="fig6-title">Latent growth in continuous time.</h2>
+          <p class="cap-body" data-i18n="fig6-body">The same students, now observed across five occasions. Thin lines are individual trajectories. Thick lines are school means. The black trace is the grand mean. Heterogeneity in <em>intercept</em> and <em>slope</em> across persons and schools is the substantive content of any growth model, and the entry point for differential-equation formulations of change.</p>
+          <div class="cap-eq">
+            <span class="label">Latent growth ODE</span>
+            dY/dt = π₀ + π₁ t + ξ(t)
+          </div>
+        </div>
+        <div class="figure-img">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <img src="images/figures/fig6_growth.png" alt="Growth trajectories over time: individual and school-mean curves" loading="lazy" width="1400" height="900">
+        </div>
+      </article>
+
+    </div>
+
+    <div class="divider">end of plates</div>
+
+    <!-- ════════════ DGP APPENDIX ════════════ -->
+    <section class="interlude reveal">
+      <div class="interlude-grid">
+        <div>
+          <h3 data-i18n="dgp-title-1">The simulation, in plain terms.</h3>
+          <p data-i18n="dgp-p1-1">Ten schools (j = 1, …, 10) drew random intercepts and slopes from a normal distribution. Within each school, forty students drew an SES value correlated with their school's intercept, and an achievement value generated as a school-specific linear function of SES with normal noise.</p>
+          <p data-i18n="dgp-p1-2">Each student also drew a personal growth rate, and was then "observed" at five evenly spaced time points with measurement error added at each occasion. The total simulation produced 2,000 observations from 400 persons in 10 clusters.</p>
+        </div>
+        <div>
+          <h3 data-i18n="dgp-title-2">Generative equations.</h3>
+
+          <div class="dgp-eq">
+            <span class="label">School level</span>
+            β₀ⱼ ∼ 𝒩(0, 1.20²) &nbsp;,&nbsp; β₁ⱼ ∼ 𝒩(0.60, 0.25²)
+          </div>
+
+          <div class="dgp-eq">
+            <span class="label">Student level (cross-sectional)</span>
+            Yᵢⱼ = 1.5 + β₀ⱼ + β₁ⱼ Xᵢⱼ + εᵢⱼ
+          </div>
+
+          <div class="dgp-eq">
+            <span class="label">Longitudinal extension</span>
+            Yᵢⱼ(t) = Yᵢⱼ(0) + ρᵢ · t + ξᵢⱼ(t)
+          </div>
+
+          <div class="dgp-eq">
+            <span class="label">Noise structure</span>
+            εᵢⱼ ∼ 𝒩(0, 0.7²) &nbsp;,&nbsp; ξᵢⱼ(t) ∼ 𝒩(0, 0.3²)
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <span><span id="copyright-year">2026</span> Lab of Data Analytics in Human Science · L-DAHS · NTUST</span>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="script.js"></script>
+</body>
+</html>
