@@ -511,20 +511,53 @@
   }
 
   /* ───────── KaTeX rendering ───────── */
-  function renderMath() {
+  function doRender() {
+    try {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '\\[', right: '\\]', display: true },
+          { left: '\\(', right: '\\)', display: false },
+          { left: '$', right: '$', display: false }
+        ],
+        throwOnError: false,
+        ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      });
+    } catch (e) {
+      console.error('KaTeX render failed', e);
+    }
+  }
+
+  async function ensureKatex() {
+    if (window.renderMathInElement) return true;
+    const katexCss = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css';
+    const katexJs = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js';
+    const autoJs = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js';
+    try {
+      if (!document.querySelector('link[href*="katex.min.css"]')) {
+        const l = document.createElement('link');
+        l.rel = 'stylesheet';
+        l.href = katexCss;
+        document.head.appendChild(l);
+      }
+      if (!window.katex) await loadScript(katexJs);
+      if (!window.renderMathInElement) await loadScript(autoJs);
+    } catch (e) {
+      console.error('KaTeX fallback load failed', e);
+    }
+    return !!window.renderMathInElement;
+  }
+
+  function renderMath(retries = 80) {
     if (window.renderMathInElement) {
-      try {
-        renderMathInElement(document.body, {
-          delimiters: [
-            { left: '\\[', right: '\\]', display: true },
-            { left: '\\(', right: '\\)', display: false }
-          ],
-          throwOnError: false
-        });
-      } catch (e) { /* ignore */ }
+      doRender();
+      return;
+    }
+    if (retries > 0) {
+      setTimeout(() => renderMath(retries - 1), 150);
     } else {
-      // retry after katex loads
-      setTimeout(renderMath, 400);
+      // last resort: load from jsdelivr ourselves
+      ensureKatex().then(ok => { if (ok) doRender(); });
     }
   }
 
@@ -560,12 +593,24 @@
   }
 
   /* ───────── init ───────── */
-  document.addEventListener('DOMContentLoaded', () => {
+  function init() {
     setupNav();
     setupReveal();
     setupScrollTop();
     setupCopyright();
     renderMath();
     setupFigures();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  // Also trigger math render on window.load (after deferred scripts settle)
+  window.addEventListener('load', () => {
+    if (window.renderMathInElement) doRender();
+    else renderMath();
   });
 })();
