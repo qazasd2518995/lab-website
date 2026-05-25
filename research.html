@@ -4,153 +4,112 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Research Foci · L-DAHS</title>
-  <meta name="description" content="The six methodological foci of L-DAHS: Multilevel SEM, HLM, CAT, meta-analysis, multivariate data mining, matrix calculus and differential equations.">
+  <meta name="description" content="The research foci of L-DAHS Latent Manifold Lab: Multilevel SEM, HLM, CAT, meta-analysis, data mining, dynamical modelling.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@300;400;500&family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
 </head>
 <body>
   <a href="#main" class="skip-link">Skip to main content</a>
 
   <nav class="navbar" role="navigation" aria-label="Main navigation">
-    <a href="index.html" class="nav-brand">
-      <span class="brand-mark">L-DAHS<span>/</span></span>
-      <span class="brand-tag">Quantitative Inference</span>
-    </a>
-    <ul class="nav-menu" id="nav-menu">
-      <li><a href="index.html" data-i18n="nav-home">Home</a></li>
-      <li><a href="framework.html" data-i18n="nav-framework">Framework</a></li>
-      <li><a href="research.html" data-i18n="nav-research">Research</a></li>
-      <li><a href="visuals.html" data-i18n="nav-visuals">Visuals</a></li>
-      <li><a href="team.html" data-i18n="nav-team">Team</a></li>
-      <li><a href="publications.html" data-i18n="nav-publications">Publications</a></li>
-    </ul>
-    <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="wrap">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-mark"></span>
+        <span>L-DAHS</span>
+        <span class="brand-tag">Latent Manifold Lab</span>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="framework.html">Framework</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="visuals.html">Figures</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="publications.html">Publications</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
 
   <main id="main">
-    <!-- ════════════════ § 03 RESEARCH FOCI ════════════════ -->
-    <section class="section-block reveal" id="foci" style="margin-top: 4rem;">
-      <div class="section-tag" data-i18n="foci-tag">§ 03</div>
-      <div class="section-label" data-i18n="foci-label">Research Foci</div>
-      <div class="section-head reveal">
-        <h2 class="section-h2" data-i18n="foci-title">Six methodological <em>vantage points</em>.</h2>
-        <p class="section-intro" data-i18n="foci-intro">Each focus is a different restriction of the master operator, a particular configuration of Λ, Z, and ∂/∂t that admits a tractable estimator and a substantive question. The methods are <em>compositional</em>.</p>
-      </div>
-
-      <div class="foci-grid">
-        <article class="focus-card">
-          <div class="focus-num">— 01 / VI</div>
-          <div class="focus-symbol">Σ</div>
-          <h3 class="focus-title" data-i18n="focus-1-title">Multilevel Structural Equation Modeling</h3>
-          <p class="focus-desc" data-i18n="focus-1-desc">Estimation of latent constructs and their structural relations across nested populations, with simultaneous decomposition of within- and between-level covariance structure.</p>
-          <div class="focus-axis">Λ · Z &nbsp;⟶&nbsp; full coupling</div>
-        </article>
-
-        <article class="focus-card featured">
-          <div class="focus-num">— 02 / VI</div>
-          <div class="focus-symbol">β₀ⱼ</div>
-          <h3 class="focus-title" data-i18n="focus-2-title">Hierarchical Linear Modeling</h3>
-          <p class="focus-desc" data-i18n="focus-2-desc">Random-coefficient and growth-curve specifications for clustered and longitudinal data. Cross-classified and multiple-membership designs. Bayesian estimation for sparse upper-level units.</p>
-          <div class="focus-axis">Z &nbsp;⟶&nbsp; (Λ, ∂/∂t)</div>
-        </article>
-
-        <article class="focus-card">
-          <div class="focus-num">— 03 / VI</div>
-          <div class="focus-symbol">θ̂</div>
-          <h3 class="focus-title" data-i18n="focus-3-title">Computerized Adaptive Testing</h3>
-          <p class="focus-desc" data-i18n="focus-3-desc">IRT-based item selection, exposure control, and content balancing. Multidimensional CAT, cognitive diagnostic models, and the calibration of large operational item banks.</p>
-          <div class="focus-axis">Λ · ∂/∂t &nbsp;⟶&nbsp; Fisher info</div>
-        </article>
-
-        <article class="focus-card">
-          <div class="focus-num">— 04 / VI</div>
-          <div class="focus-symbol">Σwᵢδᵢ</div>
-          <h3 class="focus-title" data-i18n="focus-4-title">Meta-Analysis</h3>
-          <p class="focus-desc" data-i18n="focus-4-desc">Random-effects synthesis, network and dose-response models, robust variance estimation, and meta-analytic SEM. We aggregate evidence across studies while honoring its heterogeneity.</p>
-          <div class="focus-axis">Z &nbsp;⟶&nbsp; (Λ studies)</div>
-        </article>
-
-        <article class="focus-card">
-          <div class="focus-num">— 05 / VI</div>
-          <div class="focus-symbol">∇·X</div>
-          <h3 class="focus-title" data-i18n="focus-5-title">Multivariate Data Mining</h3>
-          <p class="focus-desc" data-i18n="focus-5-desc">Pattern discovery in high-dimensional behavioral, educational, and psychometric data through penalized methods, manifold learning, and ensemble inference.</p>
-          <div class="focus-axis">Λ &nbsp;⟶&nbsp; manifold</div>
-        </article>
-
-        <article class="focus-card featured">
-          <div class="focus-num">— 06 / VI</div>
-          <div class="focus-symbol">∂f/∂X</div>
-          <h3 class="focus-title" data-i18n="focus-6-title">Matrix Calculus &amp; Differential Equations</h3>
-          <p class="focus-desc" data-i18n="focus-6-desc">The mathematical substrate of the lab. We derive new estimators, sensitivity and information matrices, and dynamic-systems formulations of change processes.</p>
-          <div class="focus-axis">Λ · Z · ∂/∂t &nbsp;⟶&nbsp; all axes</div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ════════════════ § 04 CAPABILITIES TABLE ════════════════ -->
-    <section class="section-block reveal" id="capabilities">
-      <div class="section-tag" data-i18n="cap-tag">§ 04</div>
-      <div class="section-label" data-i18n="cap-label">Methodological Capabilities</div>
-      <div class="section-head">
-        <h2 class="section-h2" data-i18n="cap-title">A working catalogue of <em>operations</em> the lab performs.</h2>
-        <p class="section-intro">From variance decomposition to dynamical systems, these are the recurring techniques the lab brings to applied problems.</p>
-      </div>
-
-      <div class="cap-table">
-        <div class="cap-row">
-          <div class="cap-num">i.</div>
-          <div class="cap-name" data-i18n="cap-1-name">Variance <em>decomposition</em></div>
-          <div class="cap-desc" data-i18n="cap-1-desc">Partitioning observed variance into latent, level-specific, and residual components across nested designs.</div>
-          <div class="cap-domain">ML-SEM · HLM</div>
+    <section id="foci" style="padding-top:120px">
+      <div class="wrap">
+        <div class="sec-head" data-rise>
+          <div class="eyebrow">What we work on</div>
+          <h2>Research foci</h2>
+          <p class="lead">Six method families, each an instance of the same framework. Read across the equations and the family resemblance is the point.</p>
         </div>
-        <div class="cap-row">
-          <div class="cap-num">ii.</div>
-          <div class="cap-name" data-i18n="cap-2-name">Latent <em>trait</em> recovery</div>
-          <div class="cap-desc" data-i18n="cap-2-desc">Item response theory, factor-analytic, and mixture models for unobserved person and item parameters.</div>
-          <div class="cap-domain">IRT · CAT</div>
-        </div>
-        <div class="cap-row">
-          <div class="cap-num">iii.</div>
-          <div class="cap-name" data-i18n="cap-3-name">Adaptive <em>measurement</em></div>
-          <div class="cap-desc" data-i18n="cap-3-desc">Item selection algorithms maximizing information at provisional ability estimates; multidimensional and constraint-aware extensions.</div>
-          <div class="cap-domain">CAT · MIRT</div>
-        </div>
-        <div class="cap-row">
-          <div class="cap-num">iv.</div>
-          <div class="cap-name" data-i18n="cap-4-name">Evidence <em>synthesis</em></div>
-          <div class="cap-desc" data-i18n="cap-4-desc">Random-effects, network, and three-level meta-analytic models with robust variance estimation and moderator analysis.</div>
-          <div class="cap-domain">META</div>
-        </div>
-        <div class="cap-row">
-          <div class="cap-num">v.</div>
-          <div class="cap-name" data-i18n="cap-5-name">High-dimensional <em>inference</em></div>
-          <div class="cap-desc" data-i18n="cap-5-desc">Regularization, dimension reduction, and ensemble methods adapted to psychometric and behavioral data structures.</div>
-          <div class="cap-domain">DATA MINING</div>
-        </div>
-        <div class="cap-row">
-          <div class="cap-num">vi.</div>
-          <div class="cap-name" data-i18n="cap-6-name">Analytic <em>derivation</em></div>
-          <div class="cap-desc" data-i18n="cap-6-desc">Closed-form gradients, Hessians, and Fisher information for new estimators via matrix calculus.</div>
-          <div class="cap-domain">MATRIX</div>
-        </div>
-        <div class="cap-row">
-          <div class="cap-num">vii.</div>
-          <div class="cap-name" data-i18n="cap-7-name">Dynamical <em>systems</em></div>
-          <div class="cap-desc" data-i18n="cap-7-desc">Continuous-time models of change, growth, and coupling formulated as differential or stochastic differential equations.</div>
-          <div class="cap-domain">ODE · SDE</div>
+
+        <div class="foci">
+          <div class="focus" style="--c:var(--d1)" data-rise>
+            <div class="k">Multilevel SEM</div>
+            <h3>Nested latent structure</h3>
+            <p>Separating within- and between-cluster covariance so classroom, learner, and item effects are not confounded.</p>
+            <code class="mini">\( \boldsymbol{\Sigma}_T=\boldsymbol{\Sigma}_W+\boldsymbol{\Sigma}_B \)</code>
+          </div>
+
+          <div class="focus" style="--c:var(--eig)" data-rise>
+            <div class="k">HLM</div>
+            <h3>Random-coefficient models</h3>
+            <p>Slopes and intercepts that vary across higher-level units, capturing context as a source of systematic variation.</p>
+            <code class="mini">\( \mathbf{y}=\mathbf{X}\boldsymbol{\beta}+\mathbf{Z}\mathbf{u}+\boldsymbol{\varepsilon} \)</code>
+          </div>
+
+          <div class="focus" style="--c:var(--d2)" data-rise>
+            <div class="k">Adaptive testing · CAT</div>
+            <h3>Information-maximizing measurement</h3>
+            <p>Each item is chosen to maximize information at the provisional ability estimate, shortening tests without losing precision.</p>
+            <code class="mini">\( j^{*}=\arg\max_j\, I_j(\hat{\theta}) \)</code>
+          </div>
+
+          <div class="focus" style="--c:var(--d3)" data-rise>
+            <div class="k">Meta-analysis</div>
+            <h3>Synthesis across studies</h3>
+            <p>Random-effects and Bayesian meta-synthesis that model heterogeneity rather than averaging it away.</p>
+            <code class="mini">\( \hat{\delta}_i=\delta+u_i+e_i,\ u_i\sim\mathcal{N}(0,\tau^2) \)</code>
+          </div>
+
+          <div class="focus" style="--c:var(--d1)" data-rise>
+            <div class="k">Data &amp; text mining</div>
+            <h3>Learning representations</h3>
+            <p>Dimension reduction, topic models, and neural encoders that turn corpora and behavioural logs into interpretable coordinates.</p>
+            <code class="mini">\( \boldsymbol{\theta}\leftarrow\boldsymbol{\theta}-\eta\,\nabla_{\boldsymbol{\theta}}\mathcal{L} \)</code>
+          </div>
+
+          <div class="focus" style="--c:var(--eig)" data-rise>
+            <div class="k">Dynamical modelling</div>
+            <h3>Affect over time</h3>
+            <p>Differential-equation models of how motivation, engagement, and anxiety drive one another along a learning trajectory.</p>
+            <code class="mini">\( \dot{\mathbf{x}}=\mathbf{f}(\mathbf{x};\boldsymbol{\theta}) \)</code>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <span><span id="copyright-year">2026</span> Lab of Data Analytics in Human Science · L-DAHS · NTUST</span>
+    <div class="wrap foot-grid">
+      <div>
+        <h4>L-DAHS · Latent Manifold Lab</h4>
+        <p>Department of Applied Foreign Languages<br>National Taiwan University of Science and Technology<br>T4-816, No. 43, Sec. 4, Keelung Rd., Taipei 10607</p>
+      </div>
+      <div>
+        <h4>People</h4>
+        <p><a href="team.html">Director &amp; PI</a><br><a href="team.html">Research assistants</a></p>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <p><a href="publications.html">Publications</a><br><a href="mailto:wenta.tseng@mail.ntust.edu.tw">wenta.tseng@mail.ntust.edu.tw</a></p>
+      </div>
+    </div>
+    <div class="wrap fine"><span id="copyright-year">2026</span> · L-DAHS Latent Manifold Lab · NTUST</div>
   </footer>
 
   <button class="scroll-top" aria-label="Scroll to top">↑</button>

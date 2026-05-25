@@ -4,167 +4,184 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Team · L-DAHS</title>
-  <meta name="description" content="The principal investigator and research assistants of L-DAHS at NTUST.">
+  <meta name="description" content="The principal investigator and research assistants of L-DAHS Latent Manifold Lab at NTUST.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@300;400;500&family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <a href="#main" class="skip-link">Skip to main content</a>
 
   <nav class="navbar" role="navigation" aria-label="Main navigation">
-    <a href="index.html" class="nav-brand">
-      <span class="brand-mark">L-DAHS<span>/</span></span>
-      <span class="brand-tag">Quantitative Inference</span>
-    </a>
-    <ul class="nav-menu" id="nav-menu">
-      <li><a href="index.html" data-i18n="nav-home">Home</a></li>
-      <li><a href="framework.html" data-i18n="nav-framework">Framework</a></li>
-      <li><a href="research.html" data-i18n="nav-research">Research</a></li>
-      <li><a href="visuals.html" data-i18n="nav-visuals">Visuals</a></li>
-      <li><a href="team.html" data-i18n="nav-team">Team</a></li>
-      <li><a href="publications.html" data-i18n="nav-publications">Publications</a></li>
-    </ul>
-    <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="wrap">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-mark"></span>
+        <span>L-DAHS</span>
+        <span class="brand-tag">Latent Manifold Lab</span>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="framework.html">Framework</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="visuals.html">Figures</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="publications.html">Publications</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
 
   <main id="main">
-    <section class="team-section">
-      <div class="section-tag" data-i18n="team-tag" style="position:static; margin-bottom:1rem;">§ 05</div>
-      <div class="section-label" data-i18n="team-label">Lab Members</div>
-      <div class="section-head reveal">
-        <h2 class="section-h2" data-i18n="team-title">The people behind the <em>work</em>.</h2>
-        <p class="section-intro" data-i18n="team-intro">The principal investigator and four research assistants pursue the lab's methodological agenda across linguistics, psychometrics, and data science.</p>
-      </div>
+    <section class="team-section" style="padding-top:120px">
+      <div class="wrap">
+        <div class="sec-head" data-rise>
+          <div class="eyebrow">Lab Members</div>
+          <h2>The people behind the <em style="background:linear-gradient(100deg,var(--d1),var(--eig) 45%,var(--d3));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-style:italic;font-weight:500">work</em>.</h2>
+          <p class="lead">The principal investigator and four research assistants pursue the lab's methodological agenda across linguistics, psychometrics, and data science.</p>
+        </div>
 
-      <!-- ════════════ DIRECTOR ════════════ -->
-      <div class="directors-wrap reveal">
-        <article class="director-card">
-          <div class="director-photo">
-            <img src="images/professor-tseng.jpg" alt="Professor Wen-Ta Tseng" width="280" height="280" loading="lazy">
-          </div>
-          <div class="director-info">
-            <h3 data-i18n="director-name">Professor Wen-Ta Tseng</h3>
-            <div class="director-title" data-i18n="director-title">Director &amp; Principal Investigator</div>
+        <div class="directors-wrap">
+          <article class="director-card" data-rise>
+            <div class="director-photo">
+              <img src="images/professor-tseng.jpg" alt="Professor Wen-Ta Tseng" width="360" height="360" loading="lazy">
+            </div>
+            <div class="director-info">
+              <h3>Professor Wen-Ta Tseng</h3>
+              <div class="director-title">Director &amp; Principal Investigator</div>
 
-            <p class="director-bio">
-              Founding director of L-DAHS. Trained in applied linguistics at the University of Nottingham and now working at the intersection of psychometrics, multivariate methods, and language acquisition. Author of <em>Text Analysis in Social Sciences: Applications of R</em> (2025).
-            </p>
+              <p class="director-bio">
+                Founding director of L-DAHS. Trained in applied linguistics at the University of Nottingham and now working at the intersection of psychometrics, multivariate methods, and language acquisition. Author of <em>Text Analysis in Social Sciences: Applications of R</em> (2025).
+              </p>
 
-            <div class="director-info-grid">
-              <div class="info-section">
-                <h4 data-i18n="education">Education</h4>
-                <p><span class="icon-mark">✦</span><span data-i18n="director-edu">Ph.D., University of Nottingham, United Kingdom</span></p>
-              </div>
+              <div class="director-info-grid">
+                <div class="info-section">
+                  <h4>Education</h4>
+                  <p><span class="icon-mark">✦</span><span>Ph.D., University of Nottingham, United Kingdom</span></p>
+                </div>
 
-              <div class="info-section">
-                <h4 data-i18n="contact-info">Contact</h4>
-                <p><span class="icon-mark">⌂</span><span data-i18n="director-office">T4-816, 4th Teaching Building</span></p>
-                <p><span class="icon-mark">☎</span><span data-i18n="director-phone">(02) 2737-6268</span></p>
-                <p><span class="icon-mark">✉</span><a href="mailto:wenta.tseng@mail.ntust.edu.tw" style="color:var(--accent-deep); text-decoration:none; border-bottom:1px dashed var(--accent-deep);">wenta.tseng@mail.ntust.edu.tw</a></p>
-              </div>
+                <div class="info-section">
+                  <h4>Contact</h4>
+                  <p><span class="icon-mark">⌂</span><span>T4-816, 4th Teaching Building</span></p>
+                  <p><span class="icon-mark">☎</span><span>(02) 2737-6268</span></p>
+                  <p><span class="icon-mark">✉</span><a href="mailto:wenta.tseng@mail.ntust.edu.tw">wenta.tseng@mail.ntust.edu.tw</a></p>
+                </div>
 
-              <div class="info-section full">
-                <h4 data-i18n="research-areas">Research Areas</h4>
-                <div class="research-tags">
-                  <span class="tag">Multilevel SEM</span>
-                  <span class="tag">HLM</span>
-                  <span class="tag">CAT</span>
-                  <span class="tag">Meta-Analysis</span>
-                  <span class="tag">Data Mining</span>
-                  <span class="tag">Matrix Calculus</span>
-                  <span class="tag">SLA</span>
+                <div class="info-section full">
+                  <h4>Research Areas</h4>
+                  <div class="research-tags">
+                    <span class="tag">Multilevel SEM</span>
+                    <span class="tag">HLM</span>
+                    <span class="tag">CAT</span>
+                    <span class="tag">Meta-Analysis</span>
+                    <span class="tag">Data Mining</span>
+                    <span class="tag">Matrix Calculus</span>
+                    <span class="tag">Dynamical Systems</span>
+                    <span class="tag">SLA</span>
+                  </div>
                 </div>
               </div>
             </div>
+          </article>
+        </div>
+
+        <div class="members-category">
+          <h3>Research <em>Assistants</em></h3>
+
+          <div class="members-grid">
+            <article class="member-card" data-rise>
+              <div class="member-photo">
+                <img src="images/cheng-chao-hsiang.jpg" alt="Cheng, Chao-Hsiang" width="280" height="350" loading="lazy">
+              </div>
+              <div class="member-info">
+                <h4>Cheng, Chao-Hsiang</h4>
+                <div class="member-position">Research Assistant · NTUST</div>
+                <p class="member-research">Computational linguistics, data and text mining, app development, chatbot.</p>
+                <div class="member-tags">
+                  <span class="tag">Programming</span>
+                  <span class="tag">Data Analytics</span>
+                  <span class="tag">ML</span>
+                  <span class="tag">NLP</span>
+                  <span class="tag">LLM</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="member-card" data-rise>
+              <div class="member-photo">
+                <img src="images/chen-zhi-wei.jpg" alt="Chen, Zhi-Wei" width="280" height="350" loading="lazy">
+              </div>
+              <div class="member-info">
+                <h4>Chen, Zhi-Wei</h4>
+                <div class="member-position">Research Assistant · NTUST</div>
+                <p class="member-research">Second language acquisition, language pedagogy, instructional design.</p>
+                <div class="member-tags">
+                  <span class="tag">SLA</span>
+                  <span class="tag">Pedagogy</span>
+                  <span class="tag">Instructional Design</span>
+                  <span class="tag">E-Learning</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="member-card" data-rise>
+              <div class="member-photo">
+                <img src="images/pham-huy-hoang.jpg" alt="Pham, Huy Hoang" width="280" height="350" loading="lazy">
+              </div>
+              <div class="member-info">
+                <h4>Pham, Huy Hoang</h4>
+                <div class="member-position">Research Assistant · NTUST</div>
+                <p class="member-research">AI language assessment (IELTS grading), cross-lingual patent analysis, Vietnamese linguistics.</p>
+                <div class="member-tags">
+                  <span class="tag">AI Assessment</span>
+                  <span class="tag">NLP</span>
+                  <span class="tag">Patent Analysis</span>
+                  <span class="tag">Text Mining</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="member-card" data-rise>
+              <div class="member-photo">
+                <img src="images/chang-chih-chin.jpg" alt="Chang, Chih-Chin" width="280" height="350" loading="lazy">
+              </div>
+              <div class="member-info">
+                <h4>Chang, Chih-Chin</h4>
+                <div class="member-position">Master Student · University of Nottingham</div>
+                <p class="member-research">Psycholinguistic approaches to vocabulary acquisition and processing, Chinese-English bilingualism, corpus linguistics.</p>
+                <div class="member-tags">
+                  <span class="tag">Psycholinguistics</span>
+                  <span class="tag">Bilingualism</span>
+                  <span class="tag">Corpus</span>
+                  <span class="tag">Data Analytics</span>
+                </div>
+              </div>
+            </article>
           </div>
-        </article>
-      </div>
-
-      <!-- ════════════ RESEARCH ASSISTANTS ════════════ -->
-      <div class="members-category">
-        <h3 data-i18n="assistants-title">Research <em>Assistants</em></h3>
-
-        <div class="members-grid">
-          <article class="member-card reveal">
-            <div class="member-photo">
-              <img src="images/cheng-chao-hsiang.jpg" alt="Cheng, Chao-Hsiang" width="280" height="350" loading="lazy">
-            </div>
-            <div class="member-info">
-              <h4 data-i18n="cheng-name">Cheng, Chao-Hsiang</h4>
-              <div class="member-position" data-i18n="cheng-position">Research Assistant · NTUST</div>
-              <p class="member-research" data-i18n="cheng-research">Computational linguistics, data and text mining, app development, chatbot.</p>
-              <div class="member-tags">
-                <span class="tag">Programming</span>
-                <span class="tag">Data Analytics</span>
-                <span class="tag">ML</span>
-                <span class="tag">NLP</span>
-                <span class="tag">LLM</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="member-card reveal">
-            <div class="member-photo">
-              <img src="images/chen-zhi-wei.jpg" alt="Chen, Zhi-Wei" width="280" height="350" loading="lazy">
-            </div>
-            <div class="member-info">
-              <h4 data-i18n="chen-name">Chen, Zhi-Wei</h4>
-              <div class="member-position" data-i18n="chen-position">Research Assistant · NTUST</div>
-              <p class="member-research" data-i18n="chen-research">Second language acquisition, language pedagogy, instructional design.</p>
-              <div class="member-tags">
-                <span class="tag">SLA</span>
-                <span class="tag">Pedagogy</span>
-                <span class="tag">Instructional Design</span>
-                <span class="tag">E-Learning</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="member-card reveal">
-            <div class="member-photo">
-              <img src="images/pham-huy-hoang.jpg" alt="Pham, Huy Hoang" width="280" height="350" loading="lazy">
-            </div>
-            <div class="member-info">
-              <h4 data-i18n="pham-name">Pham, Huy Hoang</h4>
-              <div class="member-position" data-i18n="pham-position">Research Assistant · NTUST</div>
-              <p class="member-research" data-i18n="pham-research">AI language assessment (IELTS grading), cross-lingual patent analysis, Vietnamese linguistics.</p>
-              <div class="member-tags">
-                <span class="tag">AI Assessment</span>
-                <span class="tag">NLP</span>
-                <span class="tag">Patent Analysis</span>
-                <span class="tag">Text Mining</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="member-card reveal">
-            <div class="member-photo">
-              <img src="images/chang-chih-chin.jpg" alt="Chang, Chih-Chin" width="280" height="350" loading="lazy">
-            </div>
-            <div class="member-info">
-              <h4 data-i18n="chang-name">Chang, Chih-Chin</h4>
-              <div class="member-position" data-i18n="chang-position">Master Student · University of Nottingham</div>
-              <p class="member-research" data-i18n="chang-research">Psycholinguistic approaches to vocabulary acquisition and processing, Chinese-English bilingualism, corpus linguistics.</p>
-              <div class="member-tags">
-                <span class="tag">Psycholinguistics</span>
-                <span class="tag">Bilingualism</span>
-                <span class="tag">Corpus</span>
-                <span class="tag">Data Analytics</span>
-              </div>
-            </div>
-          </article>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <span><span id="copyright-year">2026</span> Lab of Data Analytics in Human Science · L-DAHS · NTUST</span>
+    <div class="wrap foot-grid">
+      <div>
+        <h4>L-DAHS · Latent Manifold Lab</h4>
+        <p>Department of Applied Foreign Languages<br>National Taiwan University of Science and Technology<br>T4-816, No. 43, Sec. 4, Keelung Rd., Taipei 10607</p>
+      </div>
+      <div>
+        <h4>People</h4>
+        <p><a href="team.html">Director &amp; PI</a><br><a href="team.html">Research assistants</a></p>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <p><a href="publications.html">Publications</a><br><a href="mailto:wenta.tseng@mail.ntust.edu.tw">wenta.tseng@mail.ntust.edu.tw</a></p>
+      </div>
+    </div>
+    <div class="wrap fine"><span id="copyright-year">2026</span> · L-DAHS Latent Manifold Lab · NTUST</div>
   </footer>
 
   <button class="scroll-top" aria-label="Scroll to top">↑</button>

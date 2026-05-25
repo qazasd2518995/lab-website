@@ -3,213 +3,230 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visual Suite I · L-DAHS</title>
-  <meta name="description" content="Visual Suite I. A simulated 2D social-science dataset rendered through the master operator and each of its decompositions.">
+  <title>Figures · L-DAHS</title>
+  <meta name="description" content="Interactive 3D and 2D figures from the Latent Manifold Lab. Latent trait space, response surfaces, phase dynamics, forest plots, and more.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@300;400;500&family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
 </head>
 <body>
   <a href="#main" class="skip-link">Skip to main content</a>
 
   <nav class="navbar" role="navigation" aria-label="Main navigation">
-    <a href="index.html" class="nav-brand">
-      <span class="brand-mark">L-DAHS<span>/</span></span>
-      <span class="brand-tag">Quantitative Inference</span>
-    </a>
-    <ul class="nav-menu" id="nav-menu">
-      <li><a href="index.html" data-i18n="nav-home">Home</a></li>
-      <li><a href="framework.html" data-i18n="nav-framework">Framework</a></li>
-      <li><a href="research.html" data-i18n="nav-research">Research</a></li>
-      <li><a href="visuals.html" data-i18n="nav-visuals">Visuals</a></li>
-      <li><a href="team.html" data-i18n="nav-team">Team</a></li>
-      <li><a href="publications.html" data-i18n="nav-publications">Publications</a></li>
-    </ul>
-    <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="wrap">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-mark"></span>
+        <span>L-DAHS</span>
+        <span class="brand-tag">Latent Manifold Lab</span>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="framework.html">Framework</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="visuals.html">Figures</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="publications.html">Publications</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
 
   <main id="main">
+    <!-- 3D HERO FIGURES -->
+    <section id="figures" style="padding-top:120px">
+      <div class="wrap">
+        <div class="sec-head" data-rise>
+          <div class="eyebrow">Simulated illustrations · fully synthetic data</div>
+          <h2>Seeing in three dimensions</h2>
+          <p class="lead">
+            Three interactive figures, each generated from a simulated 3D social-science dataset.
+            Rotate, zoom, and hover. Every parameter lives in the page source, so you can re-simulate
+            with your own structure.
+          </p>
+        </div>
 
-    <!-- ════════════ MASTHEAD ════════════ -->
-    <section class="masthead reveal">
-      <div class="running-head" data-i18n="visuals-running">VISUAL SUITE I &nbsp;·&nbsp; № 01 / 2026</div>
-      <h1 data-i18n="visuals-h1">One dataset.<br><em>Six methodological lenses.</em></h1>
-      <div class="subtitle" data-i18n="visuals-subtitle">
-        A simulated two-dimensional social-science dataset, rendered through the master operator and each of its decompositions.
-      </div>
-      <div class="meta">
-        <span>N = 400 students</span>
-        <span>K = 10 schools</span>
-        <span>T = 5 occasions</span>
-        <span>2 variables · 6 views</span>
-      </div>
-    </section>
-
-    <!-- ════════════ ABSTRACT ════════════ -->
-    <section class="abstract reveal">
-      <div class="label" data-i18n="visuals-abstract-label">— Note from the lab</div>
-      <p data-i18n="visuals-abstract">
-        The figures that follow take a single simulated joint distribution: student socioeconomic status (X) against academic achievement (Y), with nesting in schools and observation across time. Each figure illustrates what one axis of the master operator <em>𝓜 = 𝓛(Λ) ∘ 𝓗(Z, G) ∘ 𝓓(∂/∂t)</em> brings into view. The same 400 points are read first as a pooled cloud, then as a hierarchy, then as cluster-specific covariance ellipses, then as a density field, then as a rotation onto principal axes, and finally as a dynamical flow. Each rendering is a coordinate. Together they describe what the literature too often summarizes as a single regression coefficient.
-      </p>
-    </section>
-
-    <!-- ════════════ FIGURES ════════════ -->
-    <div class="figures-stack">
-
-      <!-- FIG 1 -->
-      <article class="figure-block reveal">
-        <div class="caption">
-          <div class="cap-num">— Fig. 01</div>
-          <h2 class="cap-title" data-i18n="fig1-title">The multilevel reality, in two variables.</h2>
-          <p class="cap-body" data-i18n="fig1-body">Four hundred students, ten schools, two variables. The pooled regression line cuts through a structure it cannot see. The <em>between-school</em> gradient is steeper than the <em>within-school</em> slopes that constitute it. This is Simpson's paradox in its quietest form.</p>
-          <div class="cap-eq">
-            <span class="label">Pooled OLS</span>
-            Yᵢ = β₀ + β₁ Xᵢ + εᵢ
+        <!-- Figure 1 -->
+        <div class="viz" data-rise>
+          <div class="viz-head">
+            <div>
+              <div class="fignum">Figure 1</div>
+              <h3>The latent trait space</h3>
+            </div>
+          </div>
+          <p class="viz-desc">
+            Three hundred simulated learners, each placed by three correlated latent factors:
+            <span style="color:var(--d1)">Aptitude</span>,
+            <span style="color:var(--d2)">Motivation</span>, and
+            <span style="color:var(--d3)">Anxiety</span>, drawn from a structured covariance matrix
+            with three latent profiles. Point colour encodes a fourth derived dimension (achievement),
+            so the figure shows a 4D structure projected into a rotatable cube.
+          </p>
+          <div id="fig1" class="plot"></div>
+          <div class="viz-eq">\[ \boldsymbol{\xi}_i=\boldsymbol{\mu}_{g(i)}+\mathbf{L}\mathbf{z}_i,\quad \mathbf{z}_i\sim\mathcal{N}(\mathbf{0},\mathbf{I}),\ \ \mathbf{L}\mathbf{L}^{\!\top}=\boldsymbol{\Sigma} \]</div>
+          <div class="viz-foot">
+            <span class="chip"><span class="dot" style="background:var(--d1)"></span>x — Aptitude (ξ₁)</span>
+            <span class="chip"><span class="dot" style="background:var(--d2)"></span>y — Motivation (ξ₂)</span>
+            <span class="chip"><span class="dot" style="background:var(--d3)"></span>z — Anxiety (ξ₃)</span>
+            <span class="chip"><span class="dot" style="background:var(--eig)"></span>colour — Achievement (η)</span>
           </div>
         </div>
-        <div class="figure-img">
-          <span class="corner tl"></span><span class="corner tr"></span>
-          <span class="corner bl"></span><span class="corner br"></span>
-          <img src="images/figures/fig1_multilevel.png" alt="Multilevel scatterplot: pooled regression vs within-school slopes" loading="lazy" width="900" height="675">
-        </div>
-      </article>
 
-      <!-- FIG 2 -->
-      <article class="figure-block reveal">
-        <div class="caption">
-          <div class="cap-num">— Fig. 02</div>
-          <h2 class="cap-title" data-i18n="fig2-title">Decomposing heterogeneity: within and between.</h2>
-          <p class="cap-body" data-i18n="fig2-body">The same 400 points, now split into ten <em>within-school</em> regressions and ten <em>school-mean</em> coordinates. The between-school slope (2.77) far exceeds any within-school slope. A multilevel model that ignored this distinction would mis-attribute variance from school context to student-level SES.</p>
-          <div class="cap-eq">
-            <span class="label">Hierarchical form</span>
-            y = Xβ + Zu + ε &nbsp;,&nbsp; u ∼ 𝒩(0, G)
+        <!-- Figure 2 -->
+        <div class="viz" data-rise>
+          <div class="viz-head">
+            <div>
+              <div class="fignum">Figure 2</div>
+              <h3>A two-dimensional response surface</h3>
+            </div>
+          </div>
+          <p class="viz-desc">
+            The probability of item mastery as a smooth surface over two latent abilities, in the spirit
+            of a multidimensional item-response model. The ridge running diagonally is the compensatory
+            region where strength on one trait offsets weakness on the other: the kind of interaction a
+            flat table of coefficients hides but a surface makes obvious.
+          </p>
+          <div id="fig2" class="plot"></div>
+          <div class="viz-eq">\[ P(\theta_1,\theta_2)=\dfrac{1}{1+\exp\!\big[-(a_1\theta_1+a_2\theta_2-d)\big]} \]</div>
+          <div class="viz-foot">
+            <span class="chip"><span class="dot" style="background:var(--d1)"></span>x — Ability θ₁</span>
+            <span class="chip"><span class="dot" style="background:var(--d2)"></span>y — Ability θ₂</span>
+            <span class="chip"><span class="dot" style="background:var(--d3)"></span>height — P(mastery)</span>
           </div>
         </div>
-        <div class="figure-img">
-          <span class="corner tl"></span><span class="corner tr"></span>
-          <span class="corner bl"></span><span class="corner br"></span>
-          <img src="images/figures/fig2_within_between.png" alt="Within vs between decomposition: school-level regressions and school-mean coordinates" loading="lazy" width="900" height="450">
-        </div>
-      </article>
 
-      <!-- FIG 3 -->
-      <article class="figure-block reveal">
-        <div class="caption">
-          <div class="cap-num">— Fig. 03</div>
-          <h2 class="cap-title" data-i18n="fig3-title">Cluster-specific covariance, ten times over.</h2>
-          <p class="cap-body" data-i18n="fig3-body">Each school carries its own bivariate covariance with a unique <em>orientation</em>, <em>elongation</em>, and <em>location</em>. The dashed pooled ellipse hides this variation. Methods that assume covariance homogeneity across clusters discard the very information multilevel SEM was built to recover.</p>
-          <div class="cap-eq">
-            <span class="label">Cluster covariance</span>
-            Σⱼ = Cov(Xⱼ, Yⱼ) &nbsp;,&nbsp; j = 1, …, 10
+        <!-- Figure 3 -->
+        <div class="viz" data-rise>
+          <div class="viz-head">
+            <div>
+              <div class="fignum">Figure 3</div>
+              <h3>Affect dynamics in phase space</h3>
+            </div>
           </div>
-        </div>
-        <div class="figure-img">
-          <span class="corner tl"></span><span class="corner tr"></span>
-          <span class="corner bl"></span><span class="corner br"></span>
-          <img src="images/figures/fig3_ellipses.png" alt="Confidence ellipses by school: ten cluster-specific covariance ellipses" loading="lazy" width="900" height="720">
-        </div>
-      </article>
-
-      <!-- FIG 4 -->
-      <article class="figure-block reveal">
-        <div class="caption">
-          <div class="cap-num">— Fig. 04</div>
-          <h2 class="cap-title" data-i18n="fig4-title">The joint distribution as a density field.</h2>
-          <p class="cap-body" data-i18n="fig4-body">A bivariate kernel density with hexbinned counts and contour lines, flanked by the two marginal distributions. The joint density f(X, Y) carries more information than either marginal alone, and considerably more than the correlation coefficient that often substitutes for it.</p>
-          <div class="cap-eq">
-            <span class="label">Joint density</span>
-            f(x, y) = ∂²F / ∂x ∂y
-          </div>
-        </div>
-        <div class="figure-img">
-          <span class="corner tl"></span><span class="corner tr"></span>
-          <span class="corner bl"></span><span class="corner br"></span>
-          <img src="images/figures/fig4_density.png" alt="Bivariate density with marginal distributions" loading="lazy" width="900" height="720">
-        </div>
-      </article>
-
-      <!-- FIG 5 -->
-      <article class="figure-block reveal">
-        <div class="caption">
-          <div class="cap-num">— Fig. 05</div>
-          <h2 class="cap-title" data-i18n="fig5-title">Rotation to principal axes. The matrix at work.</h2>
-          <p class="cap-body" data-i18n="fig5-body">Eigendecomposition of the sample covariance matrix produces the orthogonal basis along which variance is maximized. PC1 absorbs roughly three-quarters of the joint variance. PC2 captures what remains. Matrix algebra is not an abstraction here. It is the <em>physical rotation</em> of the data into its own preferred coordinate system.</p>
-          <div class="cap-eq">
-            <span class="label">Spectral form</span>
-            Σ = V Λ V⊤ &nbsp;,&nbsp; Σ vₖ = λₖ vₖ
-          </div>
-        </div>
-        <div class="figure-img">
-          <span class="corner tl"></span><span class="corner tr"></span>
-          <span class="corner bl"></span><span class="corner br"></span>
-          <img src="images/figures/fig5_pca.png" alt="Principal axes and eigendecomposition" loading="lazy" width="900" height="720">
-        </div>
-      </article>
-
-      <!-- FIG 6 -->
-      <article class="figure-block reveal">
-        <div class="caption">
-          <div class="cap-num">— Fig. 06</div>
-          <h2 class="cap-title" data-i18n="fig6-title">Latent growth in continuous time.</h2>
-          <p class="cap-body" data-i18n="fig6-body">The same students, now observed across five occasions. Thin lines are individual trajectories. Thick lines are school means. The black trace is the grand mean. Heterogeneity in <em>intercept</em> and <em>slope</em> across persons and schools is the substantive content of any growth model, and the entry point for differential-equation formulations of change.</p>
-          <div class="cap-eq">
-            <span class="label">Latent growth ODE</span>
-            dY/dt = π₀ + π₁ t + ξ(t)
-          </div>
-        </div>
-        <div class="figure-img">
-          <span class="corner tl"></span><span class="corner tr"></span>
-          <span class="corner bl"></span><span class="corner br"></span>
-          <img src="images/figures/fig6_growth.png" alt="Growth trajectories over time: individual and school-mean curves" loading="lazy" width="1400" height="900">
-        </div>
-      </article>
-
-    </div>
-
-    <div class="divider">end of plates</div>
-
-    <!-- ════════════ DGP APPENDIX ════════════ -->
-    <section class="interlude reveal">
-      <div class="interlude-grid">
-        <div>
-          <h3 data-i18n="dgp-title-1">The simulation, in plain terms.</h3>
-          <p data-i18n="dgp-p1-1">Ten schools (j = 1, …, 10) drew random intercepts and slopes from a normal distribution. Within each school, forty students drew an SES value correlated with their school's intercept, and an achievement value generated as a school-specific linear function of SES with normal noise.</p>
-          <p data-i18n="dgp-p1-2">Each student also drew a personal growth rate, and was then "observed" at five evenly spaced time points with measurement error added at each occasion. The total simulation produced 2,000 observations from 400 persons in 10 clusters.</p>
-        </div>
-        <div>
-          <h3 data-i18n="dgp-title-2">Generative equations.</h3>
-
-          <div class="dgp-eq">
-            <span class="label">School level</span>
-            β₀ⱼ ∼ 𝒩(0, 1.20²) &nbsp;,&nbsp; β₁ⱼ ∼ 𝒩(0.60, 0.25²)
-          </div>
-
-          <div class="dgp-eq">
-            <span class="label">Student level (cross-sectional)</span>
-            Yᵢⱼ = 1.5 + β₀ⱼ + β₁ⱼ Xᵢⱼ + εᵢⱼ
-          </div>
-
-          <div class="dgp-eq">
-            <span class="label">Longitudinal extension</span>
-            Yᵢⱼ(t) = Yᵢⱼ(0) + ρᵢ · t + ξᵢⱼ(t)
-          </div>
-
-          <div class="dgp-eq">
-            <span class="label">Noise structure</span>
-            εᵢⱼ ∼ 𝒩(0, 0.7²) &nbsp;,&nbsp; ξᵢⱼ(t) ∼ 𝒩(0, 0.3²)
+          <p class="viz-desc">
+            Several simulated learners released from nearly-identical starting states, each trajectory
+            integrating a coupled nonlinear system of <span style="color:var(--d1)">motivation</span>,
+            <span style="color:var(--d2)">engagement</span>, and <span style="color:var(--d3)">anxiety</span>.
+            Tiny differences in initial affect produce divergent paths around a shared attractor:
+            a visual argument for why static models miss regime shifts that dynamical ones catch.
+          </p>
+          <div id="fig3" class="plot"></div>
+          <div class="viz-eq">\[ \dot{M}=\sigma(E-M),\quad \dot{E}=M(\rho-A)-E,\quad \dot{A}=ME-\beta A \]</div>
+          <div class="viz-foot">
+            <span class="chip"><span class="dot" style="background:var(--d1)"></span>x — Motivation</span>
+            <span class="chip"><span class="dot" style="background:var(--d2)"></span>y — Engagement</span>
+            <span class="chip"><span class="dot" style="background:var(--d3)"></span>z — Anxiety</span>
+            <span class="chip"><span class="dot" style="background:var(--eig)"></span>colour — time t</span>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- GALLERY -->
+    <section id="gallery">
+      <div class="wrap">
+        <div class="sec-head" data-rise>
+          <div class="eyebrow">Additional figures · one or two per research focus</div>
+          <h2>A <em style="background:linear-gradient(100deg,var(--d1),var(--eig) 45%,var(--d3));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-style:italic;font-weight:500">gallery</em> of figures.</h2>
+          <p class="lead">Eight more publication-style figures, all from fully synthetic data. Each is tagged by the focus it serves and whether it is 2D or 3D.</p>
+        </div>
+
+        <div class="gallery-grid">
+          <div class="card" data-rise>
+            <div class="top"><div><div class="fignum">Fig A</div><h3>Test information surface</h3></div>
+              <div class="badges"><span class="badge">CAT · IRT</span><span class="badge dim">3-D</span></div></div>
+            <p class="cap">Where a multidimensional test measures most precisely. Each item contributes a ridge of Fisher information; their sum is the landscape an adaptive algorithm climbs when choosing the next item.</p>
+            <div id="gA" class="plot"></div>
+            <div class="eq">\[ \mathcal{I}(\boldsymbol{\theta})=\sum_i \big(a_{1i}^2+a_{2i}^2\big)\,P_i(\boldsymbol{\theta})\big[1-P_i(\boldsymbol{\theta})\big] \]</div>
+          </div>
+
+          <div class="card" data-rise>
+            <div class="top"><div><div class="fignum">Fig B</div><h3>Adaptive test convergence</h3></div>
+              <div class="badges"><span class="badge">CAT</span><span class="badge">2-D</span></div></div>
+            <p class="cap">A single simulated examinee. The ability estimate (teal) and its shrinking 95% band close in on the true value (rose dashed) as each information-maximizing item is administered.</p>
+            <div id="gB" class="plot"></div>
+            <div class="eq">\[ \hat{\theta}_{k}\leftarrow\hat{\theta}_{k}+\frac{\sum_j a_j\,[u_j-P_j]}{\sum_j a_j^2P_j(1-P_j)+1},\quad \mathrm{SE}=\mathcal{I}^{-1/2} \]</div>
+          </div>
+
+          <div class="card" data-rise>
+            <div class="top"><div><div class="fignum">Fig C</div><h3>Forest plot</h3></div>
+              <div class="badges"><span class="badge">Meta-analysis</span><span class="badge">2-D</span></div></div>
+            <p class="cap">Twelve simulated studies with marker size scaled to precision, and the random-effects pooled estimate as a diamond at the foot. The canonical synthesis figure.</p>
+            <div id="gC" class="plot"></div>
+            <div class="eq">\[ \hat{\delta}_{\text{RE}}=\frac{\sum_i w_i\,d_i}{\sum_i w_i},\qquad w_i=\frac{1}{\,s_i^2+\hat{\tau}^2\,} \]</div>
+          </div>
+
+          <div class="card" data-rise>
+            <div class="top"><div><div class="fignum">Fig D</div><h3>Funnel plot</h3></div>
+              <div class="badges"><span class="badge">Meta · bias</span><span class="badge">2-D</span></div></div>
+            <p class="cap">Effect size against its standard error, with the 95% pseudo-confidence funnel. Asymmetry at the wide base is the visual signature of small-study or publication bias.</p>
+            <div id="gD" class="plot"></div>
+            <div class="eq">\[ \text{funnel: } \hat{\delta}\pm 1.96\,s,\quad s\in[0,\,s_{\max}] \]</div>
+          </div>
+
+          <div class="card" data-rise>
+            <div class="top"><div><div class="fignum">Fig E</div><h3>Random-slope spaghetti plot</h3></div>
+              <div class="badges"><span class="badge">HLM · multilevel</span><span class="badge">2-D</span></div></div>
+            <p class="cap">Twenty classrooms, each its own regression line coloured by intercept, scattered around the fixed-effect line (white). Exactly the picture random intercepts and slopes are meant to capture.</p>
+            <div id="gE" class="plot"></div>
+            <div class="eq">\[ y_{ij}=(\beta_0+u_{0j})+(\beta_1+u_{1j})\,x_{ij}+\varepsilon_{ij} \]</div>
+          </div>
+
+          <div class="card" data-rise>
+            <div class="top"><div><div class="fignum">Fig F</div><h3>Correlation matrix heatmap</h3></div>
+              <div class="badges"><span class="badge">SEM · matrix algebra</span><span class="badge">2-D</span></div></div>
+            <p class="cap">The block structure that a measurement model assumes, made visible: high within-construct correlations on the diagonal blocks, low cross-construct correlations off them.</p>
+            <div id="gF" class="plot"></div>
+            <div class="eq">\[ \mathbf{R}=\mathbf{D}^{-1/2}\,\boldsymbol{\Sigma}\,\mathbf{D}^{-1/2},\qquad \mathbf{D}=\operatorname{diag}(\boldsymbol{\Sigma}) \]</div>
+          </div>
+
+          <div class="card" data-rise>
+            <div class="top"><div><div class="fignum">Fig G</div><h3>Gradient descent on a loss surface</h3></div>
+              <div class="badges"><span class="badge">Matrix calculus</span><span class="badge dim">3-D</span></div></div>
+            <p class="cap">Estimation as a walk downhill. The path zig-zags down an elongated quadratic valley toward the minimum, the geometric reason ill-conditioned problems are slow to converge.</p>
+            <div id="gG" class="plot"></div>
+            <div class="eq">\[ \mathbf{w}_{t+1}=\mathbf{w}_t-\eta\,\nabla\mathcal{L}(\mathbf{w}_t),\quad \nabla\mathcal{L}=\mathbf{M}\mathbf{w} \]</div>
+          </div>
+
+          <div class="card" data-rise>
+            <div class="top"><div><div class="fignum">Fig H</div><h3>Phase portrait with vector field</h3></div>
+              <div class="badges"><span class="badge">Dynamical systems</span><span class="badge">2-D</span></div></div>
+            <p class="cap">A two-state affect system: the arrows are the flow, the dashed lines the nullclines, and the bright curves are trajectories spiralling into a stable equilibrium, a planar companion to the 3D attractor.</p>
+            <div id="gH" class="plot"></div>
+            <div class="eq">\[ \dot{M}=-\gamma M+\omega A,\qquad \dot{A}=-\omega M-\gamma A \]</div>
+          </div>
+        </div>
+
+        <div class="note">
+          <b>All data synthetic.</b> Figures are seeded simulations for illustration. No human-subjects data.<br>
+          <b>To re-simulate:</b> every figure's parameters live at the top of its build function in <code>script.js</code>.
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
-    <span><span id="copyright-year">2026</span> Lab of Data Analytics in Human Science · L-DAHS · NTUST</span>
+    <div class="wrap foot-grid">
+      <div>
+        <h4>L-DAHS · Latent Manifold Lab</h4>
+        <p>Department of Applied Foreign Languages<br>National Taiwan University of Science and Technology<br>T4-816, No. 43, Sec. 4, Keelung Rd., Taipei 10607</p>
+      </div>
+      <div>
+        <h4>People</h4>
+        <p><a href="team.html">Director &amp; PI</a><br><a href="team.html">Research assistants</a></p>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <p><a href="publications.html">Publications</a><br><a href="mailto:wenta.tseng@mail.ntust.edu.tw">wenta.tseng@mail.ntust.edu.tw</a></p>
+      </div>
+    </div>
+    <div class="wrap fine"><span id="copyright-year">2026</span> · L-DAHS Latent Manifold Lab · NTUST</div>
   </footer>
 
   <button class="scroll-top" aria-label="Scroll to top">↑</button>
