@@ -104,7 +104,10 @@
   function setPlotMsg(ids, txt) {
     ids.forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.innerHTML = `<div style="height:100%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.82rem;color:#6b7596;text-align:center;padding:24px;line-height:1.7">${txt}</div>`;
+      if (!el) return;
+      // Don't overwrite a rendered Plotly chart
+      if (el.dataset.plotted === '1' || el.classList.contains('js-plotly-plot')) return;
+      el.innerHTML = `<div style="height:100%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.82rem;color:#6b7596;text-align:center;padding:24px;line-height:1.7">${txt}</div>`;
     });
   }
 
@@ -578,10 +581,16 @@
       return;
     }
     idsOnPage.forEach(id => {
-      try { FIGURE_BUILDERS[id](); } catch (e) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      // Clear the loading placeholder before Plotly takes over
+      el.innerHTML = '';
+      try {
+        FIGURE_BUILDERS[id]();
+        el.dataset.plotted = '1';
+      } catch (e) {
         console.error('figure', id, e);
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = `<div style="height:100%;display:flex;align-items:center;justify-content:center;font-family:monospace;color:#6b7596;font-size:.8rem">figure failed — see console</div>`;
+        el.innerHTML = `<div style="height:100%;display:flex;align-items:center;justify-content:center;font-family:monospace;color:#6b7596;font-size:.8rem">figure failed — see console</div>`;
       }
     });
     window.addEventListener('resize', () => {
