@@ -80,14 +80,14 @@ body::before {
 }
 .skip-link:focus { top: 1rem; }
 
-/* three-tier container system */
+/* three-tier container system — content centered on a 1640px axis */
 .wrap {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 0 clamp(20px, 4vw, 80px);
+  max-width: 1640px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 56px);
 }
 .wrap-narrow {
   position: relative;
@@ -100,8 +100,8 @@ body::before {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: none;
-  margin: 0;
+  max-width: 1840px;
+  margin: 0 auto;
   padding: 0 clamp(16px, 3vw, 48px);
 }
 
@@ -328,10 +328,11 @@ header.hero::after {
   background: linear-gradient(180deg, var(--panel), var(--bg-2));
   border: 1px solid var(--line);
   border-radius: 18px;
-  padding: 26px 26px 22px;
+  padding: 32px 30px 28px;
   box-shadow: var(--glow);
   position: relative;
   overflow: hidden;
+  min-height: 280px;
 }
 .eq-card::after {
   content: "";
@@ -477,11 +478,15 @@ section.section-tight { padding-top: 24px; }
   background: linear-gradient(180deg, var(--panel), var(--bg-2));
   border: 1px solid var(--line);
   border-radius: 16px;
-  padding: 26px;
+  padding: 32px 28px;
   position: relative;
   overflow: hidden;
   transition: transform 0.25s, border-color 0.25s;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
 }
+.pillar .eqn { margin-top: auto; }
 .pillar:hover { transform: translateY(-4px); }
 .pillar .num {
   font-family: "JetBrains Mono", monospace;
@@ -509,25 +514,30 @@ section.section-tight { padding-top: 24px; }
 .pillar.p2 { border-top: 3px solid var(--d2); }
 .pillar.p3 { border-top: 3px solid var(--d3); }
 
-/* foci cards — asymmetric 6-column grid */
+/* foci cards — 12-column asymmetric grid */
 .foci {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 18px;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+  grid-auto-rows: minmax(280px, auto);
 }
-.foci .focus { grid-column: span 2; }
-.foci .focus.span-3 { grid-column: span 3; }
-.foci .focus.span-4 { grid-column: span 4; }
+.foci .focus { grid-column: span 4; }
+.foci .focus.span-3 { grid-column: span 6; }
+.foci .focus.span-4 { grid-column: span 8; }
 .foci .focus.span-6 { grid-column: 1 / -1; }
 .focus {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 22px 22px 20px;
+  padding: 26px 24px 24px;
   position: relative;
   transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
   overflow: hidden;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
 }
+.focus .mini { margin-top: auto; }
 .focus::before {
   content: "";
   position: absolute;
@@ -637,10 +647,10 @@ section.section-tight { padding-top: 24px; }
   color: var(--ink);
 }
 
-/* gallery (Figures_set_2 style) — asymmetric 6-column */
+/* gallery — asymmetric 12-column */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(12, 1fr);
   gap: 22px;
   padding: 16px 0 70px;
 }
@@ -652,14 +662,14 @@ section.section-tight { padding-top: 24px; }
   box-shadow: var(--glow);
   display: flex;
   flex-direction: column;
-  grid-column: span 3;
+  grid-column: span 6;
 }
-.card.featured { grid-column: span 4; }
-.card.featured .plot { height: 560px; }
-.card.minor { grid-column: span 2; }
-.card.minor .plot { height: 320px; }
+.card.featured { grid-column: span 8; }
+.card.featured .plot { height: 540px; }
+.card.minor { grid-column: span 4; }
+.card.minor .plot { height: 340px; }
 .card.wide { grid-column: 1 / -1; }
-.card.wide .plot { height: 520px; }
+.card.wide .plot { height: 480px; }
 .card .top {
   padding: 22px 24px 4px;
   display: flex;
@@ -756,15 +766,17 @@ section.section-tight { padding-top: 24px; }
 }
 .director-card {
   display: grid;
-  grid-template-columns: minmax(280px, 360px) 1fr;
-  gap: 38px;
+  grid-template-columns: minmax(300px, 380px) 1fr;
+  gap: 44px;
   align-items: start;
-  padding: 32px;
+  padding: 40px 44px;
   background: linear-gradient(180deg, var(--panel), var(--bg-2));
   border: 1px solid var(--line);
   border-radius: 18px;
   box-shadow: var(--glow);
   position: relative;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 .director-card::before {
   content: "PRINCIPAL · DIRECTOR";
@@ -980,15 +992,17 @@ section.section-tight { padding-top: 24px; }
 }
 .book-hero {
   display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 36px;
-  padding: 32px;
+  grid-template-columns: 260px 1fr;
+  gap: 44px;
+  padding: 40px 44px;
   background: linear-gradient(180deg, var(--panel), var(--bg-2));
   border: 1px solid var(--line);
   border-radius: 18px;
   box-shadow: var(--glow);
   align-items: start;
   position: relative;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 .book-hero::before {
   content: "MONOGRAPH · RECENT";
@@ -1109,7 +1123,10 @@ section.section-tight { padding-top: 24px; }
 }
 
 /* publications timeline */
-.publications-timeline {}
+.publications-timeline {
+  max-width: 1400px;
+  margin: 0 auto;
+}
 .year-group { margin-bottom: 44px; }
 .year-header {
   display: flex;
@@ -1144,8 +1161,10 @@ section.section-tight { padding-top: 24px; }
 }
 .publications-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
   gap: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 .publication-item {
   padding: 1.3rem 1.4rem;
@@ -1282,7 +1301,8 @@ footer.site-footer .placeholder {
 @media (max-width: 1100px) {
   .hero-grid { grid-template-columns: 1fr; gap: 28px; }
   .hero-stamp { display: none; }
-  .frame-grid { grid-template-columns: 1fr; }
+  .frame-grid { grid-template-columns: 1fr; gap: 16px; }
+  .pillar { min-height: 0; }
   .members-grid { grid-template-columns: repeat(2, 1fr); }
   .director-card { grid-template-columns: 1fr; padding: 28px; }
   .director-photo { max-width: 280px; }
@@ -1302,6 +1322,7 @@ footer.site-footer .placeholder {
   .foci .focus.span-3,
   .foci .focus.span-4,
   .foci .focus.span-6 { grid-column: span 1; }
+  .focus { min-height: 0; }
   .publications-list { grid-template-columns: 1fr; }
   .foot-grid { grid-template-columns: 1fr; }
   .sec-head { grid-template-columns: 1fr; gap: 14px; }
