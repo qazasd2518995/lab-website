@@ -30,7 +30,13 @@
     return `rgb(${Math.round(A[0] + (B[0] - A[0]) * t)},${Math.round(A[1] + (B[1] - A[1]) * t)},${Math.round(A[2] + (B[2] - A[2]) * t)})`;
   }
 
-  const CONF = { responsive: true, displayModeBar: false };
+  const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  const CONF = {
+    responsive: true,
+    displayModeBar: isTouch ? 'hover' : false,
+    modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleSpikelines'],
+    displaylogo: false
+  };
 
   const AX3 = (t, c) => ({
     title: { text: t, font: { family: 'JetBrains Mono', size: 11, color: c } },
@@ -570,6 +576,56 @@
     gA, gB, gC, gD, gE, gF, gG, gH
   };
 
+  /* ───────── touch UX for interactive figures ───────── */
+  function enhanceTouchUX(plotEl) {
+    if (!isTouch) return;
+    // 3D plots only: detect Plotly's scene gl3d node
+    const is3D = !!plotEl.querySelector('.gl3d, .scene');
+    const wrapper = plotEl.closest('.viz, .card');
+    if (!wrapper) return;
+
+    // Avoid double-decoration
+    if (wrapper.querySelector('.plot-touch-hint')) return;
+
+    // Touch hint badge
+    const hint = document.createElement('div');
+    hint.className = 'plot-touch-hint';
+    hint.innerHTML = is3D
+      ? '<span class="dot"></span> Drag to rotate · pinch to zoom'
+      : '<span class="dot"></span> Pinch to zoom · drag to pan';
+    plotEl.parentNode.insertBefore(hint, plotEl);
+
+    // Auto-fade hint after first interaction
+    let interacted = false;
+    const fade = () => {
+      if (interacted) return;
+      interacted = true;
+      hint.classList.add('faded');
+    };
+    plotEl.addEventListener('touchstart', fade, { passive: true });
+    plotEl.addEventListener('click', fade);
+    // Also fade after 5s regardless
+    setTimeout(fade, 5000);
+
+    // Lock page scroll while user interacts with the plot (prevent
+    // accidental page scroll while trying to rotate / pan)
+    let scrollLocked = false;
+    plotEl.addEventListener('touchstart', (e) => {
+      if (e.touches.length >= 1) {
+        document.body.style.overflow = 'hidden';
+        scrollLocked = true;
+      }
+    }, { passive: true });
+    const unlock = () => {
+      if (scrollLocked) {
+        document.body.style.overflow = '';
+        scrollLocked = false;
+      }
+    };
+    plotEl.addEventListener('touchend', unlock);
+    plotEl.addEventListener('touchcancel', unlock);
+  }
+
   async function setupFigures() {
     const idsOnPage = Object.keys(FIGURE_BUILDERS).filter(id => document.getElementById(id));
     if (!idsOnPage.length) return;
@@ -588,6 +644,7 @@
       try {
         FIGURE_BUILDERS[id]();
         el.dataset.plotted = '1';
+        enhanceTouchUX(el);
       } catch (e) {
         console.error('figure', id, e);
         el.innerHTML = `<div style="height:100%;display:flex;align-items:center;justify-content:center;font-family:monospace;color:#6b7596;font-size:.8rem">figure failed — see console</div>`;
