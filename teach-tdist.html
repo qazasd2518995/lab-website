@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The t-distribution & critical values · Teaching · L-DAHS</title>
+  <meta name="description" content="The Student's t-distribution and its critical-value table: why estimating σ changes the ruler, how to read a one- or two-tailed critical value, with an interactive t-table and a shaded rejection-region curve.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="wrap">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-mark"></span>
+        <span>L-DAHS</span>
+        <span class="brand-tag">Latent Manifold Lab</span>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="framework.html">Framework</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="teaching.html" aria-current="page">Teaching</a></li>
+        <li><a href="visuals.html">Figures</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="publications.html">Publications</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <article class="section-lg section-page-top teach-detail" style="--c:var(--d2)">
+      <div class="wrap">
+
+        <nav class="teach-breadcrumb" aria-label="Breadcrumb">
+          <a href="teaching.html#teaching">Teaching</a>
+          <span class="tb-sep">/</span>
+          <span class="tb-cur">02 · The t-distribution</span>
+        </nav>
+
+        <header class="teach-head" data-rise>
+          <div class="td-tag">§ 07 · 02　Reference · Quiz</div>
+          <h1>The <em>t</em>-distribution &amp; critical values</h1>
+          <p class="td-sub">t 分配與臨界值表 · when σ is estimated, the ruler changes</p>
+        </header>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Overview</div>
+          <p class="td-prose">When the population standard deviation is unknown and must be estimated from the sample, the standardised statistic no longer follows the normal curve but <strong>Student's t</strong>: heavier in the tails, more forgiving of extreme values. As the degrees of freedom grow, t approaches z. The critical-value table converts a chosen significance level α and degrees of freedom df into the cut-off a test statistic must clear.</p>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Key formulas</div>
+          <div class="tm-formulas">
+            <div class="tm-eq">$$t = \dfrac{\bar{X} - \mu}{S/\sqrt{n}}, \quad df = n - 1$$</div>
+            <div class="tm-eq">$$t_{df} \to N(0,1) \ \text{as } df \to \infty$$</div>
+          </div>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">The rejection region</div>
+          <p class="td-prose">A critical value marks the edge of the <strong>rejection region</strong>: the tail area equal to α. A two-tailed test splits α between both tails; a one-tailed test puts it all in one. The shaded area below is exactly α, and its inner edge sits at the critical value the table returns.</p>
+          <figure class="teach-figure">
+            <div data-widget="dist-curve" data-type="t" data-df="24" data-alpha="0.05" data-tail="2" data-stat="2.5"></div>
+            <figcaption>t-distribution, df = 24. Gold tails are the two-tailed rejection region at α = .05 (edges ±2.064); the teal marker is an observed t of 2.50, which falls inside the right tail — reject H₀.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Interactive critical-value table</div>
+          <p class="td-prose">Pick a df and α, or toggle one- vs two-tailed. The readout gives the critical value the test statistic must exceed. Click any df row or α column to select it.</p>
+          <div class="teach-widget" data-widget="t-table"></div>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">How to read the table</div>
+          <ol class="teach-steps">
+            <li><strong>Find the row.</strong> Degrees of freedom: for a one-sample or paired test, df = n − 1; for an independent two-sample pooled test, df = n₁ + n₂ − 2.</li>
+            <li><strong>Find the column.</strong> Choose your α. For a two-tailed test the listed α is split across both tails; for a one-tailed test read the half-α column shown.</li>
+            <li><strong>Read the cell.</strong> That number is t<sub>crit</sub>. Reject H₀ when |t<sub>observed</sub>| ≥ t<sub>crit</sub>.</li>
+            <li><strong>Mind the bottom row.</strong> At df = ∞ the t-values become the z-values — the normal table is just t with infinite degrees of freedom.</li>
+          </ol>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">When to use</div>
+          <ul class="tm-when">
+            <li>Any test of means where the population variance is unknown.</li>
+            <li>Choosing a critical value from α (one- or two-tailed) and df.</li>
+            <li>Small samples, where the t-correction matters most.</li>
+          </ul>
+        </section>
+
+        <nav class="teach-nav" data-teach-nav="tdist" aria-label="Unit navigation"></nav>
+
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap foot-grid">
+      <div>
+        <h4>L-DAHS · Latent Manifold Lab</h4>
+        <p>Department of Applied Foreign Languages<br>National Taiwan University of Science and Technology<br>T4-816, No. 43, Sec. 4, Keelung Rd., Taipei 10607</p>
+      </div>
+      <div>
+        <h4>People</h4>
+        <p><a href="team.html">Director &amp; PI</a><br><a href="team.html">Research assistants</a></p>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <p><a href="publications.html">Publications</a><br><a href="mailto:wenta.tseng@mail.ntust.edu.tw">wenta.tseng@mail.ntust.edu.tw</a></p>
+      </div>
+    </div>
+    <div class="wrap fine"><span id="copyright-year">2026</span> · L-DAHS · Latent Manifold Lab · National Taiwan University of Science and Technology</div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="script.js"></script>
+  <script src="teaching.js"></script>
+</body>
+</html>

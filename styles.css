@@ -1612,6 +1612,227 @@ footer.site-footer .placeholder {
   text-transform: uppercase;
   color: var(--ink-faint);
 }
+/* Card may render as an <a> linking to its detail page */
+a.teach-card { text-decoration: none; }
+
+/* ───────── Teaching detail pages ───────── */
+.teach-detail .wrap { max-width: 860px; }
+.teach-breadcrumb {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  margin-bottom: 1.8rem;
+}
+.teach-breadcrumb a { color: var(--ink-soft); text-decoration: none; }
+.teach-breadcrumb a:hover { color: var(--c, var(--eig)); }
+.teach-breadcrumb .tb-sep { margin: 0 0.5rem; opacity: 0.5; }
+.teach-breadcrumb .tb-cur { color: var(--ink); }
+
+.teach-head { margin-bottom: 2.4rem; }
+.teach-head .td-tag {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c, var(--eig));
+  margin-bottom: 0.8rem;
+}
+.teach-head h1 {
+  font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+  line-height: 1.12;
+  margin: 0 0 0.5rem;
+}
+.teach-head h1 em { font-style: italic; color: var(--c, var(--eig)); }
+.teach-head .td-sub {
+  color: var(--ink-soft);
+  font-size: 1.02rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.teach-block { margin: 2.4rem 0; }
+.teach-block .td-prose { color: var(--ink-soft); line-height: 1.75; margin: 0.4rem 0; }
+.teach-block .td-prose strong { color: var(--ink); font-weight: 600; }
+
+.teach-figure { margin: 1.2rem 0 0; }
+.teach-figure > [data-widget] {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.teach-figure svg { width: 100%; height: auto; display: block; }
+.teach-figure figcaption {
+  margin-top: 0.7rem;
+  font-size: 0.86rem;
+  color: var(--ink-faint);
+  line-height: 1.6;
+}
+
+.teach-steps { margin: 0.6rem 0 0; padding-left: 1.3rem; color: var(--ink-soft); }
+.teach-steps li { margin: 0.55rem 0; line-height: 1.7; }
+.teach-steps strong { color: var(--ink); font-weight: 600; }
+
+/* Interactive t-table widget */
+.teach-widget {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 18px 8px;
+  margin-top: 1rem;
+}
+.tt-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.tt-field { display: flex; flex-direction: column; gap: 5px; }
+.tt-field > span {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.tt-field select {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  padding: 7px 10px;
+  font: inherit;
+  font-size: 0.9rem;
+  min-width: 84px;
+  cursor: pointer;
+}
+.tt-field select:focus-visible { outline: none; border-color: var(--c, var(--eig)); }
+.tt-tail { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.tt-tail button {
+  background: var(--panel);
+  border: none;
+  color: var(--ink-soft);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.74rem;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.tt-tail button + button { border-left: 1px solid var(--line); }
+.tt-tail button.on { background: var(--c, var(--eig)); color: #0b1124; font-weight: 600; }
+
+.tt-readout {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--c, var(--eig));
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+}
+.tt-readout .tt-big {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.25rem;
+  color: var(--ink);
+}
+.tt-readout .tt-big sub { font-size: 0.66em; }
+.tt-readout .tt-lab {
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  margin-top: 3px;
+}
+
+.tt-scroll { overflow: auto; max-height: 420px; border-radius: 8px; -webkit-overflow-scrolling: touch; }
+.t-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.82rem;
+}
+.t-table th, .t-table td {
+  padding: 6px 10px;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.t-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--panel-2, var(--bg-2));
+  color: var(--ink-soft);
+  font-weight: 500;
+  z-index: 1;
+}
+.t-table .tt-grp {
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: none;
+  color: var(--ink-faint);
+  text-align: center;
+}
+/* keep Greek α lowercase (uppercase would turn it into Α) */
+.tt-field > span.tt-nocaps { text-transform: none; }
+.t-table .tt-ahead th { cursor: pointer; }
+.t-table .tt-sub { display: block; font-size: 0.58rem; color: var(--ink-faint); margin-top: 2px; }
+.t-table .dfcell { cursor: pointer; color: var(--ink-soft); }
+.t-table tbody tr:hover td { background: rgba(255,255,255,0.03); }
+.t-table tr.gap td { border-top: 1px solid var(--line); }
+.t-table tr.inf-row td { font-weight: 600; }
+.t-table th.col-on, .t-table td.col-on { color: var(--c, var(--eig)); }
+.t-table tr.row-on td { background: rgba(255,255,255,0.04); }
+.t-table td.cell-on {
+  background: var(--c, var(--eig));
+  color: #0b1124;
+  font-weight: 700;
+  border-radius: 4px;
+}
+
+/* Prev / next unit navigation */
+.teach-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 3rem;
+  padding-top: 1.8rem;
+  border-top: 1px solid var(--line);
+}
+.teach-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.teach-nav-link.next { text-align: right; }
+.teach-nav-link:not(.disabled):hover {
+  transform: translateY(-3px);
+  border-color: var(--c, var(--eig));
+  box-shadow: var(--glow);
+}
+.teach-nav-link.disabled { border-style: dashed; opacity: 0.35; pointer-events: none; }
+.teach-nav-link .tn-dir {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.teach-nav-link .tn-num {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+.teach-nav-link .tn-title { color: var(--ink); font-size: 0.94rem; line-height: 1.4; }
+
+@media (max-width: 600px) {
+  .tt-controls { gap: 12px; }
+  .teach-nav { grid-template-columns: 1fr; }
+  .teach-nav-link.next { text-align: left; }
+}
 
 /* Modal */
 .tm-overlay {

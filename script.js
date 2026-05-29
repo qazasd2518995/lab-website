@@ -931,26 +931,37 @@
   ];
 
   /* ───────── teaching: cards + modal ───────── */
+  // Cards whose full detail page exists are linked directly; the rest still
+  // open the legacy summary modal until their detail page ships. Remove the
+  // modal fallback (and this set) once every card has a detail page.
+  const DETAIL_PAGES = new Set(['tdist']);
+
   function setupTeaching() {
     const grid = document.getElementById('teach-grid');
     if (!grid) return;
 
     // Build cards
     TEACH_CARDS.forEach(card => {
-      const el = document.createElement('button');
+      const hasDetail = DETAIL_PAGES.has(card.id);
+      const el = document.createElement(hasDetail ? 'a' : 'button');
       el.className = 'teach-card';
-      el.type = 'button';
       el.style.setProperty('--c', card.color);
-      el.setAttribute('aria-haspopup', 'dialog');
-      el.setAttribute('aria-label', `Open: ${card.title}`);
       el.dataset.id = card.id;
+      if (hasDetail) {
+        el.href = `teach-${card.id}.html`;
+        el.setAttribute('aria-label', `Open unit: ${card.title}`);
+      } else {
+        el.type = 'button';
+        el.setAttribute('aria-haspopup', 'dialog');
+        el.setAttribute('aria-label', `Open: ${card.title}`);
+      }
       el.innerHTML =
         `<div class="tc-num">${card.num}</div>` +
         `<h3>${card.title}</h3>` +
         `<p class="tc-sub">${card.subtitle}</p>` +
         (card.preview ? `<div class="tc-preview">${card.preview}</div>` : '') +
         `<div class="tc-kind">${card.kind}</div>`;
-      el.addEventListener('click', () => openModal(card, el));
+      if (!hasDetail) el.addEventListener('click', () => openModal(card, el));
       grid.appendChild(el);
     });
 
@@ -1059,6 +1070,13 @@
     setupFigures();
     setupTeaching();
   }
+
+  // Expose a minimal namespace so the teaching detail pages (teaching.js) can
+  // reuse this file's KaTeX / Plotly / layout helpers without duplicating them.
+  window.LDAHS = {
+    doRender, ensurePlotly, ensureKatex,
+    LAYOUT2D, ax2, CONF, enhanceTouchUX
+  };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
