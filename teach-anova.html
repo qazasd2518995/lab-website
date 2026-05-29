@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One-way ANOVA · Teaching · L-DAHS</title>
+  <meta name="description" content="One-way ANOVA: partitioning total variance into a between-groups signal and within-groups noise, the F-ratio and its critical values, effect size, and Tukey HSD follow-up — with an interactive F-table and an F-ratio simulator.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="wrap">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-mark"></span>
+        <span>L-DAHS</span>
+        <span class="brand-tag">Latent Manifold Lab</span>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="framework.html">Framework</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="teaching.html" aria-current="page">Teaching</a></li>
+        <li><a href="visuals.html">Figures</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="publications.html">Publications</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <article class="section-lg section-page-top teach-detail" style="--c:var(--d1)">
+      <div class="wrap">
+
+        <nav class="teach-breadcrumb" aria-label="Breadcrumb">
+          <a href="teaching.html#teaching">Teaching</a>
+          <span class="tb-sep">/</span>
+          <span class="tb-cur">05 · One-way ANOVA</span>
+        </nav>
+
+        <header class="teach-head" data-rise>
+          <div class="td-tag">§ 07 · 05　Lecture · Walkthrough · 10 examples</div>
+          <h1>One-way <em>ANOVA</em></h1>
+          <p class="td-sub">單因子變異數分析 · partitioning variance into signal and noise</p>
+        </header>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Overview</div>
+          <p class="td-prose">With three or more groups, ANOVA splits the <strong>total variance</strong> into a between-groups part (differences among group means) and a within-groups part (noise inside each group). Their ratio of mean squares is the F-statistic. A large F says the between-group signal dwarfs the within-group noise.</p>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Key formulas</div>
+          <div class="tm-formulas">
+            <div class="tm-eq">$$SS_{\text{total}} = SS_{\text{between}} + SS_{\text{within}}$$</div>
+            <div class="tm-eq">$$F = \dfrac{MS_{\text{between}}}{MS_{\text{within}}}, \quad MS = \dfrac{SS}{df}$$</div>
+            <div class="tm-eq">$$df_{\text{between}} = k - 1, \quad df_{\text{within}} = N - k$$</div>
+            <div class="tm-eq">$$\eta^2 = \dfrac{SS_{\text{between}}}{SS_{\text{total}}}$$</div>
+          </div>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Variance, partitioned</div>
+          <figure class="teach-figure">
+            <div>
+              <svg viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Total variance bar split into between-groups and within-groups parts">
+                <text x="20" y="40" font-family="JetBrains Mono, monospace" font-size="10" fill="#a9b2cc">SS total</text>
+                <rect x="20" y="50" width="480" height="34" rx="4" fill="#a9b2cc" opacity="0.25"/>
+                <text x="20" y="120" font-family="JetBrains Mono, monospace" font-size="10" fill="#34e3cf">SS between (signal)</text>
+                <rect x="20" y="130" width="300" height="34" rx="4" fill="#34e3cf" opacity="0.85"/>
+                <text x="330" y="120" font-family="JetBrains Mono, monospace" font-size="10" fill="#ff5d8f">SS within (noise)</text>
+                <rect x="328" y="130" width="172" height="34" rx="4" fill="#ff5d8f" opacity="0.7"/>
+                <line x1="320" y1="46" x2="320" y2="172" stroke="#6b7596" stroke-width="1" stroke-dasharray="3,3"/>
+              </svg>
+            </div>
+            <figcaption>F is large when the between-groups bar dominates the within-groups bar.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Worked example · three teaching methods</div>
+          <p class="td-prose">Three groups of n = 5 learners, vocabulary post-test scores. The total sum of squares (140) splits into 90 between groups and 50 within. Dividing each by its degrees of freedom gives the mean squares, and their ratio is F.</p>
+          <figure class="teach-figure">
+            <div data-widget="anova-table"
+                 data-rows='[{"src":"Between groups","ss":"90","df":"2","ms":"45.00","f":"10.80","p":".002"},{"src":"Within groups (error)","ss":"50","df":"12","ms":"4.17","f":"","p":""},{"src":"Total","ss":"140","df":"14","ms":"","f":"","p":""}]'></div>
+            <figcaption>F(2, 12) = 45.00 / 4.17 = 10.80, p = .002. The between-groups signal clears the noise — reject H₀ that all group means are equal.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">The F-distribution &amp; its critical value</div>
+          <p class="td-prose">Under H₀ the F-statistic follows an F-distribution with (df<sub>between</sub>, df<sub>within</sub>) degrees of freedom. Reject when the observed F lands in the upper tail beyond the critical value.</p>
+          <figure class="teach-figure">
+            <div data-widget="dist-curve" data-type="f" data-df="2" data-df2="12" data-alpha="0.05" data-stat="10.8"></div>
+            <figcaption>F(2, 12), α = .05. The gold tail is the rejection region (edge at F = 3.89); the observed F = 10.80 is far inside it.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Try it: the F-ratio simulator</div>
+          <p class="td-prose">Drag the mean squares and watch F move. When the between-groups mean square is large relative to within-groups, F clears its critical value and the test turns significant.</p>
+          <div class="teach-widget">
+            <div data-widget="f-sim" data-df1="2" data-df2="12" data-alpha="0.05"></div>
+          </div>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Interactive F critical-value table</div>
+          <p class="td-prose">Pick a significance level, then read the critical F at the intersection of numerator df (between) and denominator df (within). Type any df pair for an exact value.</p>
+          <div class="teach-widget">
+            <div data-widget="f-table" data-alpha="0.05"></div>
+          </div>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">After a significant F: post-hoc &amp; effect size</div>
+          <p class="td-prose">A significant omnibus F says <em>some</em> means differ, not which. <strong>Tukey HSD</strong> compares every pair while holding the family-wise error rate at α. For effect size, η² is simple but upward-biased; <strong>ω²</strong> corrects that bias and is the better population estimate.</p>
+          <div class="tm-formulas">
+            <div class="tm-eq">$$\text{HSD} = q_{\alpha,\,k,\,df_w}\sqrt{\dfrac{MS_{\text{within}}}{n}}$$</div>
+            <div class="tm-eq">$$\omega^2 = \dfrac{SS_{\text{between}} - (k-1)\,MS_{\text{within}}}{SS_{\text{total}} + MS_{\text{within}}}$$</div>
+          </div>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Assumptions</div>
+          <ul class="tm-when">
+            <li>Independent observations within and across groups.</li>
+            <li>Normality of residuals in each group.</li>
+            <li>Homogeneity of variance (check with Levene's test; if it fails, use Welch's ANOVA and Games–Howell).</li>
+          </ul>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">When to use</div>
+          <ul class="tm-when">
+            <li>Comparing means across three or more independent groups.</li>
+            <li>Quantifying effect size with η² or ω² after a significant F.</li>
+            <li>Following up with post-hoc tests (e.g. Tukey HSD).</li>
+          </ul>
+        </section>
+
+        <nav class="teach-nav" data-teach-nav="anova" aria-label="Unit navigation"></nav>
+
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap foot-grid">
+      <div>
+        <h4>L-DAHS · Latent Manifold Lab</h4>
+        <p>Department of Applied Foreign Languages<br>National Taiwan University of Science and Technology<br>T4-816, No. 43, Sec. 4, Keelung Rd., Taipei 10607</p>
+      </div>
+      <div>
+        <h4>People</h4>
+        <p><a href="team.html">Director &amp; PI</a><br><a href="team.html">Research assistants</a></p>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <p><a href="publications.html">Publications</a><br><a href="mailto:wenta.tseng@mail.ntust.edu.tw">wenta.tseng@mail.ntust.edu.tw</a></p>
+      </div>
+    </div>
+    <div class="wrap fine"><span id="copyright-year">2026</span> · L-DAHS · Latent Manifold Lab · National Taiwan University of Science and Technology</div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="script.js"></script>
+  <script src="teaching.js"></script>
+</body>
+</html>

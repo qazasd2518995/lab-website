@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sampling distribution & standard error · Teaching · L-DAHS</title>
+  <meta name="description" content="The sampling distribution of the mean: enumerate every sample of a tiny population to see that the sample mean is unbiased and that its spread shrinks as σ/√n — the foundation of every confidence interval and test statistic.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="wrap">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-mark"></span>
+        <span>L-DAHS</span>
+        <span class="brand-tag">Latent Manifold Lab</span>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="framework.html">Framework</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="teaching.html" aria-current="page">Teaching</a></li>
+        <li><a href="visuals.html">Figures</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="publications.html">Publications</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <article class="section-lg section-page-top teach-detail" style="--c:var(--d1)">
+      <div class="wrap">
+
+        <nav class="teach-breadcrumb" aria-label="Breadcrumb">
+          <a href="teaching.html#teaching">Teaching</a>
+          <span class="tb-sep">/</span>
+          <span class="tb-cur">01 · Sampling distribution</span>
+        </nav>
+
+        <header class="teach-head" data-rise>
+          <div class="td-tag">§ 07 · 01　Lecture · Quiz</div>
+          <h1>Sampling distribution &amp; <em>standard error</em></h1>
+          <p class="td-sub">抽樣分配與標準誤 · the two properties that make inference possible</p>
+        </header>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Overview</div>
+          <p class="td-prose">Enumerate every possible sample of a tiny population and the sample mean reveals two exact properties. It is <strong>unbiased</strong>: averaged over all samples it equals the population mean. And its spread shrinks with sample size as <strong>variance reduction</strong>. Together they underwrite every confidence interval and every test statistic.</p>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Key formulas</div>
+          <div class="tm-formulas">
+            <div class="tm-eq">$$E(\bar{X}) = \mu$$</div>
+            <div class="tm-eq">$$\mathrm{Var}(\bar{X}) = \dfrac{\sigma^2}{n}$$</div>
+            <div class="tm-eq">$$\mathrm{SE}(\bar{X}) = \dfrac{\sigma}{\sqrt{n}}$$</div>
+          </div>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">See it: all nine samples</div>
+          <p class="td-prose">Take the population <strong>{1, 2, 3}</strong> and draw every sample of size n = 2 with replacement. There are nine equally likely samples. Their means cluster around the population mean μ = 2, and the mean of those means is exactly 2 — that is what <em>unbiased</em> means, made concrete.</p>
+          <figure class="teach-figure">
+            <table class="tm-anova samp-grid">
+              <thead><tr><th>Sample (X₁, X₂)</th><th>Mean X̄</th><th>Sample (X₁, X₂)</th><th>Mean X̄</th><th>Sample (X₁, X₂)</th><th>Mean X̄</th></tr></thead>
+              <tbody>
+                <tr><td class="src">(1, 1)</td><td>1.0</td><td class="src">(2, 1)</td><td>1.5</td><td class="src">(3, 1)</td><td>2.0</td></tr>
+                <tr><td class="src">(1, 2)</td><td>1.5</td><td class="src">(2, 2)</td><td>2.0</td><td class="src">(3, 2)</td><td>2.5</td></tr>
+                <tr><td class="src">(1, 3)</td><td>2.0</td><td class="src">(2, 3)</td><td>2.5</td><td class="src">(3, 3)</td><td>3.0</td></tr>
+                <tr class="total"><td class="src">mean of the nine sample means</td><td colspan="5">= 2.0 = μ &nbsp;(unbiased)</td></tr>
+              </tbody>
+            </table>
+            <figcaption>Population {1, 2, 3}, samples of n = 2 with replacement. The nine sample means average to μ = 2 exactly.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">The √n law — and its cost</div>
+          <p class="td-prose">Because the standard error falls as σ/√n, precision improves only with the <strong>square root</strong> of sample size. Halving the standard error does not take twice the data — it takes four times. The table below holds σ = 12 fixed and shows what each sample size buys.</p>
+          <figure class="teach-figure">
+            <table class="tm-anova">
+              <thead><tr><th>Sample size n</th><th>√n</th><th>SE = σ/√n</th><th>vs n = 1</th></tr></thead>
+              <tbody>
+                <tr><td class="src">1</td><td>1.00</td><td>12.00</td><td>—</td></tr>
+                <tr><td class="src">4</td><td>2.00</td><td>6.00</td><td>½ the SE</td></tr>
+                <tr><td class="src">16</td><td>4.00</td><td>3.00</td><td>¼ the SE</td></tr>
+                <tr><td class="src">25</td><td>5.00</td><td>2.40</td><td>⅕ the SE</td></tr>
+                <tr><td class="src">100</td><td>10.00</td><td>1.20</td><td>1/10 the SE</td></tr>
+              </tbody>
+            </table>
+            <figcaption>σ = 12 throughout. Each fourfold increase in n halves the standard error — diminishing returns built into the √n.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">As n grows, the distribution narrows</div>
+          <figure class="teach-figure">
+            <div>
+              <svg viewBox="0 0 520 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sampling distribution narrowing as n grows">
+                <line x1="40" y1="180" x2="500" y2="180" stroke="#6b7596" stroke-width="1"/>
+                <path d="M40,180 C150,178 200,120 270,120 C340,120 390,178 500,180" fill="none" stroke="#a9b2cc" stroke-width="1.5" opacity="0.6"/>
+                <path d="M150,180 C220,176 250,60 270,60 C290,60 320,176 390,180 Z" fill="#34e3cf" opacity="0.18"/>
+                <path d="M150,180 C220,176 250,60 270,60 C290,60 320,176 390,180" fill="none" stroke="#34e3cf" stroke-width="2"/>
+                <line x1="270" y1="46" x2="270" y2="180" stroke="#ff5d8f" stroke-width="1.4" stroke-dasharray="4,3"/>
+                <text x="270" y="38" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="14" fill="#ff5d8f">μ</text>
+                <text x="430" y="150" font-family="JetBrains Mono, monospace" font-size="11" fill="#a9b2cc">n = 1</text>
+                <text x="300" y="96" font-family="JetBrains Mono, monospace" font-size="11" fill="#34e3cf">large n</text>
+                <text x="270" y="200" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#6b7596">X̄</text>
+              </svg>
+            </div>
+            <figcaption>Larger samples concentrate the sample mean tightly around μ. The √n law in one picture.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">When to use</div>
+          <ul class="tm-when">
+            <li>Reasoning about why a larger n gives a more precise estimate.</li>
+            <li>Setting up confidence intervals: width is driven by σ/√n.</li>
+            <li>Understanding the denominator of every z- and t-statistic.</li>
+          </ul>
+        </section>
+
+        <nav class="teach-nav" data-teach-nav="sampling" aria-label="Unit navigation"></nav>
+
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap foot-grid">
+      <div>
+        <h4>L-DAHS · Latent Manifold Lab</h4>
+        <p>Department of Applied Foreign Languages<br>National Taiwan University of Science and Technology<br>T4-816, No. 43, Sec. 4, Keelung Rd., Taipei 10607</p>
+      </div>
+      <div>
+        <h4>People</h4>
+        <p><a href="team.html">Director &amp; PI</a><br><a href="team.html">Research assistants</a></p>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <p><a href="publications.html">Publications</a><br><a href="mailto:wenta.tseng@mail.ntust.edu.tw">wenta.tseng@mail.ntust.edu.tw</a></p>
+      </div>
+    </div>
+    <div class="wrap fine"><span id="copyright-year">2026</span> · L-DAHS · Latent Manifold Lab · National Taiwan University of Science and Technology</div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="script.js"></script>
+  <script src="teaching.js"></script>
+</body>
+</html>

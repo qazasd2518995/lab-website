@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>From t to F · one view · Teaching · L-DAHS</title>
+  <meta name="description" content="The t-test and one-way ANOVA are the same idea: with two groups, F equals t squared. A single dataset is run both ways to show the equivalence, with an interactive F-table.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="wrap">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-mark"></span>
+        <span>L-DAHS</span>
+        <span class="brand-tag">Latent Manifold Lab</span>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="framework.html">Framework</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="teaching.html" aria-current="page">Teaching</a></li>
+        <li><a href="visuals.html">Figures</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="publications.html">Publications</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <article class="section-lg section-page-top teach-detail" style="--c:var(--eig)">
+      <div class="wrap">
+        <nav class="teach-breadcrumb" aria-label="Breadcrumb">
+          <a href="teaching.html#teaching">Teaching</a>
+          <span class="tb-sep">/</span>
+          <span class="tb-cur">07 · From t to F</span>
+        </nav>
+
+        <header class="teach-head" data-rise>
+          <div class="td-tag">§ 07 · 07　Worked example · F table</div>
+          <h1>From <em>t</em> to <em>F</em> · one view</h1>
+          <p class="td-sub">從 t 到 F · the same signal-over-noise idea</p>
+        </header>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Overview</div>
+          <p class="td-prose">The t-test and ANOVA are not rival procedures. With exactly two groups, the F-statistic equals the square of the t-statistic: <strong>t² = F</strong>. Both are a signal divided by an estimate of noise; ANOVA generalises the comparison to many groups at once. This is the lab's framework in miniature: structure first, then a ratio.</p>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Key formulas</div>
+          <div class="tm-formulas">
+            <div class="tm-eq">$$t^2 = F \quad (\text{for } k = 2 \text{ groups})$$</div>
+            <div class="tm-eq">$$F = \dfrac{MS_{\text{between}}}{MS_{\text{within}}}$$</div>
+          </div>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">One dataset, two routes</div>
+          <p class="td-prose">Take two groups of n = 5. Group A = {8, 7, 9, 6, 10}, mean 8.0; Group B = {5, 4, 6, 3, 7}, mean 5.0. Each group has a sum of squares of 10, so the pooled variance is 2.50. Run it as a t-test and as an ANOVA, and the two answers lock together.</p>
+          <figure class="teach-figure">
+            <svg viewBox="0 0 520 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="t squared maps to F">
+              <text x="120" y="100" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="46" fill="#34e3cf">t²</text>
+              <line x1="165" y1="88" x2="330" y2="88" stroke="#a9b2cc" stroke-width="1.6"/>
+              <path d="M330,88 l-12,-6 v12 z" fill="#a9b2cc"/>
+              <text x="247" y="74" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#6b7596">k = 2</text>
+              <text x="400" y="100" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="46" fill="#ff5d8f">F</text>
+              <text x="260" y="150" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#e9e7dd">(3.000)² = 9.000</text>
+            </svg>
+            <figcaption>For two groups the two tests coincide: t = 3.000, F = 9.000, and t² = F exactly.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">The t route</div>
+          <div class="tm-formulas">
+            <div class="tm-eq">$$S_p^2 = \dfrac{SS_1 + SS_2}{n_1 + n_2 - 2} = \dfrac{10 + 10}{8} = 2.50$$</div>
+            <div class="tm-eq">$$\mathrm{SE} = \sqrt{S_p^2\left(\tfrac{1}{n_1} + \tfrac{1}{n_2}\right)} = \sqrt{2.50 \cdot 0.4} = 1.00$$</div>
+            <div class="tm-eq">$$t = \dfrac{\bar{X}_1 - \bar{X}_2}{\mathrm{SE}} = \dfrac{8.0 - 5.0}{1.00} = 3.000, \quad df = 8$$</div>
+          </div>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">The ANOVA route</div>
+          <p class="td-prose">Grand mean = 6.5. The between-groups sum of squares measures how far the group means sit from the grand mean; the within-groups sum of squares is the pooled scatter. Their mean squares form F.</p>
+          <figure class="teach-figure">
+            <div data-widget="anova-table" data-rows='[{"src":"Between","ss":"22.5","df":"1","ms":"22.50","f":"9.00","p":".017"},{"src":"Within","ss":"20.0","df":"8","ms":"2.50"},{"src":"Total","ss":"42.5","df":"9"}]'></div>
+            <figcaption>F(1, 8) = 22.50 / 2.50 = 9.00. And 9.00 = 3.000² — the t and F routes give the same decision and the same p = .017.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Interactive F critical-value table</div>
+          <p class="td-prose">Beyond two groups the t-test runs out; ANOVA carries on. Look up the critical F for any numerator and denominator df here — for the example above, F<sub>crit</sub>(1, 8) at α = .05.</p>
+          <div class="teach-widget">
+            <div data-widget="f-table" data-alpha="0.05"></div>
+          </div>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">When to use</div>
+          <ul class="tm-when">
+            <li>Seeing why a two-group ANOVA and a t-test agree.</li>
+            <li>Connecting the t-table and the F-table through degrees of freedom.</li>
+            <li>Framing all mean comparisons as signal over noise.</li>
+          </ul>
+        </section>
+
+        <nav class="teach-nav" data-teach-nav="ttof" aria-label="Unit navigation"></nav>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap foot-grid">
+      <div>
+        <h4>L-DAHS · Latent Manifold Lab</h4>
+        <p>Department of Applied Foreign Languages<br>National Taiwan University of Science and Technology<br>T4-816, No. 43, Sec. 4, Keelung Rd., Taipei 10607</p>
+      </div>
+      <div>
+        <h4>People</h4>
+        <p><a href="team.html">Director &amp; PI</a><br><a href="team.html">Research assistants</a></p>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <p><a href="publications.html">Publications</a><br><a href="mailto:wenta.tseng@mail.ntust.edu.tw">wenta.tseng@mail.ntust.edu.tw</a></p>
+      </div>
+    </div>
+    <div class="wrap fine"><span id="copyright-year">2026</span> · L-DAHS · Latent Manifold Lab · National Taiwan University of Science and Technology</div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="script.js"></script>
+  <script src="teaching.js"></script>
+</body>
+</html>

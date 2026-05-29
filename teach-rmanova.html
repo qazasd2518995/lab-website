@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repeated-measures ANOVA · Teaching · L-DAHS</title>
+  <meta name="description" content="Repeated-measures ANOVA: when every subject sees every condition, the within-subjects variance splits into conditions and error after individual differences are removed — with the sphericity assumption and Bonferroni follow-up.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="wrap">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-mark"></span>
+        <span>L-DAHS</span>
+        <span class="brand-tag">Latent Manifold Lab</span>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="framework.html">Framework</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="teaching.html" aria-current="page">Teaching</a></li>
+        <li><a href="visuals.html">Figures</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="publications.html">Publications</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <article class="section-lg section-page-top teach-detail" style="--c:var(--d2)">
+      <div class="wrap">
+        <nav class="teach-breadcrumb" aria-label="Breadcrumb">
+          <a href="teaching.html#teaching">Teaching</a>
+          <span class="tb-sep">/</span>
+          <span class="tb-cur">06 · Repeated-measures ANOVA</span>
+        </nav>
+
+        <header class="teach-head" data-rise>
+          <div class="td-tag">§ 07 · 06　Walkthrough · 10 studies</div>
+          <h1>Repeated-measures <em>ANOVA</em></h1>
+          <p class="td-sub">重複量數變異數分析 · removing individual differences</p>
+        </header>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Overview</div>
+          <p class="td-prose">When every subject experiences every condition, the within-subjects variance splits again into a <strong>conditions</strong> part and an <strong>error</strong> part, after the stable between-subjects differences are removed. Pulling out individual differences sharpens the test, which is why repeated-measures designs are so powerful.</p>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Key formulas</div>
+          <div class="tm-formulas">
+            <div class="tm-eq">$$SS_{\text{within-subj}} = SS_{\text{conditions}} + SS_{\text{error}}$$</div>
+            <div class="tm-eq">$$F = \dfrac{MS_{\text{conditions}}}{MS_{\text{error}}}$$</div>
+            <div class="tm-eq">$$\eta^2_{\text{partial}} = \dfrac{SS_{\text{conditions}}}{SS_{\text{conditions}} + SS_{\text{error}}}$$</div>
+          </div>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Two-stage partition</div>
+          <p class="td-prose">Total variance is split twice. First, the stable between-subjects differences are set aside. What remains — the within-subjects variance — is then split into the conditions effect and the error against which it is tested.</p>
+          <figure class="teach-figure">
+            <svg viewBox="0 0 520 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Total variance split first by subjects, then within-subjects into conditions and error">
+              <text x="20" y="34" font-family="JetBrains Mono, monospace" font-size="10" fill="#a9b2cc">SS total</text>
+              <rect x="20" y="42" width="480" height="28" rx="4" fill="#a9b2cc" opacity="0.22"/>
+              <rect x="20" y="92" width="150" height="28" rx="4" fill="#6b7596" opacity="0.6"/>
+              <text x="24" y="83" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#6b7596">between subjects (removed)</text>
+              <rect x="172" y="92" width="328" height="28" rx="4" fill="none" stroke="#a9b2cc" stroke-width="1" stroke-dasharray="3,3"/>
+              <text x="176" y="150" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#ffb74d">conditions ◀ tested effect</text>
+              <rect x="172" y="158" width="210" height="28" rx="4" fill="#ffb74d" opacity="0.85"/>
+              <text x="392" y="150" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#ff5d8f">error</text>
+              <rect x="390" y="158" width="110" height="28" rx="4" fill="#ff5d8f" opacity="0.6"/>
+            </svg>
+            <figcaption>Between-subjects variance is set aside first; F then tests conditions against a purified error term.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">ANOVA summary table</div>
+          <p class="td-prose">Five learners measured at three time points (weeks 1, 6, 12). The conditions effect is tested against error, not against the large between-subjects variance — which is why it is set aside in its own row.</p>
+          <figure class="teach-figure">
+            <table class="tm-anova">
+              <thead><tr><th>Source</th><th>SS</th><th>df</th><th>MS</th><th>F</th><th>p</th></tr></thead>
+              <tbody>
+                <tr><td class="src">Between subjects</td><td>120</td><td>4</td><td>30.0</td><td>—</td><td>—</td></tr>
+                <tr><td class="src">Conditions (time)</td><td>160</td><td>2</td><td>80.0</td><td>26.67</td><td>&lt;.001</td></tr>
+                <tr><td class="src">Error</td><td>24</td><td>8</td><td>3.0</td><td>—</td><td>—</td></tr>
+                <tr class="total"><td class="src">Total</td><td>304</td><td>14</td><td>—</td><td>—</td><td>—</td></tr>
+              </tbody>
+            </table>
+            <figcaption>F(2, 8) = 80.0 / 3.0 = 26.67, p &lt; .001. The 120 between-subjects SS is removed before the time effect is tested against the 24 of error.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">The sphericity assumption</div>
+          <p class="td-prose">Repeated-measures designs carry one extra assumption beyond ordinary ANOVA: <strong>sphericity</strong> — the variances of the differences between every pair of conditions are equal. <strong>Mauchly's test</strong> checks it. When it fails (p &lt; .05), apply a <strong>Greenhouse–Geisser</strong> (or Huynh–Feldt) correction, which multiplies the degrees of freedom by ε &lt; 1 so the F-test stays valid.</p>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Post-hoc · Bonferroni-corrected pairs</div>
+          <p class="td-prose">A significant omnibus test says the conditions differ somewhere. Pairwise comparisons with a Bonferroni correction control the family-wise error rate across the three contrasts.</p>
+          <figure class="teach-figure">
+            <table class="tm-anova">
+              <thead><tr><th>Comparison</th><th>Mean diff</th><th>t(4)</th><th>p (Bonf.)</th><th>Sig.?</th></tr></thead>
+              <tbody>
+                <tr><td class="src">Week 6 − Week 1</td><td>4.0</td><td>2.98</td><td>.12</td><td>No</td></tr>
+                <tr><td class="src">Week 12 − Week 6</td><td>4.0</td><td>4.21</td><td>.04</td><td>Yes</td></tr>
+                <tr><td class="src">Week 12 − Week 1</td><td>8.0</td><td>8.43</td><td>.003</td><td>Yes</td></tr>
+              </tbody>
+            </table>
+            <figcaption>After correction, the gain by week 12 is significant; the early week-1-to-6 change is not yet.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">When to use</div>
+          <ul class="tm-when">
+            <li>The same subjects measured under several conditions or times.</li>
+            <li>Longitudinal or within-subject experimental designs.</li>
+            <li>When between-subject noise would otherwise mask the effect.</li>
+          </ul>
+        </section>
+
+        <nav class="teach-nav" data-teach-nav="rmanova" aria-label="Unit navigation"></nav>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap foot-grid">
+      <div>
+        <h4>L-DAHS · Latent Manifold Lab</h4>
+        <p>Department of Applied Foreign Languages<br>National Taiwan University of Science and Technology<br>T4-816, No. 43, Sec. 4, Keelung Rd., Taipei 10607</p>
+      </div>
+      <div>
+        <h4>People</h4>
+        <p><a href="team.html">Director &amp; PI</a><br><a href="team.html">Research assistants</a></p>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <p><a href="publications.html">Publications</a><br><a href="mailto:wenta.tseng@mail.ntust.edu.tw">wenta.tseng@mail.ntust.edu.tw</a></p>
+      </div>
+    </div>
+    <div class="wrap fine"><span id="copyright-year">2026</span> · L-DAHS · Latent Manifold Lab · National Taiwan University of Science and Technology</div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="script.js"></script>
+  <script src="teaching.js"></script>
+</body>
+</html>

@@ -359,11 +359,174 @@
   }
 
   /* ─────────────────────────────────────────────
+     Interactive F critical-value table
+     data-widget="f-table" data-alpha="0.05"
+     Values are computed live, so any df works.
+     ───────────────────────────────────────────── */
+  const F_DF1 = [1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 30, 60];
+  const F_DF2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20, 24, 30, 40, 60, 120];
+  const F_ALPHAS = [0.10, 0.05, 0.025, 0.01, 0.001];
+
+  function fHeat(f) {
+    // log scale 1→~12 mapped teal(low)→amber→pink(high)
+    const t = Math.max(0, Math.min(1, Math.log(Math.max(f, 1)) / Math.log(12)));
+    const stops = [[0, [52, 227, 207]], [0.5, [255, 183, 77]], [1, [255, 93, 143]]];
+    let c = stops[stops.length - 1][1];
+    for (let i = 1; i < stops.length; i++) {
+      if (t <= stops[i][0]) {
+        const a = stops[i - 1], b = stops[i], f2 = (t - a[0]) / (b[0] - a[0]);
+        c = a[1].map((v, k) => Math.round(v + (b[1][k] - v) * f2));
+        break;
+      }
+    }
+    return `rgba(${c[0]},${c[1]},${c[2]},0.16)`;
+  }
+
+  function buildFTable(el) {
+    let alpha = +(el.dataset.alpha || 0.05);
+    el.innerHTML =
+      `<div class="ft-controls">` +
+        `<div class="ft-alpha" role="group" aria-label="Significance level">` +
+          F_ALPHAS.map(a => `<button type="button" data-a="${a}"${a === alpha ? ' class="on"' : ''}>${fmtAlpha(a)}</button>`).join('') +
+        `</div>` +
+        `<div class="ft-quick">` +
+          `<label>df₁ <input class="ft-d1" type="number" min="1" value="3"></label>` +
+          `<label>df₂ <input class="ft-d2" type="number" min="1" value="16"></label>` +
+          `<span class="ft-quick-out" aria-live="polite"></span>` +
+        `</div>` +
+      `</div>` +
+      `<div class="ft-scroll"><table class="f-table"><thead></thead><tbody></tbody></table></div>`;
+
+    const head = el.querySelector('.f-table thead');
+    const body = el.querySelector('.f-table tbody');
+    const quickOut = el.querySelector('.ft-quick-out');
+    const d1in = el.querySelector('.ft-d1');
+    const d2in = el.querySelector('.ft-d2');
+
+    function buildGrid() {
+      head.innerHTML = '<tr><th class="ft-corner">df₂ \\ df₁</th>' +
+        F_DF1.map(d1 => `<th>${d1}</th>`).join('') + '</tr>';
+      body.innerHTML = '';
+      F_DF2.forEach(d2 => {
+        const tr = document.createElement('tr');
+        let html = `<th class="ft-row">${d2}</th>`;
+        F_DF1.forEach(d1 => {
+          const f = statDist.fCrit(alpha, d1, d2);
+          html += `<td style="background:${fHeat(f)}" data-d1="${d1}" data-d2="${d2}">${f.toFixed(2)}</td>`;
+        });
+        tr.innerHTML = html;
+        body.appendChild(tr);
+      });
+      // crosshair highlight on hover
+      body.querySelectorAll('td').forEach(td => {
+        td.addEventListener('mouseenter', () => {
+          const ci = td.cellIndex;
+          body.querySelectorAll('td, th').forEach(c => c.classList.remove('ft-hot'));
+          body.querySelectorAll('tr').forEach(tr => {
+            const cell = tr.children[ci]; if (cell) cell.classList.add('ft-hot');
+          });
+          [...td.parentNode.children].forEach(c => c.classList.add('ft-hot'));
+        });
+      });
+      body.addEventListener('mouseleave', () => body.querySelectorAll('.ft-hot').forEach(c => c.classList.remove('ft-hot')));
+    }
+
+    function quick() {
+      const d1 = Math.max(1, +d1in.value || 1);
+      const d2 = Math.max(1, +d2in.value || 1);
+      const f = statDist.fCrit(alpha, d1, d2);
+      quickOut.innerHTML = `F<sub>crit</sub>(${d1}, ${d2}) = <strong>${f.toFixed(3)}</strong>`;
+    }
+
+    el.querySelectorAll('.ft-alpha button').forEach(b => {
+      b.onclick = () => {
+        el.querySelectorAll('.ft-alpha button').forEach(x => x.classList.remove('on'));
+        b.classList.add('on');
+        alpha = +b.dataset.a;
+        buildGrid(); quick();
+      };
+    });
+    d1in.oninput = quick; d2in.oninput = quick;
+    buildGrid(); quick();
+  }
+
+  /* ─────────────────────────────────────────────
+     ANOVA summary table
+     data-widget="anova-table" data-rows='[...]' data-total='{...}'
+     Each row: {src, ss, df, ms, f, p}  (ms/f/p optional)
+     ───────────────────────────────────────────── */
+  function buildAnovaTable(el) {
+    let rows = [], total = null;
+    try { rows = JSON.parse(el.dataset.rows || '[]'); } catch (e) {}
+    try { total = el.dataset.total ? JSON.parse(el.dataset.total) : null; } catch (e) {}
+    const cell = v => (v === undefined || v === null || v === '') ? '—' : v;
+    const tr = (r, cls) =>
+      `<tr${cls ? ` class="${cls}"` : ''}>` +
+        `<td class="src">${r.src}</td>` +
+        `<td>${cell(r.ss)}</td><td>${cell(r.df)}</td><td>${cell(r.ms)}</td>` +
+        `<td>${cell(r.f)}</td><td>${cell(r.p)}</td>` +
+      `</tr>`;
+    el.innerHTML =
+      `<table class="tm-anova"><thead><tr>` +
+        `<th>Source</th><th>SS</th><th>df</th><th>MS</th><th>F</th><th>p</th>` +
+      `</tr></thead><tbody>` +
+        rows.map(r => tr(r, r.src && /total/i.test(r.src) ? 'total' : '')).join('') +
+        (total ? tr(total, 'total') : '') +
+      `</tbody></table>`;
+  }
+
+  /* ─────────────────────────────────────────────
+     F-ratio simulator — drag MS_between / MS_within,
+     watch F move past its critical value.
+     data-widget="f-sim" data-df1="2" data-df2="12" data-alpha="0.05"
+     ───────────────────────────────────────────── */
+  function buildFRatioSim(el) {
+    const df1 = +(el.dataset.df1 || 2);
+    const df2 = +(el.dataset.df2 || 12);
+    const alpha = +(el.dataset.alpha || 0.05);
+    const crit = statDist.fCrit(alpha, df1, df2);
+    let msB = 45, msW = 15;
+
+    el.innerHTML =
+      `<div class="fs-row"><label>MS<sub>between</sub> <output class="fs-b">${msB}</output></label>` +
+        `<input class="fs-sb" type="range" min="1" max="100" step="1" value="${msB}"></div>` +
+      `<div class="fs-row"><label>MS<sub>within</sub> <output class="fs-w">${msW}</output></label>` +
+        `<input class="fs-sw" type="range" min="1" max="100" step="1" value="${msW}"></div>` +
+      `<div class="fs-bar"><div class="fs-fill"></div><div class="fs-crit" title="critical F"></div></div>` +
+      `<div class="fs-verdict" aria-live="polite"></div>`;
+
+    const bOut = el.querySelector('.fs-b'), wOut = el.querySelector('.fs-w');
+    const fill = el.querySelector('.fs-fill'), critMark = el.querySelector('.fs-crit');
+    const verdict = el.querySelector('.fs-verdict');
+    const sb = el.querySelector('.fs-sb'), sw = el.querySelector('.fs-sw');
+    const SCALE = Math.max(crit * 2.2, 6); // bar spans 0..SCALE in F units
+
+    function update() {
+      msB = +sb.value; msW = +sw.value;
+      bOut.textContent = msB; wOut.textContent = msW;
+      const F = msB / msW;
+      const pct = Math.min(100, F / SCALE * 100);
+      const critPct = Math.min(100, crit / SCALE * 100);
+      const sig = F >= crit;
+      fill.style.width = pct + '%';
+      fill.style.background = sig ? 'var(--d3)' : 'var(--d1)';
+      critMark.style.left = critPct + '%';
+      verdict.innerHTML = `F = ${msB}/${msW} = <strong>${F.toFixed(2)}</strong> &nbsp;·&nbsp; F<sub>crit</sub>(${df1},${df2}) = ${crit.toFixed(2)} &nbsp;→&nbsp; ` +
+        (sig ? `<span class="fs-yes">reject H₀</span>` : `<span class="fs-no">fail to reject</span>`);
+    }
+    sb.oninput = update; sw.oninput = update;
+    update();
+  }
+
+  /* ─────────────────────────────────────────────
      Widget registry + bootstrap
      ───────────────────────────────────────────── */
   const TEACH_WIDGETS = {
     't-table': buildTTable,
-    'dist-curve': buildDistCurve
+    'dist-curve': buildDistCurve,
+    'f-table': buildFTable,
+    'anova-table': buildAnovaTable,
+    'f-sim': buildFRatioSim
   };
 
   function setupWidgets() {

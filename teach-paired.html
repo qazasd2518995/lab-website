@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The paired-samples t-test · Teaching · L-DAHS</title>
+  <meta name="description" content="The paired-samples t-test: when the same subjects are measured twice, reduce the problem to a one-sample test on the differences. The within-pair correlation buys precision.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="wrap">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-mark"></span>
+        <span>L-DAHS</span>
+        <span class="brand-tag">Latent Manifold Lab</span>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="framework.html">Framework</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="teaching.html" aria-current="page">Teaching</a></li>
+        <li><a href="visuals.html">Figures</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="publications.html">Publications</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <article class="section-lg section-page-top teach-detail" style="--c:var(--eig)">
+      <div class="wrap">
+        <nav class="teach-breadcrumb" aria-label="Breadcrumb">
+          <a href="teaching.html#teaching">Teaching</a>
+          <span class="tb-sep">/</span>
+          <span class="tb-cur">04 · The paired-samples t-test</span>
+        </nav>
+
+        <header class="teach-head" data-rise>
+          <div class="td-tag">§ 07 · 04　Lecture · 15-item activity</div>
+          <h1>The <em>paired-samples</em> t-test</h1>
+          <p class="td-sub">成對樣本 t 檢定 · pre/post, repeated measures, matched pairs</p>
+        </header>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Overview</div>
+          <p class="td-prose">When the same subjects are measured twice, the two samples are correlated by design. Reduce the problem to a <strong>one-sample test on the differences</strong> \( D_i = X_{1i} - X_{2i} \). The within-pair correlation is absorbed automatically. Written with covariance, the term \( -2rS_1S_2 \) shrinks the standard error: positive correlation buys precision.</p>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Key formulas</div>
+          <div class="tm-formulas">
+            <div class="tm-eq">$$t = \dfrac{\bar{D} - \mu_D}{S_D/\sqrt{n}}, \quad df = n - 1$$</div>
+            <div class="tm-eq">$$\widehat{\mathrm{SE}} = \sqrt{\dfrac{S_1^2 + S_2^2 - 2\,r\,S_1 S_2}{n}}$$</div>
+            <div class="tm-eq">$$d = \dfrac{\bar{D}}{S_D}$$</div>
+          </div>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">The within-subject change</div>
+          <p class="td-prose">Each subject is measured before and after. A line connects that person's two scores — the paired test models the change along each line, not the gap between two separate clouds of people.</p>
+          <figure class="teach-figure">
+            <svg viewBox="0 0 520 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pre to post paired observations connected by lines">
+              <line x1="120" y1="20" x2="120" y2="180" stroke="#6b7596" stroke-width="0.8"/>
+              <line x1="400" y1="20" x2="400" y2="180" stroke="#6b7596" stroke-width="0.8"/>
+              <text x="120" y="200" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#a9b2cc">pre</text>
+              <text x="400" y="200" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#a9b2cc">post</text>
+              <g stroke="#7c8cff" stroke-width="1.4" opacity="0.8">
+                <line x1="120" y1="150" x2="400" y2="110"/>
+                <line x1="120" y1="120" x2="400" y2="70"/>
+                <line x1="120" y1="95" x2="400" y2="60"/>
+                <line x1="120" y1="60" x2="400" y2="40"/>
+              </g>
+              <g fill="#ff5d8f"><circle cx="120" cy="150" r="4"/><circle cx="120" cy="120" r="4"/><circle cx="120" cy="95" r="4"/><circle cx="120" cy="60" r="4"/></g>
+              <g fill="#34e3cf"><circle cx="400" cy="110" r="4"/><circle cx="400" cy="70" r="4"/><circle cx="400" cy="60" r="4"/><circle cx="400" cy="40" r="4"/></g>
+            </svg>
+            <figcaption>Each line is one subject; the paired test models the within-subject change, not the gap between two independent groups.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Worked example · vocabulary gain</div>
+          <p class="td-prose">Five learners take a vocabulary test before and after a six-week course. Work on the differences, not the two columns.</p>
+          <figure class="teach-figure">
+            <table class="tm-anova">
+              <thead><tr><th>Subject</th><th>Pre</th><th>Post</th><th>D = Post − Pre</th></tr></thead>
+              <tbody>
+                <tr><td class="src">S1</td><td>18</td><td>23</td><td>+5</td></tr>
+                <tr><td class="src">S2</td><td>20</td><td>22</td><td>+2</td></tr>
+                <tr><td class="src">S3</td><td>15</td><td>21</td><td>+6</td></tr>
+                <tr><td class="src">S4</td><td>22</td><td>26</td><td>+4</td></tr>
+                <tr><td class="src">S5</td><td>19</td><td>22</td><td>+3</td></tr>
+                <tr class="total"><td class="src">mean D̄</td><td>—</td><td>—</td><td>+4.0</td></tr>
+              </tbody>
+            </table>
+            <figcaption>The five differences (5, 2, 6, 4, 3) average to D̄ = 4.0. Everything downstream uses this single column.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">The seven-step computation</div>
+          <ol class="teach-steps">
+            <li><strong>Differences</strong> — compute Dᵢ = X₁ᵢ − X₂ᵢ for each pair.</li>
+            <li><strong>Mean difference</strong> — D̄ = ΣDᵢ / n.</li>
+            <li><strong>Spread</strong> — S_D, the standard deviation of the differences.</li>
+            <li><strong>Standard error</strong> — SE = S_D / √n.</li>
+            <li><strong>Statistic</strong> — t = D̄ / SE, under H₀: μ_D = 0.</li>
+            <li><strong>Degrees of freedom</strong> — df = n − 1.</li>
+            <li><strong>Effect size</strong> — d = D̄ / S_D, a within-subject Cohen's d.</li>
+          </ol>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Five common pitfalls</div>
+          <ul class="tm-when">
+            <li>Running an independent t-test on paired data — it inflates the error term.</li>
+            <li>Using the wrong df: it is n − 1 (pairs), not n₁ + n₂ − 2.</li>
+            <li>Ignoring the sign of D̄ — a negative mean difference reverses the interpretation.</li>
+            <li>Checking normality of the raw scores instead of the differences.</li>
+            <li>Misreading the design: "two conditions, two scores per person" is paired.</li>
+          </ul>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">When to use</div>
+          <ul class="tm-when">
+            <li>Pre/post designs measuring the same people twice.</li>
+            <li>Matched-pairs or repeated single-factor comparisons.</li>
+            <li>Whenever ignoring the pairing would waste the design's power.</li>
+          </ul>
+        </section>
+
+        <nav class="teach-nav" data-teach-nav="paired" aria-label="Unit navigation"></nav>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap foot-grid">
+      <div>
+        <h4>L-DAHS · Latent Manifold Lab</h4>
+        <p>Department of Applied Foreign Languages<br>National Taiwan University of Science and Technology<br>T4-816, No. 43, Sec. 4, Keelung Rd., Taipei 10607</p>
+      </div>
+      <div>
+        <h4>People</h4>
+        <p><a href="team.html">Director &amp; PI</a><br><a href="team.html">Research assistants</a></p>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <p><a href="publications.html">Publications</a><br><a href="mailto:wenta.tseng@mail.ntust.edu.tw">wenta.tseng@mail.ntust.edu.tw</a></p>
+      </div>
+    </div>
+    <div class="wrap fine"><span id="copyright-year">2026</span> · L-DAHS · Latent Manifold Lab · National Taiwan University of Science and Technology</div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="script.js"></script>
+  <script src="teaching.js"></script>
+</body>
+</html>

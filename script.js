@@ -931,133 +931,29 @@
   ];
 
   /* ───────── teaching: cards + modal ───────── */
-  // Cards whose full detail page exists are linked directly; the rest still
-  // open the legacy summary modal until their detail page ships. Remove the
-  // modal fallback (and this set) once every card has a detail page.
-  const DETAIL_PAGES = new Set(['tdist']);
-
   function setupTeaching() {
     const grid = document.getElementById('teach-grid');
     if (!grid) return;
 
-    // Build cards
+    // Every card links to its own detail page (teach-<id>.html).
     TEACH_CARDS.forEach(card => {
-      const hasDetail = DETAIL_PAGES.has(card.id);
-      const el = document.createElement(hasDetail ? 'a' : 'button');
+      const el = document.createElement('a');
       el.className = 'teach-card';
       el.style.setProperty('--c', card.color);
       el.dataset.id = card.id;
-      if (hasDetail) {
-        el.href = `teach-${card.id}.html`;
-        el.setAttribute('aria-label', `Open unit: ${card.title}`);
-      } else {
-        el.type = 'button';
-        el.setAttribute('aria-haspopup', 'dialog');
-        el.setAttribute('aria-label', `Open: ${card.title}`);
-      }
+      el.href = `teach-${card.id}.html`;
+      el.setAttribute('aria-label', `Open unit: ${card.title}`);
       el.innerHTML =
         `<div class="tc-num">${card.num}</div>` +
         `<h3>${card.title}</h3>` +
         `<p class="tc-sub">${card.subtitle}</p>` +
         (card.preview ? `<div class="tc-preview">${card.preview}</div>` : '') +
         `<div class="tc-kind">${card.kind}</div>`;
-      if (!hasDetail) el.addEventListener('click', () => openModal(card, el));
       grid.appendChild(el);
     });
 
     // Render preview formulas inside the cards
     doRender(grid);
-
-    // One reusable modal container
-    const overlay = document.createElement('div');
-    overlay.className = 'tm-overlay';
-    overlay.innerHTML = '<div class="tm-dialog" tabindex="-1" role="dialog" aria-modal="true"></div>';
-    document.body.appendChild(overlay);
-    overlay.inert = true;
-    const dialog = overlay.querySelector('.tm-dialog');
-
-    let lastFocused = null;
-    let rendered = {};
-
-    function openModal(card, trigger) {
-      lastFocused = trigger || null;
-      overlay.style.setProperty('--c', card.color);
-      dialog.setAttribute('aria-label', card.title);
-      dialog.innerHTML = buildModalHTML(card);
-      dialog.scrollTop = 0;
-      overlay.inert = false;
-      overlay.classList.add('open');
-      document.body.classList.add('tm-lock');
-      if (!rendered[card.id]) {
-        if (window.renderMathInElement) {
-          doRender(dialog);
-          rendered[card.id] = true;
-        } else {
-          ensureKatex().then(ok => {
-            if (ok && overlay.classList.contains('open')) {
-              doRender(dialog);
-              rendered[card.id] = true;
-            }
-          });
-        }
-      }
-      dialog.querySelector('.tm-close').addEventListener('click', closeModal);
-      dialog.focus();
-    }
-
-    function closeModal() {
-      overlay.classList.remove('open');
-      document.body.classList.remove('tm-lock');
-      overlay.inert = true;
-      if (lastFocused) lastFocused.focus();
-    }
-
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) closeModal();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (!overlay.classList.contains('open')) return;
-      if (e.key === 'Escape') { closeModal(); return; }
-      if (e.key === 'Tab') trapFocus(e);
-    });
-
-    function trapFocus(e) {
-      const focusables = dialog.querySelectorAll('button, a[href], [tabindex]:not([tabindex="-1"])');
-      if (!focusables.length) return;
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      if (!dialog.contains(document.activeElement)) {
-        e.preventDefault(); first.focus();
-      } else if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault(); last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault(); first.focus();
-      }
-    }
-  }
-
-  function buildModalHTML(card) {
-    const formulas = card.formulas.map(f => `<div class="tm-eq">$$${f}$$</div>`).join('');
-    const when = card.whenToUse.map(w => `<li>${w}</li>`).join('');
-    const figure = card.svg
-      ? `<div class="tm-label">Figure</div><div class="tm-figure">${card.svg}` +
-        (card.figcap ? `<div class="tm-figcap">${card.figcap}</div>` : '') + `</div>`
-      : '';
-    return (
-      `<div class="tm-top">` +
-        `<span class="tm-tag">§ 07 · ${card.num}　${card.kind}</span>` +
-        `<button class="tm-close" type="button" aria-label="Close">✕</button>` +
-      `</div>` +
-      `<h3>${card.title}</h3>` +
-      `<p class="tm-subtitle">${card.subtitle}</p>` +
-      `<div class="tm-label">Overview</div>` +
-      `<div class="tm-overview">${card.overview}</div>` +
-      `<div class="tm-label">Key formulas</div>` +
-      `<div class="tm-formulas">${formulas}</div>` +
-      figure +
-      `<div class="tm-label">When to use</div>` +
-      `<ul class="tm-when">${when}</ul>`
-    );
   }
 
   /* ───────── init ───────── */

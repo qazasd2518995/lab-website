@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Two means, six tests · Teaching · L-DAHS</title>
+  <meta name="description" content="Every two-sample test of the difference between two means is one idea in different clothes. Three questions pick one of six tests; only the standard error in the denominator changes.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="wrap">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-mark"></span>
+        <span>L-DAHS</span>
+        <span class="brand-tag">Latent Manifold Lab</span>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="framework.html">Framework</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="teaching.html" aria-current="page">Teaching</a></li>
+        <li><a href="visuals.html">Figures</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="publications.html">Publications</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <article class="section-lg section-page-top teach-detail" style="--c:var(--d3)">
+      <div class="wrap">
+        <nav class="teach-breadcrumb" aria-label="Breadcrumb">
+          <a href="teaching.html#teaching">Teaching</a>
+          <span class="tb-sep">/</span>
+          <span class="tb-cur">03 · Two means, six tests</span>
+        </nav>
+
+        <header class="teach-head" data-rise>
+          <div class="td-tag">§ 07 · 03　Decision tree · 12 problems</div>
+          <h1>Two means, <em>six tests</em></h1>
+          <p class="td-sub">兩平均數差 μ₁ − μ₂ · choosing the right denominator</p>
+        </header>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Overview</div>
+          <p class="td-prose">Every two-sample test of \( \mu_1 - \mu_2 \) is one idea in different clothes. Three questions (is σ known? are the samples large? are the groups independent or paired?) pick one of six tests. The numerator is always the observed difference minus its null value; only the <strong>standard error in the denominator</strong> changes.</p>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">Key formulas</div>
+          <div class="tm-formulas">
+            <div class="tm-eq">$$\text{statistic} = \dfrac{(\bar{X}_1 - \bar{X}_2) - (\mu_1 - \mu_2)}{\widehat{\mathrm{SE}}(\bar{X}_1 - \bar{X}_2)}$$</div>
+            <div class="tm-eq">$$S_p^2 = \dfrac{(n_1-1)S_1^2 + (n_2-1)S_2^2}{n_1 + n_2 - 2}$$</div>
+          </div>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">The decision tree</div>
+          <p class="td-prose">Three questions, asked in order, route you to one of six tests. First: is the population σ known? If not, are the samples large enough for the normal approximation? And finally: are the two groups independent, or paired by design?</p>
+          <figure class="teach-figure">
+            <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Decision tree routing from the difference of two means to one of six tests">
+              <rect x="10" y="132" width="96" height="34" rx="5" fill="#e9e7dd"/>
+              <text x="58" y="154" text-anchor="middle" font-family="Fraunces, serif" font-size="14" fill="#0b1124">μ₁ − μ₂</text>
+              <g stroke="#a9b2cc" stroke-width="1.1" fill="none">
+                <path d="M106,142 H140 V40 H176"/>
+                <path d="M106,156 H140 V210 H176"/>
+                <path d="M280,210 H310 V150 H346"/>
+                <path d="M280,210 H310 V262 H346"/>
+                <path d="M448,150 H470 V120 H470"/>
+                <path d="M448,150 H470 V180 H470"/>
+              </g>
+              <g font-family="JetBrains Mono, monospace" font-size="9.5" fill="#6b7596">
+                <text x="120" y="34">σ known</text>
+                <text x="120" y="226">σ unknown</text>
+                <text x="316" y="146">small n</text>
+                <text x="316" y="278">large n</text>
+              </g>
+              <g font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="600">
+                <rect x="176" y="26" width="100" height="28" rx="4" fill="none" stroke="#34e3cf" stroke-width="1.3"/>
+                <text x="226" y="44" text-anchor="middle" fill="#34e3cf">z-test</text>
+                <rect x="176" y="196" width="104" height="28" rx="4" fill="none" stroke="#a9b2cc" stroke-width="1"/>
+                <text x="228" y="214" text-anchor="middle" fill="#a9b2cc">n &amp; design?</text>
+                <rect x="346" y="248" width="120" height="28" rx="4" fill="none" stroke="#34e3cf" stroke-width="1.1"/>
+                <text x="406" y="266" text-anchor="middle" fill="#34e3cf">z (large n)</text>
+                <rect x="346" y="136" width="102" height="28" rx="4" fill="none" stroke="#a9b2cc" stroke-width="1"/>
+                <text x="397" y="154" text-anchor="middle" fill="#a9b2cc">independent?</text>
+                <rect x="468" y="106" width="120" height="26" rx="4" fill="none" stroke="#ff5d8f" stroke-width="1.2"/>
+                <text x="528" y="123" text-anchor="middle" fill="#ff5d8f" font-size="10">pooled / Welch t</text>
+                <rect x="468" y="166" width="120" height="26" rx="4" fill="none" stroke="#ffb74d" stroke-width="1.2"/>
+                <text x="528" y="183" text-anchor="middle" fill="#ffb74d" font-size="10">paired t</text>
+              </g>
+            </svg>
+            <figcaption>Three questions in sequence decide only which standard error goes in the denominator.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">The six tests</div>
+          <p class="td-prose">Same numerator every time. What changes is the denominator — how the standard error of the difference is estimated.</p>
+          <figure class="teach-figure">
+            <table class="tm-anova">
+              <thead><tr><th>Test</th><th>Condition</th><th>Denominator (SE)</th></tr></thead>
+              <tbody>
+                <tr><td class="src">z-test</td><td>σ known</td><td>σ·√(1/n₁ + 1/n₂)</td></tr>
+                <tr><td class="src">z-test</td><td>large n (CLT)</td><td>√(S₁²/n₁ + S₂²/n₂)</td></tr>
+                <tr><td class="src">Pooled t</td><td>small n, equal variances</td><td>Sp·√(1/n₁ + 1/n₂)</td></tr>
+                <tr><td class="src">Welch t′</td><td>small n, unequal variances</td><td>√(S₁²/n₁ + S₂²/n₂)</td></tr>
+                <tr><td class="src">Paired t</td><td>dependent, r unknown</td><td>S_D/√n</td></tr>
+                <tr><td class="src">Paired t</td><td>dependent, r known</td><td>√((S₁²+S₂²−2rS₁S₂)/n)</td></tr>
+              </tbody>
+            </table>
+            <figcaption>One template, six denominators. The design and what you know about σ pick the row.</figcaption>
+          </figure>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">One template, three forks</div>
+          <p class="td-prose">Every test is <strong>(observed difference − null difference) / SE</strong>. The numerator is the signal; only the way the denominator estimates noise changes. Three forks decide it: <strong>(i)</strong> σ known vs estimated picks z or t; <strong>(ii)</strong> assuming equal variances vs not picks pooled or Welch — modern practice leans Welch; <strong>(iii)</strong> independent vs paired is set by the design, and when paired, positive correlation shrinks the SE and buys precision.</p>
+        </section>
+
+        <section class="teach-block" data-rise>
+          <div class="tm-label">When to use</div>
+          <ul class="tm-when">
+            <li>Comparing two group means and unsure which test applies.</li>
+            <li>Deciding between pooled and Welch t under unequal variances.</li>
+            <li>Recognising paired designs: positive correlation buys precision.</li>
+          </ul>
+        </section>
+
+        <nav class="teach-nav" data-teach-nav="twomeans" aria-label="Unit navigation"></nav>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap foot-grid">
+      <div>
+        <h4>L-DAHS · Latent Manifold Lab</h4>
+        <p>Department of Applied Foreign Languages<br>National Taiwan University of Science and Technology<br>T4-816, No. 43, Sec. 4, Keelung Rd., Taipei 10607</p>
+      </div>
+      <div>
+        <h4>People</h4>
+        <p><a href="team.html">Director &amp; PI</a><br><a href="team.html">Research assistants</a></p>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <p><a href="publications.html">Publications</a><br><a href="mailto:wenta.tseng@mail.ntust.edu.tw">wenta.tseng@mail.ntust.edu.tw</a></p>
+      </div>
+    </div>
+    <div class="wrap fine"><span id="copyright-year">2026</span> · L-DAHS · Latent Manifold Lab · National Taiwan University of Science and Technology</div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="script.js"></script>
+  <script src="teaching.js"></script>
+</body>
+</html>
