@@ -142,23 +142,27 @@
           </article>
 
           <!-- Text Mining -->
-          <article class="method-card" data-rise>
+          <article class="method-card method-card-wide" data-rise>
             <div class="method-header">
               <div class="method-num">05</div>
               <div class="method-tag" style="--c:var(--d1)">Text Mining · NLP</div>
             </div>
             <h3>Learning representations</h3>
-            <p>Dimension reduction, topic models, and neural encoders that turn corpora and behavioural logs into interpretable coordinates. From bag-of-words to transformer embeddings, we extract latent semantic structure.</p>
-            <div class="method-visual">
+            <p>Dimension reduction, topic models, and neural encoders that turn corpora and behavioural logs into interpretable coordinates. From bag-of-words to transformer embeddings, we extract latent semantic structure from learner writing, open-ended responses, and textual feedback.</p>
+            <div class="method-visual method-visual-wide">
               <div class="method-figure" id="nlp-topics">
-                <div class="figure-title">Topic Distribution</div>
+                <div class="figure-title">Topic Distribution (LDA)</div>
               </div>
               <div class="method-figure" id="nlp-embed">
-                <div class="figure-title">Word Embeddings</div>
+                <div class="figure-title">Word Embeddings (t-SNE)</div>
+              </div>
+              <div class="method-figure" id="nlp-wordfreq">
+                <div class="figure-title">Term Frequency</div>
               </div>
             </div>
             <div class="method-eqs">
               <code class="mini">\( p(w|d)=\sum_k p(w|z_k)p(z_k|d) \)</code>
+              <code class="mini">\( \text{TF-IDF}_{t,d}=\text{tf}_{t,d}\cdot\log\dfrac{N}{n_t} \)</code>
               <code class="mini">\( \cos(\mathbf{u},\mathbf{v})=\dfrac{\mathbf{u}\cdot\mathbf{v}}{\|\mathbf{u}\|\|\mathbf{v}\|} \)</code>
             </div>
           </article>

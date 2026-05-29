@@ -960,7 +960,7 @@
   async function setupResearchFigures() {
     const containers = ['msem-icc', 'msem-path', 'hlm-spaghetti', 'hlm-shrinkage',
       'irt-icc', 'irt-tif', 'meta-forest', 'meta-funnel',
-      'nlp-topics', 'nlp-embed', 'dyn-phase', 'dyn-trajectory', 'dyn-bifurcation',
+      'nlp-topics', 'nlp-embed', 'nlp-wordfreq', 'dyn-phase', 'dyn-trajectory', 'dyn-bifurcation',
       'sem-cfa', 'sem-full'];
     if (!containers.some(id => document.getElementById(id))) return;
 
@@ -1067,18 +1067,63 @@
           shapes: [{ type: 'line', x0: 0.4, x1: 0.4, y0: 0, y1: 0.3, line: { color: '#ffb74d', width: 1.5, dash: 'dash' } }] }), MC);
     }
 
-    // Topics
+    // Topics - stacked horizontal bar for document-topic distribution
     if (document.getElementById('nlp-topics')) {
-      Plotly.newPlot('nlp-topics', [{ type: 'bar', x: ['Motivation','Anxiety','Strategy','Assessment','Vocab'], y: [0.28,0.22,0.18,0.17,0.15],
-        marker: { color: ['#34e3cf','#ffb74d','#ff5d8f','#7c8cff','#a9b2cc'] } }], Object.assign({}, ML, { xaxis: ax(''), yaxis: ax('P(topic)') }), MC);
+      const docs = ['Doc 1', 'Doc 2', 'Doc 3', 'Doc 4', 'Doc 5'];
+      const topics = [
+        { name: 'Motivation', color: '#34e3cf', vals: [0.45, 0.12, 0.08, 0.35, 0.22] },
+        { name: 'Anxiety', color: '#ff5d8f', vals: [0.15, 0.55, 0.20, 0.18, 0.12] },
+        { name: 'Strategy', color: '#ffb74d', vals: [0.25, 0.18, 0.48, 0.22, 0.35] },
+        { name: 'Assessment', color: '#7c8cff', vals: [0.10, 0.10, 0.18, 0.20, 0.25] },
+        { name: 'Vocab', color: '#a9b2cc', vals: [0.05, 0.05, 0.06, 0.05, 0.06] }
+      ];
+      const traces = topics.map(t => ({
+        type: 'bar', y: docs, x: t.vals, name: t.name, orientation: 'h',
+        marker: { color: t.color }, hovertemplate: '%{x:.0%}<extra>' + t.name + '</extra>'
+      }));
+      Plotly.newPlot('nlp-topics', traces, Object.assign({}, ML, {
+        barmode: 'stack', xaxis: ax('Topic proportion'), yaxis: ax(''),
+        legend: { font: { size: 8, color: '#a9b2cc' }, orientation: 'h', y: -0.15 },
+        margin: { l: 45, r: 10, t: 10, b: 45 }
+      }), MC);
     }
 
-    // Embeddings
+    // Embeddings - t-SNE with clusters
     if (document.getElementById('nlp-embed')) {
-      Plotly.newPlot('nlp-embed', [{ type: 'scatter', x: [-1.2,1.5,-0.8,-0.3,0.2,1.8], y: [0.8,-0.5,1.2,0.4,0.1,-0.8],
-        mode: 'markers+text', text: ['motivation','anxiety','engagement','learning','strategy','test'], textposition: 'top center',
-        textfont: { family: 'JetBrains Mono', size: 8, color: '#a9b2cc' }, marker: { size: 9, color: '#7c8cff' } }],
-        Object.assign({}, ML, { xaxis: ax('Dim 1'), yaxis: ax('Dim 2') }), MC);
+      const clusters = [
+        { words: ['motivation','drive','goal','interest'], color: '#34e3cf', cx: -1.5, cy: 1.2 },
+        { words: ['anxiety','stress','worry','fear'], color: '#ff5d8f', cx: 1.8, cy: 1.0 },
+        { words: ['learning','study','practice','skill'], color: '#7c8cff', cx: 0.2, cy: -1.3 },
+        { words: ['test','exam','score','grade'], color: '#ffb74d', cx: 1.5, cy: -0.8 }
+      ];
+      const traces = clusters.map(c => {
+        const xs = c.words.map(() => c.cx + (Math.random() - 0.5) * 0.8);
+        const ys = c.words.map(() => c.cy + (Math.random() - 0.5) * 0.8);
+        return {
+          type: 'scatter', x: xs, y: ys, mode: 'markers+text', text: c.words,
+          textposition: 'top center', textfont: { family: 'JetBrains Mono', size: 7, color: '#a9b2cc' },
+          marker: { size: 10, color: c.color, opacity: 0.85, line: { color: '#0b1124', width: 1 } },
+          hoverinfo: 'text'
+        };
+      });
+      Plotly.newPlot('nlp-embed', traces, Object.assign({}, ML, {
+        xaxis: Object.assign(ax('t-SNE 1'), { range: [-3, 3] }),
+        yaxis: Object.assign(ax('t-SNE 2'), { range: [-2.5, 2.5] }),
+        showlegend: false
+      }), MC);
+    }
+
+    // Word frequency - horizontal bar chart
+    if (document.getElementById('nlp-wordfreq')) {
+      const words = ['learning', 'student', 'motivation', 'language', 'anxiety', 'strategy', 'vocabulary', 'writing'];
+      const freqs = [245, 198, 167, 145, 132, 118, 95, 87];
+      const tfidf = [0.42, 0.38, 0.51, 0.35, 0.48, 0.44, 0.52, 0.39];
+      Plotly.newPlot('nlp-wordfreq', [{
+        type: 'bar', y: words, x: freqs, orientation: 'h',
+        marker: { color: tfidf, colorscale: [[0, '#2a6fb0'], [0.5, '#34e3cf'], [1, '#ffb74d']], showscale: true,
+          colorbar: { title: { text: 'TF-IDF', font: { size: 9, color: '#a9b2cc' } }, thickness: 8, len: 0.6, tickfont: { size: 8, color: '#6b7596' } } },
+        hovertemplate: '%{y}: %{x} occurrences<br>TF-IDF: %{marker.color:.2f}<extra></extra>'
+      }], Object.assign({}, ML, { xaxis: ax('Frequency'), yaxis: ax(''), margin: { l: 65, r: 10, t: 10, b: 35 } }), MC);
     }
 
     // Phase Portrait
