@@ -52,50 +52,157 @@
           </div>
         </div>
 
-        <div class="foci">
-          <!-- Row 1: 6 + 6 (two large feature cards) -->
-          <div class="focus span-3" style="--c:var(--d1)" data-rise>
-            <div class="k">Multilevel SEM</div>
+        <div class="research-methods">
+          <!-- Multilevel SEM -->
+          <article class="method-card" data-rise>
+            <div class="method-header">
+              <div class="method-num">01</div>
+              <div class="method-tag" style="--c:var(--d1)">Multilevel SEM</div>
+            </div>
             <h3>Nested latent structure</h3>
-            <p>Separating within- and between-cluster covariance so classroom, learner, and item effects are not confounded.</p>
-            <code class="mini">\( \boldsymbol{\Sigma}_T=\boldsymbol{\Sigma}_W+\boldsymbol{\Sigma}_B \)</code>
-          </div>
+            <p>Separating within- and between-cluster covariance so classroom, learner, and item effects are not confounded. The total covariance decomposes into level-specific structures, each with its own measurement and structural model.</p>
+            <div class="method-visual">
+              <div class="method-figure" id="msem-icc">
+                <div class="figure-title">ICC Decomposition</div>
+              </div>
+              <div class="method-figure" id="msem-path">
+                <div class="figure-title">Two-Level Path Model</div>
+              </div>
+            </div>
+            <div class="method-eqs">
+              <code class="mini">\( \boldsymbol{\Sigma}_T=\boldsymbol{\Sigma}_W+\boldsymbol{\Sigma}_B \)</code>
+              <code class="mini">\( \text{ICC}=\dfrac{\sigma^2_B}{\sigma^2_B+\sigma^2_W} \)</code>
+            </div>
+          </article>
 
-          <div class="focus span-3" style="--c:var(--eig)" data-rise>
-            <div class="k">HLM</div>
+          <!-- HLM -->
+          <article class="method-card" data-rise>
+            <div class="method-header">
+              <div class="method-num">02</div>
+              <div class="method-tag" style="--c:var(--eig)">HLM · Mixed Models</div>
+            </div>
             <h3>Random-coefficient models</h3>
-            <p>Slopes and intercepts that vary across higher-level units, capturing context as a source of systematic variation.</p>
-            <code class="mini">\( \mathbf{y}=\mathbf{X}\boldsymbol{\beta}+\mathbf{Z}\mathbf{u}+\boldsymbol{\varepsilon} \)</code>
-          </div>
+            <p>Slopes and intercepts that vary across higher-level units, capturing context as a source of systematic variation. Shrinkage pulls extreme estimates toward the grand mean, borrowing strength across clusters.</p>
+            <div class="method-visual">
+              <div class="method-figure" id="hlm-spaghetti">
+                <div class="figure-title">Random Slopes</div>
+              </div>
+              <div class="method-figure" id="hlm-shrinkage">
+                <div class="figure-title">Shrinkage Effect</div>
+              </div>
+            </div>
+            <div class="method-eqs">
+              <code class="mini">\( y_{ij}=(\beta_0+u_{0j})+(\beta_1+u_{1j})x_{ij}+\varepsilon_{ij} \)</code>
+              <code class="mini">\( \mathbf{u}_j\sim\mathcal{N}(\mathbf{0},\boldsymbol{\Psi}) \)</code>
+            </div>
+          </article>
 
-          <!-- Row 2: 4 + 4 + 4 (three even cards) -->
-          <div class="focus" style="--c:var(--d2)" data-rise>
-            <div class="k">Adaptive testing · CAT</div>
-            <h3>Information-maximizing measurement</h3>
-            <p>Each item is chosen to maximize information at the provisional ability estimate, shortening tests without losing precision.</p>
-            <code class="mini">\( j^{*}=\arg\max_j\, I_j(\hat{\theta}) \)</code>
-          </div>
+          <!-- CAT / IRT -->
+          <article class="method-card" data-rise>
+            <div class="method-header">
+              <div class="method-num">03</div>
+              <div class="method-tag" style="--c:var(--d2)">CAT · IRT</div>
+            </div>
+            <h3>Adaptive measurement</h3>
+            <p>Each item is chosen to maximize Fisher information at the provisional ability estimate, shortening tests without losing precision. Item characteristic curves govern response probabilities; test information aggregates item contributions.</p>
+            <div class="method-visual">
+              <div class="method-figure" id="irt-icc">
+                <div class="figure-title">Item Characteristic Curves</div>
+              </div>
+              <div class="method-figure" id="irt-tif">
+                <div class="figure-title">Test Information Function</div>
+              </div>
+            </div>
+            <div class="method-eqs">
+              <code class="mini">\( P_i(\theta)=\dfrac{1}{1+e^{-a_i(\theta-b_i)}} \)</code>
+              <code class="mini">\( I(\theta)=\sum_i a_i^2 P_i Q_i \)</code>
+            </div>
+          </article>
 
-          <div class="focus" style="--c:var(--d3)" data-rise>
-            <div class="k">Meta-analysis</div>
+          <!-- Meta-analysis -->
+          <article class="method-card" data-rise>
+            <div class="method-header">
+              <div class="method-num">04</div>
+              <div class="method-tag" style="--c:var(--d3)">Meta-Analysis</div>
+            </div>
             <h3>Synthesis across studies</h3>
-            <p>Random-effects and Bayesian meta-synthesis that model heterogeneity rather than averaging it away.</p>
-            <code class="mini">\( \hat{\delta}_i=\delta+u_i+e_i,\ u_i\sim\mathcal{N}(0,\tau^2) \)</code>
-          </div>
+            <p>Random-effects models that treat each study's true effect as drawn from a distribution, capturing heterogeneity rather than averaging it away. Forest plots visualize individual effects; funnel plots diagnose publication bias.</p>
+            <div class="method-visual">
+              <div class="method-figure" id="meta-forest">
+                <div class="figure-title">Forest Plot</div>
+              </div>
+              <div class="method-figure" id="meta-funnel">
+                <div class="figure-title">Funnel Plot</div>
+              </div>
+            </div>
+            <div class="method-eqs">
+              <code class="mini">\( \hat{\delta}_i=\delta+u_i+e_i \)</code>
+              <code class="mini">\( I^2=\dfrac{Q-(k-1)}{Q}\times 100\% \)</code>
+            </div>
+          </article>
 
-          <div class="focus" style="--c:var(--d1)" data-rise>
-            <div class="k">Data &amp; text mining</div>
+          <!-- Text Mining -->
+          <article class="method-card" data-rise>
+            <div class="method-header">
+              <div class="method-num">05</div>
+              <div class="method-tag" style="--c:var(--d1)">Text Mining · NLP</div>
+            </div>
             <h3>Learning representations</h3>
-            <p>Dimension reduction, topic models, and neural encoders that turn corpora and behavioural logs into interpretable coordinates.</p>
-            <code class="mini">\( \boldsymbol{\theta}\leftarrow\boldsymbol{\theta}-\eta\,\nabla_{\boldsymbol{\theta}}\mathcal{L} \)</code>
-          </div>
+            <p>Dimension reduction, topic models, and neural encoders that turn corpora and behavioural logs into interpretable coordinates. From bag-of-words to transformer embeddings, we extract latent semantic structure.</p>
+            <div class="method-visual">
+              <div class="method-figure" id="nlp-topics">
+                <div class="figure-title">Topic Distribution</div>
+              </div>
+              <div class="method-figure" id="nlp-embed">
+                <div class="figure-title">Word Embeddings</div>
+              </div>
+            </div>
+            <div class="method-eqs">
+              <code class="mini">\( p(w|d)=\sum_k p(w|z_k)p(z_k|d) \)</code>
+              <code class="mini">\( \cos(\mathbf{u},\mathbf{v})=\dfrac{\mathbf{u}\cdot\mathbf{v}}{\|\mathbf{u}\|\|\mathbf{v}\|} \)</code>
+            </div>
+          </article>
 
-          <!-- Row 3: full-width feature -->
-          <div class="focus span-6" style="--c:var(--eig)" data-rise>
-            <div class="k">Dynamical modelling</div>
-            <h3>Affect over time</h3>
-            <p>Differential-equation models of how motivation, engagement, and anxiety drive one another along a learning trajectory. Coupled ODEs let us trace regime shifts that snapshots miss, mapping how learner states settle into attractors and escape from local minima.</p>
-            <code class="mini">\( \dot{\mathbf{x}}=\mathbf{f}(\mathbf{x};\boldsymbol{\theta}),\quad \mathbf{x}(0)=\mathbf{x}_0 \)</code>
+          <!-- Dynamical Systems -->
+          <article class="method-card method-card-wide" data-rise>
+            <div class="method-header">
+              <div class="method-num">06</div>
+              <div class="method-tag" style="--c:var(--eig)">Dynamical Systems</div>
+            </div>
+            <h3>Affect trajectories over time</h3>
+            <p>Differential-equation models of how motivation, engagement, and anxiety drive one another along a learning trajectory. Coupled ODEs let us trace regime shifts that snapshots miss, mapping how learner states settle into attractors and escape from local minima. Phase portraits reveal stability; bifurcation diagrams show how parameter changes flip system behavior.</p>
+            <div class="method-visual method-visual-wide">
+              <div class="method-figure" id="dyn-phase">
+                <div class="figure-title">Phase Portrait</div>
+              </div>
+              <div class="method-figure" id="dyn-trajectory">
+                <div class="figure-title">State Trajectories</div>
+              </div>
+              <div class="method-figure" id="dyn-bifurcation">
+                <div class="figure-title">Bifurcation Diagram</div>
+              </div>
+            </div>
+            <div class="method-eqs">
+              <code class="mini">\( \dot{\mathbf{x}}=\mathbf{f}(\mathbf{x};\boldsymbol{\theta}) \)</code>
+              <code class="mini">\( \mathbf{J}=\dfrac{\partial\mathbf{f}}{\partial\mathbf{x}}\big|_{\mathbf{x}^*} \)</code>
+              <code class="mini">\( \lambda(\mathbf{J})<0 \Rightarrow \text{stable} \)</code>
+            </div>
+          </article>
+        </div>
+
+        <!-- SEM Path Diagram Section -->
+        <div class="research-showcase" data-rise>
+          <div class="showcase-header">
+            <h3>Structural Equation <em>Modeling</em></h3>
+            <p class="lead">The canonical CFA and full SEM path diagrams that structure the lab's measurement and structural models.</p>
+          </div>
+          <div class="sem-diagrams">
+            <div class="sem-diagram" id="sem-cfa">
+              <div class="figure-title">Confirmatory Factor Analysis</div>
+            </div>
+            <div class="sem-diagram" id="sem-full">
+              <div class="figure-title">Full Structural Model</div>
+            </div>
           </div>
         </div>
       </div>

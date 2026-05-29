@@ -97,9 +97,9 @@
   async function ensurePlotly() {
     if (window.Plotly) return true;
     const urls = [
-      'https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.2/plotly.min.js',
-      'https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js',
-      'https://cdn.plot.ly/plotly-2.27.0.min.js'
+      'https://cdn.plot.ly/plotly-2.35.2.min.js',
+      'https://cdn.plot.ly/plotly-2.32.0.min.js',
+      'https://cdn.plot.ly/plotly-basic-2.35.2.min.js'
     ];
     for (const u of urls) {
       try { await loadScript(u); if (window.Plotly) return true; } catch (e) { /* try next */ }
@@ -956,6 +956,169 @@
     doRender(grid);
   }
 
+  /* ───────── Research page figures ───────── */
+  async function setupResearchFigures() {
+    const containers = ['msem-icc', 'msem-path', 'hlm-spaghetti', 'hlm-shrinkage',
+      'irt-icc', 'irt-tif', 'meta-forest', 'meta-funnel',
+      'nlp-topics', 'nlp-embed', 'dyn-phase', 'dyn-trajectory', 'dyn-bifurcation',
+      'sem-cfa', 'sem-full'];
+    if (!containers.some(id => document.getElementById(id))) return;
+
+    // Load Plotly first
+    console.log('Loading Plotly...');
+    const ok = await ensurePlotly();
+    console.log('Plotly loaded:', ok, 'Plotly object:', typeof window.Plotly);
+    if (!ok) {
+      console.error('Failed to load Plotly');
+      return;
+    }
+
+    const ML = { paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
+      margin: { l: 44, r: 16, t: 28, b: 36 }, showlegend: false,
+      font: { family: 'Spectral', color: '#e9e7dd', size: 11 } };
+    const ax = (t) => ({ title: { text: t, font: { family: 'JetBrains Mono', size: 9, color: '#a9b2cc' } },
+      gridcolor: 'rgba(150,170,220,0.12)', zerolinecolor: 'rgba(150,170,220,0.2)',
+      tickfont: { family: 'JetBrains Mono', size: 8, color: '#6b7596' }, color: '#a9b2cc' });
+    const MC = { responsive: true, displayModeBar: false };
+
+    // ICC Decomposition
+    if (document.getElementById('msem-icc')) {
+      console.log('Drawing msem-icc...');
+      try {
+      Plotly.newPlot('msem-icc', [
+        { type: 'bar', y: ['Reading','Writing','Listening','Grammar'], x: [0.72,0.68,0.75,0.65], orientation: 'h', marker: { color: '#34e3cf' } },
+        { type: 'bar', y: ['Reading','Writing','Listening','Grammar'], x: [0.28,0.32,0.25,0.35], orientation: 'h', marker: { color: '#ff5d8f' } }
+      ], Object.assign({}, ML, { barmode: 'stack', xaxis: ax('Variance'), yaxis: ax('') }), MC);
+      console.log('msem-icc done');
+      } catch(e) { console.error('msem-icc error:', e); }
+    }
+
+    // Two-Level Path (SVG)
+    if (document.getElementById('msem-path')) {
+      document.getElementById('msem-path').innerHTML += `<svg viewBox="0 0 300 180" style="width:100%;height:calc(100% - 30px);margin-top:30px"><defs><marker id="arr" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#a9b2cc"/></marker></defs><text x="150" y="18" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6b7596">LEVEL 2 (Between)</text><ellipse cx="80" cy="50" rx="28" ry="18" fill="none" stroke="#ff5d8f" stroke-width="1.5"/><text x="80" y="54" text-anchor="middle" font-family="Fraunces" font-size="11" fill="#ff5d8f">ξB</text><ellipse cx="220" cy="50" rx="28" ry="18" fill="none" stroke="#ff5d8f" stroke-width="1.5"/><text x="220" y="54" text-anchor="middle" font-family="Fraunces" font-size="11" fill="#ff5d8f">ηB</text><line x1="108" y1="50" x2="188" y2="50" stroke="#a9b2cc" stroke-width="1.2" marker-end="url(#arr)"/><line x1="20" y1="90" x2="280" y2="90" stroke="#6b7596" stroke-width="0.8" stroke-dasharray="4,3"/><text x="150" y="108" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6b7596">LEVEL 1 (Within)</text><ellipse cx="80" cy="140" rx="28" ry="18" fill="none" stroke="#34e3cf" stroke-width="1.5"/><text x="80" y="144" text-anchor="middle" font-family="Fraunces" font-size="11" fill="#34e3cf">ξW</text><ellipse cx="220" cy="140" rx="28" ry="18" fill="none" stroke="#34e3cf" stroke-width="1.5"/><text x="220" y="144" text-anchor="middle" font-family="Fraunces" font-size="11" fill="#34e3cf">ηW</text><line x1="108" y1="140" x2="188" y2="140" stroke="#a9b2cc" stroke-width="1.2" marker-end="url(#arr)"/></svg>`;
+    }
+
+    // HLM Random Slopes
+    if (document.getElementById('hlm-spaghetti')) {
+      const traces = [];
+      for (let j = 0; j < 12; j++) {
+        const b0 = 2 + (rng() - 0.5) * 1.6, b1 = 0.5 + (rng() - 0.5) * 0.6;
+        const xs = [], ys = [];
+        for (let x = 0; x <= 10; x += 1) { xs.push(x); ys.push(b0 + b1 * x); }
+        traces.push({ x: xs, y: ys, mode: 'lines', line: { width: 1.2, color: lerpColor('#34e3cf', '#ff5d8f', j / 11) }, opacity: 0.7 });
+      }
+      traces.push({ x: [0,10], y: [2, 7], mode: 'lines', line: { width: 2.5, color: '#e9e7dd' } });
+      Plotly.newPlot('hlm-spaghetti', traces, Object.assign({}, ML, { xaxis: ax('X'), yaxis: ax('Y') }), MC);
+    }
+
+    // Shrinkage
+    if (document.getElementById('hlm-shrinkage')) {
+      const raw = [], shrunk = [], labels = [];
+      for (let j = 0; j < 8; j++) { const r = (rng()-0.5)*3; raw.push(r); shrunk.push(r*0.65); labels.push('G'+(j+1)); }
+      Plotly.newPlot('hlm-shrinkage', [
+        { type: 'scatter', x: raw, y: labels, mode: 'markers', marker: { size: 9, color: '#6b7596', symbol: 'circle-open' } },
+        { type: 'scatter', x: shrunk, y: labels, mode: 'markers', marker: { size: 9, color: '#34e3cf' } }
+      ], Object.assign({}, ML, { xaxis: ax('Slope'), yaxis: Object.assign(ax(''), { type: 'category' }),
+        shapes: [{ type: 'line', x0: 0, x1: 0, y0: -0.5, y1: 7.5, line: { color: '#ffb74d', width: 1.5, dash: 'dash' } }] }), MC);
+    }
+
+    // IRT ICC
+    if (document.getElementById('irt-icc')) {
+      const items = [{a:1.2,b:-1.5,c:'#34e3cf'},{a:1.8,b:0,c:'#ffb74d'},{a:1.0,b:1.2,c:'#ff5d8f'},{a:2.2,b:-0.5,c:'#7c8cff'}];
+      const traces = items.map(it => {
+        const xs = [], ys = [];
+        for (let th = -3; th <= 3; th += 0.15) { xs.push(th); ys.push(1/(1+Math.exp(-it.a*(th-it.b)))); }
+        return { x: xs, y: ys, mode: 'lines', line: { width: 2, color: it.c } };
+      });
+      Plotly.newPlot('irt-icc', traces, Object.assign({}, ML, { xaxis: ax('θ'), yaxis: Object.assign(ax('P'), { range: [0,1] }) }), MC);
+    }
+
+    // TIF
+    if (document.getElementById('irt-tif')) {
+      const items = [{a:1.2,b:-1.5},{a:1.8,b:0},{a:1.0,b:1.2},{a:2.2,b:-0.5},{a:1.5,b:-0.8},{a:1.3,b:0.6}];
+      const xs = [], ys = [];
+      for (let th = -3; th <= 3; th += 0.15) {
+        xs.push(th); let info = 0;
+        items.forEach(it => { const p = 1/(1+Math.exp(-it.a*(th-it.b))); info += it.a*it.a*p*(1-p); });
+        ys.push(info);
+      }
+      Plotly.newPlot('irt-tif', [{ x: xs, y: ys, mode: 'lines', fill: 'tozeroy', line: { width: 2, color: '#7c8cff' }, fillcolor: 'rgba(124,140,255,0.2)' }],
+        Object.assign({}, ML, { xaxis: ax('θ'), yaxis: ax('I(θ)') }), MC);
+    }
+
+    // Forest Plot
+    if (document.getElementById('meta-forest')) {
+      const studies = ['Study 1','Study 2','Study 3','Study 4','Study 5','Pooled'];
+      const effects = [0.35,0.52,0.28,0.61,0.40,0.43], ses = [0.12,0.15,0.10,0.18,0.11,0.05];
+      Plotly.newPlot('meta-forest', [{
+        type: 'scatter', x: effects, y: studies, mode: 'markers',
+        marker: { size: 10, color: studies.map((s,i) => i===5?'#ffb74d':'#34e3cf'), symbol: studies.map((s,i) => i===5?'diamond':'circle') },
+        error_x: { type: 'data', array: ses.map(s => 1.96*s), color: '#6b7596', thickness: 1.5 }
+      }], Object.assign({}, ML, { xaxis: ax("Cohen's d"), yaxis: Object.assign(ax(''), { type: 'category' }),
+        shapes: [{ type: 'line', x0: 0, x1: 0, y0: -0.5, y1: 5.5, line: { color: '#ff5d8f', width: 1, dash: 'dash' } }] }), MC);
+    }
+
+    // Funnel
+    if (document.getElementById('meta-funnel')) {
+      const effs = [], ses = [];
+      for (let i = 0; i < 20; i++) { const se = 0.05+rng()*0.2; effs.push(0.4+(rng()-0.5)*se*2); ses.push(se); }
+      Plotly.newPlot('meta-funnel', [{ type: 'scatter', x: effs, y: ses, mode: 'markers', marker: { size: 7, color: '#34e3cf', opacity: 0.8 } }],
+        Object.assign({}, ML, { xaxis: ax('Effect'), yaxis: Object.assign(ax('SE'), { autorange: 'reversed' }),
+          shapes: [{ type: 'line', x0: 0.4, x1: 0.4, y0: 0, y1: 0.3, line: { color: '#ffb74d', width: 1.5, dash: 'dash' } }] }), MC);
+    }
+
+    // Topics
+    if (document.getElementById('nlp-topics')) {
+      Plotly.newPlot('nlp-topics', [{ type: 'bar', x: ['Motivation','Anxiety','Strategy','Assessment','Vocab'], y: [0.28,0.22,0.18,0.17,0.15],
+        marker: { color: ['#34e3cf','#ffb74d','#ff5d8f','#7c8cff','#a9b2cc'] } }], Object.assign({}, ML, { xaxis: ax(''), yaxis: ax('P(topic)') }), MC);
+    }
+
+    // Embeddings
+    if (document.getElementById('nlp-embed')) {
+      Plotly.newPlot('nlp-embed', [{ type: 'scatter', x: [-1.2,1.5,-0.8,-0.3,0.2,1.8], y: [0.8,-0.5,1.2,0.4,0.1,-0.8],
+        mode: 'markers+text', text: ['motivation','anxiety','engagement','learning','strategy','test'], textposition: 'top center',
+        textfont: { family: 'JetBrains Mono', size: 8, color: '#a9b2cc' }, marker: { size: 9, color: '#7c8cff' } }],
+        Object.assign({}, ML, { xaxis: ax('Dim 1'), yaxis: ax('Dim 2') }), MC);
+    }
+
+    // Phase Portrait
+    if (document.getElementById('dyn-phase')) {
+      let tx = [1.8], ty = [1.5];
+      for (let n = 0; n < 60; n++) { const x = tx[tx.length-1], y = ty[ty.length-1]; tx.push(x+(-0.5*x+0.3*y)*0.15); ty.push(y+(-0.3*x-0.5*y)*0.15); }
+      Plotly.newPlot('dyn-phase', [{ type: 'scatter', x: tx, y: ty, mode: 'lines', line: { width: 2.5, color: '#ff5d8f' } }],
+        Object.assign({}, ML, { xaxis: Object.assign(ax('Motivation'), { range: [-2.5,2.5] }), yaxis: Object.assign(ax('Anxiety'), { range: [-2.5,2.5] }),
+          shapes: [{ type: 'circle', x0: -0.08, x1: 0.08, y0: -0.08, y1: 0.08, fillcolor: '#ffb74d', line: { width: 0 } }] }), MC);
+    }
+
+    // Trajectories
+    if (document.getElementById('dyn-trajectory')) {
+      const t = [], m = [], a = []; let M = 1, A = 0.5;
+      for (let i = 0; i <= 80; i++) { t.push(i*0.1); m.push(M); a.push(A); M += (-0.3*M+0.2*A)*0.1; A += (-0.1*M-0.4*A+0.3)*0.1; }
+      Plotly.newPlot('dyn-trajectory', [
+        { x: t, y: m, mode: 'lines', line: { width: 2, color: '#34e3cf' } },
+        { x: t, y: a, mode: 'lines', line: { width: 2, color: '#ff5d8f' } }
+      ], Object.assign({}, ML, { xaxis: ax('Time'), yaxis: ax('State') }), MC);
+    }
+
+    // Bifurcation
+    if (document.getElementById('dyn-bifurcation')) {
+      const rs = [], xs = [];
+      for (let r = 2.8; r <= 4; r += 0.025) { let x = 0.5; for (let i = 0; i < 80; i++) x = r*x*(1-x); for (let i = 0; i < 15; i++) { x = r*x*(1-x); rs.push(r); xs.push(x); } }
+      Plotly.newPlot('dyn-bifurcation', [{ type: 'scatter', x: rs, y: xs, mode: 'markers', marker: { size: 1.2, color: '#7c8cff', opacity: 0.6 } }],
+        Object.assign({}, ML, { xaxis: ax('r'), yaxis: ax('x*') }), MC);
+    }
+
+    // CFA SVG
+    if (document.getElementById('sem-cfa')) {
+      document.getElementById('sem-cfa').innerHTML += `<svg viewBox="0 0 400 260" style="width:100%;height:calc(100% - 40px);margin-top:40px"><defs><marker id="a2" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#a9b2cc"/></marker></defs><ellipse cx="100" cy="60" rx="38" ry="20" fill="none" stroke="#34e3cf" stroke-width="2"/><text x="100" y="65" text-anchor="middle" font-family="Fraunces" font-size="12" fill="#34e3cf">Aptitude</text><ellipse cx="300" cy="60" rx="38" ry="20" fill="none" stroke="#ffb74d" stroke-width="2"/><text x="300" y="65" text-anchor="middle" font-family="Fraunces" font-size="12" fill="#ffb74d">Motivation</text><path d="M138,60 Q200,25 262,60" fill="none" stroke="#7c8cff" stroke-width="1.5" stroke-dasharray="4,3"/><text x="200" y="35" text-anchor="middle" font-family="Fraunces" font-size="10" fill="#7c8cff">φ</text><g><rect x="40" y="130" width="36" height="22" rx="3" fill="none" stroke="#a9b2cc"/><text x="58" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#a9b2cc">x1</text><rect x="82" y="130" width="36" height="22" rx="3" fill="none" stroke="#a9b2cc"/><text x="100" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#a9b2cc">x2</text><rect x="124" y="130" width="36" height="22" rx="3" fill="none" stroke="#a9b2cc"/><text x="142" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#a9b2cc">x3</text></g><line x1="75" y1="80" x2="58" y2="128" stroke="#a9b2cc" stroke-width="1" marker-end="url(#a2)"/><line x1="100" y1="80" x2="100" y2="128" stroke="#a9b2cc" stroke-width="1" marker-end="url(#a2)"/><line x1="125" y1="80" x2="142" y2="128" stroke="#a9b2cc" stroke-width="1" marker-end="url(#a2)"/><g><rect x="240" y="130" width="36" height="22" rx="3" fill="none" stroke="#a9b2cc"/><text x="258" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#a9b2cc">y1</text><rect x="282" y="130" width="36" height="22" rx="3" fill="none" stroke="#a9b2cc"/><text x="300" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#a9b2cc">y2</text><rect x="324" y="130" width="36" height="22" rx="3" fill="none" stroke="#a9b2cc"/><text x="342" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#a9b2cc">y3</text></g><line x1="275" y1="80" x2="258" y2="128" stroke="#a9b2cc" stroke-width="1" marker-end="url(#a2)"/><line x1="300" y1="80" x2="300" y2="128" stroke="#a9b2cc" stroke-width="1" marker-end="url(#a2)"/><line x1="325" y1="80" x2="342" y2="128" stroke="#a9b2cc" stroke-width="1" marker-end="url(#a2)"/><text x="200" y="220" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="11" fill="#6b7596">Σ = ΛΦΛ' + Θ</text></svg>`;
+    }
+
+    // Full SEM SVG
+    if (document.getElementById('sem-full')) {
+      document.getElementById('sem-full').innerHTML += `<svg viewBox="0 0 400 260" style="width:100%;height:calc(100% - 40px);margin-top:40px"><defs><marker id="a3" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#a9b2cc"/></marker></defs><ellipse cx="70" cy="60" rx="32" ry="18" fill="none" stroke="#34e3cf" stroke-width="2"/><text x="70" y="65" text-anchor="middle" font-family="Fraunces" font-size="11" fill="#34e3cf">ξ₁</text><ellipse cx="70" cy="120" rx="32" ry="18" fill="none" stroke="#34e3cf" stroke-width="2"/><text x="70" y="125" text-anchor="middle" font-family="Fraunces" font-size="11" fill="#34e3cf">ξ₂</text><ellipse cx="200" cy="90" rx="32" ry="18" fill="none" stroke="#ffb74d" stroke-width="2"/><text x="200" y="95" text-anchor="middle" font-family="Fraunces" font-size="11" fill="#ffb74d">η₁</text><ellipse cx="320" cy="90" rx="32" ry="18" fill="none" stroke="#ff5d8f" stroke-width="2"/><text x="320" y="95" text-anchor="middle" font-family="Fraunces" font-size="11" fill="#ff5d8f">η₂</text><line x1="102" y1="65" x2="166" y2="85" stroke="#a9b2cc" stroke-width="1.5" marker-end="url(#a3)"/><line x1="102" y1="115" x2="166" y2="95" stroke="#a9b2cc" stroke-width="1.5" marker-end="url(#a3)"/><line x1="232" y1="90" x2="286" y2="90" stroke="#a9b2cc" stroke-width="1.5" marker-end="url(#a3)"/><text x="130" y="70" font-family="Fraunces" font-size="9" fill="#a9b2cc">γ₁₁</text><text x="130" y="115" font-family="Fraunces" font-size="9" fill="#a9b2cc">γ₁₂</text><text x="255" y="82" font-family="Fraunces" font-size="9" fill="#a9b2cc">β₂₁</text><path d="M70,78 Q25,90 70,102" fill="none" stroke="#7c8cff" stroke-width="1.5" stroke-dasharray="4,3"/><g><rect x="160" y="160" width="28" height="18" rx="2" fill="none" stroke="#a9b2cc"/><rect x="193" y="160" width="28" height="18" rx="2" fill="none" stroke="#a9b2cc"/><rect x="283" y="160" width="28" height="18" rx="2" fill="none" stroke="#a9b2cc"/><rect x="316" y="160" width="28" height="18" rx="2" fill="none" stroke="#a9b2cc"/></g><line x1="185" y1="108" x2="174" y2="158" stroke="#a9b2cc" stroke-width="1" marker-end="url(#a3)"/><line x1="215" y1="108" x2="207" y2="158" stroke="#a9b2cc" stroke-width="1" marker-end="url(#a3)"/><line x1="305" y1="108" x2="297" y2="158" stroke="#a9b2cc" stroke-width="1" marker-end="url(#a3)"/><line x1="335" y1="108" x2="330" y2="158" stroke="#a9b2cc" stroke-width="1" marker-end="url(#a3)"/><text x="200" y="220" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="11" fill="#6b7596">η = Bη + Γξ + ζ</text></svg>`;
+    }
+  }
+
   /* ───────── init ───────── */
   function init() {
     setupNav();
@@ -965,6 +1128,7 @@
     renderMath();
     setupFigures();
     setupTeaching();
+    setupResearchFigures();
   }
 
   // Expose a minimal namespace so the teaching detail pages (teaching.js) can

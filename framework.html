@@ -63,18 +63,155 @@
             <h3>Structure as decomposition</h3>
             <p>Persons × items, students × schools, studies × moderators are all matrices. Latent structure is recovered by factoring the covariance the model implies.</p>
             <div class="eqn">\[ \boldsymbol{\Sigma}(\boldsymbol{\theta})=\boldsymbol{\Lambda}\boldsymbol{\Phi}\boldsymbol{\Lambda}^{\!\top}+\boldsymbol{\Theta} \]</div>
+            <div class="pillar-apps">
+              <span>SEM</span><span>CFA</span><span>IRT</span><span>PCA</span>
+            </div>
           </div>
           <div class="pillar p2" data-rise>
             <div class="num">02 · MATRIX CALCULUS</div>
             <h3>Estimation as a gradient</h3>
             <p>Every estimator is the stationary point of an objective. Fisher information, score equations, and back-propagation are one differential idea applied across scales.</p>
             <div class="eqn">\[ \hat{\boldsymbol{\theta}}=\arg\min_{\boldsymbol{\theta}}\;\mathcal{L}(\boldsymbol{\theta}),\quad \mathbf{H}=\frac{\partial^2\mathcal{L}}{\partial\boldsymbol{\theta}\,\partial\boldsymbol{\theta}^{\!\top}} \]</div>
+            <div class="pillar-apps">
+              <span>ML</span><span>FIML</span><span>HMC</span><span>CAT</span>
+            </div>
           </div>
           <div class="pillar p3" data-rise>
             <div class="num">03 · DIFFERENTIAL EQUATIONS</div>
             <h3>Change as a flow</h3>
             <p>Motivation, anxiety, and engagement are not snapshots but trajectories. Coupled ODEs describe how affective states co-evolve and settle into attractors.</p>
             <div class="eqn">\[ \dot{\boldsymbol{\xi}}=\mathbf{A}\boldsymbol{\xi}+\mathbf{g}(\boldsymbol{\xi}),\quad \boldsymbol{\xi}(0)=\boldsymbol{\xi}_0 \]</div>
+            <div class="pillar-apps">
+              <span>LCS</span><span>DSEM</span><span>Phase</span><span>ODE</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Framework Flow Diagram -->
+        <div class="framework-flow" data-rise>
+          <div class="flow-header">
+            <h3>How the <em>three pillars</em> connect</h3>
+            <p class="lead">A unified pipeline: data becomes matrices, matrices yield gradients, gradients trace dynamics.</p>
+          </div>
+          <div class="flow-diagram" id="framework-flow-svg">
+            <svg viewBox="0 0 900 200" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <marker id="flow-arrow" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                  <path d="M0,0 L10,5 L0,10 Z" fill="#a9b2cc"/>
+                </marker>
+                <linearGradient id="grad-flow" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#34e3cf"/>
+                  <stop offset="50%" stop-color="#7c8cff"/>
+                  <stop offset="100%" stop-color="#ff5d8f"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Stage 1: Data -->
+              <rect x="20" y="60" width="140" height="80" rx="12" fill="none" stroke="#6b7596" stroke-width="1.5"/>
+              <text x="90" y="95" text-anchor="middle" font-family="Fraunces" font-size="16" fill="#e9e7dd">Raw Data</text>
+              <text x="90" y="118" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6b7596">n × p observations</text>
+
+              <!-- Arrow 1 -->
+              <line x1="165" y1="100" x2="215" y2="100" stroke="#a9b2cc" stroke-width="2" marker-end="url(#flow-arrow)"/>
+
+              <!-- Stage 2: Linear Algebra -->
+              <rect x="220" y="45" width="160" height="110" rx="12" fill="rgba(52,227,207,0.1)" stroke="#34e3cf" stroke-width="2"/>
+              <text x="300" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#34e3cf" letter-spacing="0.1em">LINEAR ALGEBRA</text>
+              <text x="300" y="105" text-anchor="middle" font-family="Fraunces" font-size="14" fill="#e9e7dd">Σ = ΛΦΛ′ + Θ</text>
+              <text x="300" y="130" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6b7596">decompose structure</text>
+
+              <!-- Arrow 2 -->
+              <line x1="385" y1="100" x2="435" y2="100" stroke="#a9b2cc" stroke-width="2" marker-end="url(#flow-arrow)"/>
+
+              <!-- Stage 3: Matrix Calculus -->
+              <rect x="440" y="45" width="160" height="110" rx="12" fill="rgba(124,140,255,0.1)" stroke="#7c8cff" stroke-width="2"/>
+              <text x="520" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#7c8cff" letter-spacing="0.1em">MATRIX CALCULUS</text>
+              <text x="520" y="105" text-anchor="middle" font-family="Fraunces" font-size="14" fill="#e9e7dd">∇L(θ) = 0</text>
+              <text x="520" y="130" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6b7596">estimate parameters</text>
+
+              <!-- Arrow 3 -->
+              <line x1="605" y1="100" x2="655" y2="100" stroke="#a9b2cc" stroke-width="2" marker-end="url(#flow-arrow)"/>
+
+              <!-- Stage 4: Differential Equations -->
+              <rect x="660" y="45" width="160" height="110" rx="12" fill="rgba(255,93,143,0.1)" stroke="#ff5d8f" stroke-width="2"/>
+              <text x="740" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#ff5d8f" letter-spacing="0.1em">DIFF. EQUATIONS</text>
+              <text x="740" y="105" text-anchor="middle" font-family="Fraunces" font-size="14" fill="#e9e7dd">dξ/dt = f(ξ)</text>
+              <text x="740" y="130" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6b7596">model dynamics</text>
+
+              <!-- Arrow 4 to output -->
+              <line x1="825" y1="100" x2="875" y2="100" stroke="#a9b2cc" stroke-width="2" marker-end="url(#flow-arrow)"/>
+
+              <!-- Output -->
+              <circle cx="890" cy="100" r="8" fill="url(#grad-flow)"/>
+
+              <!-- Bottom flow line -->
+              <path d="M90,145 Q90,180 300,180 Q520,180 740,180 Q890,180 890,115" fill="none" stroke="url(#grad-flow)" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.5"/>
+              <text x="450" y="175" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#6b7596">feedback: model fit → refine structure</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Application Matrix -->
+        <div class="framework-matrix" data-rise>
+          <div class="matrix-header">
+            <h3>Methods × <em>pillars</em></h3>
+            <p class="lead">Each method draws on one or more pillars. The table shows which mathematical operation dominates.</p>
+          </div>
+          <div class="matrix-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th><span class="pillar-dot p1"></span>Linear Algebra</th>
+                  <th><span class="pillar-dot p2"></span>Matrix Calculus</th>
+                  <th><span class="pillar-dot p3"></span>Diff. Equations</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Multilevel SEM</td>
+                  <td class="active p1">covariance decomposition</td>
+                  <td class="active p2">ML / FIML estimation</td>
+                  <td class="dim">—</td>
+                </tr>
+                <tr>
+                  <td>HLM / Mixed Models</td>
+                  <td class="active p1">design matrices</td>
+                  <td class="active p2">REML / Bayes</td>
+                  <td class="dim">—</td>
+                </tr>
+                <tr>
+                  <td>IRT / CAT</td>
+                  <td class="active p1">item parameters</td>
+                  <td class="active p2">Fisher information</td>
+                  <td class="dim">—</td>
+                </tr>
+                <tr>
+                  <td>Meta-Analysis</td>
+                  <td class="active p1">effect aggregation</td>
+                  <td class="active p2">weighted estimation</td>
+                  <td class="dim">—</td>
+                </tr>
+                <tr>
+                  <td>Text Mining / NLP</td>
+                  <td class="active p1">embeddings, SVD</td>
+                  <td class="active p2">gradient descent</td>
+                  <td class="dim">—</td>
+                </tr>
+                <tr>
+                  <td>Dynamical Systems</td>
+                  <td class="active p1">state-space form</td>
+                  <td class="active p2">parameter estimation</td>
+                  <td class="active p3">ODE / phase flow</td>
+                </tr>
+                <tr>
+                  <td>Latent Change Score</td>
+                  <td class="active p1">latent structure</td>
+                  <td class="active p2">SEM estimation</td>
+                  <td class="active p3">discrete dynamics</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
