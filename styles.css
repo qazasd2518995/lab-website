@@ -2097,7 +2097,9 @@ a.teach-card { text-decoration: none; }
 
 /* ───────── Teaching detail pages ───────── */
 .teach-detail .wrap { max-width: 860px; }
-.teach-detail.section-lg { padding: clamp(60px, 8vw, 100px) 0 clamp(48px, 6vw, 80px); }
+article.teach-detail.section-lg.section-page-top {
+  padding: clamp(100px, 10vw, 140px) 0 clamp(48px, 6vw, 80px);
+}
 .teach-breadcrumb {
   font-family: "JetBrains Mono", monospace;
   font-size: 0.72rem;
@@ -2132,7 +2134,10 @@ a.teach-card { text-decoration: none; }
   margin: 0;
 }
 
-.teach-block { margin: 1.6rem 0; }
+.teach-block {
+  margin: 1.6rem 0;
+  padding: 0;
+}
 .teach-block:first-of-type { margin-top: 0; }
 .teach-block .td-prose { color: var(--ink-soft); line-height: 1.75; margin: 0.3rem 0; }
 .teach-block .td-prose strong { color: var(--ink); font-weight: 600; }
