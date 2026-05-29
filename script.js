@@ -520,7 +520,42 @@
   }
 
   /* ───────── KaTeX rendering ───────── */
-  function doRender(root) {
+
+  // KaTeX measures roots and fraction lines against its own web fonts. If a
+  // formula is laid out before those fonts arrive, the metrics are taken from a
+  // fallback font and never recomputed — the radical bar then drifts across the
+  // row (a stray line through the numerator). Gate every render on the fonts
+  // being ready so layout always uses the real KaTeX metrics. Resolves
+  // immediately on browsers without the Font Loading API, and after a short
+  // safety timeout so a stalled font fetch never blocks rendering forever.
+  let katexFontsReady = null;
+  function whenKatexFontsReady() {
+    if (katexFontsReady) return katexFontsReady;
+    if (!document.fonts || !document.fonts.load) {
+      katexFontsReady = Promise.resolve();
+      return katexFontsReady;
+    }
+    // KaTeX fonts are declared via @font-face and fetched lazily, so
+    // document.fonts.ready can resolve before they are even requested.
+    // Explicitly request the families our formulas actually use (text, math
+    // italics, and the Size* families that draw radicals and large delimiters)
+    // so the metrics are present before layout.
+    const families = [
+      '10px "KaTeX_Main"',
+      '10px "KaTeX_Math"',
+      'italic 10px "KaTeX_Math"',
+      '10px "KaTeX_Size1"',
+      '10px "KaTeX_Size2"',
+      '10px "KaTeX_Size3"',
+      '10px "KaTeX_Size4"'
+    ];
+    const loads = families.map(f => document.fonts.load(f).catch(() => {}));
+    const timeout = new Promise(res => setTimeout(res, 3000));
+    katexFontsReady = Promise.race([Promise.all(loads), timeout]);
+    return katexFontsReady;
+  }
+
+  function renderNow(root) {
     try {
       renderMathInElement(root || document.body, {
         delimiters: [
@@ -535,6 +570,10 @@
     } catch (e) {
       console.error('KaTeX render failed', e);
     }
+  }
+
+  function doRender(root) {
+    whenKatexFontsReady().then(() => renderNow(root));
   }
 
   async function ensureKatex() {
