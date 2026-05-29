@@ -120,20 +120,23 @@ sec-head:
 - `prefers-reduced-motion` 時停用開闔動畫。
 - 卡片資料集中為一個 JS 物件陣列（id、編號、kind、color、title、subtitle、previewFormula、overview、formulas[]、svg、whenToUse[]）；Modal DOM 由 JS 依資料注入，單一 Modal 容器重複使用。
 
-## SVG 重新上色
+## SVG（方案 A：新繪深色主題向量圖）
 
-把選定的原始內嵌 SVG 從米色系改為深色主題：
+每張卡的圖採「新繪一張乾淨的深色主題 SVG」，內容忠於來源教材的統計概念，而非逐一移植風格參差的原始 SVG。理由：教材原圖配色/字型/變數依賴各異，部分（如 9 樣本格、決策樹）本是複雜 HTML 表格或手刻座標，硬移植成本高且易壞；新繪可完全套用站內 `--panel`/`--d1..--eig`/字型，與 Figures 頁的程式化圖風格一致。少數本就乾淨的 SVG（如 t 表臨界區）可沿用骨架並換色。
 
-- 底/面板：`#f4ecdc`/`#faf4e6`/`#f3ede1` 等 → `--panel` / `transparent`。
-- 線/文字主色：`#2b2118`/`#221d17`(ink) → `--ink` / `--ink-soft`。
-- 強調（酒紅 `#8a3324`/`#8a2a24`、橄欖、金）→ `--d1`/`--d2`/`--d3`/`--eig` 對應。
+統一上色規則：
+
+- 底/面板：`transparent`（卡在 Modal 深色面板上）。
+- 線/文字主色：`--ink` / `--ink-soft` / `--ink-faint`。
+- 強調：`--d1`(#34e3cf) / `--d2`(#ffb74d) / `--d3`(#ff5d8f) / `--eig`(#7c8cff)，依該卡主題色為主。
 - 字型：Fraunces（標籤）、JetBrains Mono（數值/座標）。
+- `viewBox` 等比縮放、`width:100%; height:auto`，不設 `min-width` 以免手機溢出。
 
-SVG 直接內嵌於 teaching.html 或 JS 卡片資料中，不引用外部檔。原 SVG 用 `var(--...)` inline style 的部分需改寫為新主題實際色值或新變數。
+SVG 直接內嵌於 teaching.html 卡片資料的 `svg` 欄位（字串），不引用外部檔。顏色用實際色值（hex），不用 CSS 變數，避免 SVG 內 `var()` 在某些情境失效。
 
 ## 公式渲染
 
-teaching.html 載入與 index.html 一致的 KaTeX（CDN：katex.min.css + katex.min.js + auto-render contrib）。注意：教材原檔用 MathJax 的 `$...$`/`$$...$$` 分隔，移植到本站須改寫為 KaTeX auto-render 預設可辨識的分隔（`\(...\)` / `\[...\]`），與既有頁面一致。
+teaching.html 載入與 index.html 一致的 KaTeX（CDN：katex.min.css + katex.min.js + auto-render contrib）。既有 `doRender()` 的 auto-render 已設定四種分隔符（`$$`、`\[`、`\(`、`$`），因此教材原檔 MathJax 的 `$...$`/`$$...$$` 公式可直接沿用，不必改寫。`doRender()` 需擴充為可接受目標元素參數，以便 Modal 開啟後只渲染 Modal 內的公式。
 
 ## 檔案改動清單
 
