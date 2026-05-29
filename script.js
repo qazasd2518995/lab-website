@@ -958,9 +958,12 @@
 
   /* ───────── Research page figures ───────── */
   async function setupResearchFigures() {
-    const containers = ['msem-icc', 'msem-path', 'hlm-spaghetti', 'hlm-shrinkage',
-      'irt-icc', 'irt-tif', 'meta-forest', 'meta-funnel',
-      'nlp-topics', 'nlp-embed', 'nlp-wordfreq', 'dyn-phase', 'dyn-trajectory', 'dyn-bifurcation',
+    const containers = ['msem-icc', 'msem-variance', 'msem-path',
+      'hlm-spaghetti', 'hlm-shrinkage', 'hlm-caterpillar',
+      'irt-icc', 'irt-tif', 'irt-theta',
+      'meta-forest', 'meta-funnel', 'meta-cumulative',
+      'nlp-topics', 'nlp-embed', 'nlp-wordfreq',
+      'dyn-phase', 'dyn-trajectory', 'dyn-bifurcation',
       'sem-cfa', 'sem-full'];
     if (!containers.some(id => document.getElementById(id))) return;
 
@@ -981,16 +984,30 @@
       tickfont: { family: 'JetBrains Mono', size: 8, color: '#6b7596' }, color: '#a9b2cc' });
     const MC = { responsive: true, displayModeBar: false };
 
-    // ICC Decomposition
+    // ICC by Variable - horizontal bar
     if (document.getElementById('msem-icc')) {
-      console.log('Drawing msem-icc...');
-      try {
-      Plotly.newPlot('msem-icc', [
-        { type: 'bar', y: ['Reading','Writing','Listening','Grammar'], x: [0.72,0.68,0.75,0.65], orientation: 'h', marker: { color: '#34e3cf' } },
-        { type: 'bar', y: ['Reading','Writing','Listening','Grammar'], x: [0.28,0.32,0.25,0.35], orientation: 'h', marker: { color: '#ff5d8f' } }
-      ], Object.assign({}, ML, { barmode: 'stack', xaxis: ax('Variance'), yaxis: ax('') }), MC);
-      console.log('msem-icc done');
-      } catch(e) { console.error('msem-icc error:', e); }
+      const vars = ['Motivation', 'Anxiety', 'Engagement', 'Achievement', 'Self-efficacy'];
+      const iccs = [0.18, 0.12, 0.22, 0.31, 0.15];
+      Plotly.newPlot('msem-icc', [{
+        type: 'bar', y: vars, x: iccs, orientation: 'h',
+        marker: { color: iccs, colorscale: [[0, '#34e3cf'], [0.5, '#7c8cff'], [1, '#ff5d8f']] },
+        text: iccs.map(v => (v * 100).toFixed(0) + '%'), textposition: 'outside',
+        textfont: { family: 'JetBrains Mono', size: 9, color: '#a9b2cc' },
+        hovertemplate: '%{y}: ICC = %{x:.2f}<extra></extra>'
+      }], Object.assign({}, ML, { xaxis: Object.assign(ax('ICC'), { range: [0, 0.45] }), yaxis: ax(''), margin: { l: 75, r: 40, t: 10, b: 35 } }), MC);
+    }
+
+    // Variance Partition - stacked bar
+    if (document.getElementById('msem-variance')) {
+      const vars = ['Reading', 'Writing', 'Listening', 'Speaking'];
+      const within = [0.72, 0.68, 0.75, 0.58];
+      const between = [0.28, 0.32, 0.25, 0.42];
+      Plotly.newPlot('msem-variance', [
+        { type: 'bar', y: vars, x: within, orientation: 'h', name: 'Within', marker: { color: '#34e3cf' }, hovertemplate: 'Within: %{x:.0%}<extra></extra>' },
+        { type: 'bar', y: vars, x: between, orientation: 'h', name: 'Between', marker: { color: '#ff5d8f' }, hovertemplate: 'Between: %{x:.0%}<extra></extra>' }
+      ], Object.assign({}, ML, { barmode: 'stack', xaxis: ax('Proportion'), yaxis: ax(''),
+        legend: { font: { size: 9, color: '#a9b2cc' }, orientation: 'h', y: -0.15, x: 0.5, xanchor: 'center' },
+        showlegend: true, margin: { l: 60, r: 10, t: 10, b: 40 } }), MC);
     }
 
     // Two-Level Path (SVG)
@@ -1016,10 +1033,34 @@
       const raw = [], shrunk = [], labels = [];
       for (let j = 0; j < 8; j++) { const r = (rng()-0.5)*3; raw.push(r); shrunk.push(r*0.65); labels.push('G'+(j+1)); }
       Plotly.newPlot('hlm-shrinkage', [
-        { type: 'scatter', x: raw, y: labels, mode: 'markers', marker: { size: 9, color: '#6b7596', symbol: 'circle-open' } },
-        { type: 'scatter', x: shrunk, y: labels, mode: 'markers', marker: { size: 9, color: '#34e3cf' } }
+        { type: 'scatter', x: raw, y: labels, mode: 'markers', marker: { size: 9, color: '#6b7596', symbol: 'circle-open' }, name: 'OLS' },
+        { type: 'scatter', x: shrunk, y: labels, mode: 'markers', marker: { size: 9, color: '#34e3cf' }, name: 'BLUP' }
       ], Object.assign({}, ML, { xaxis: ax('Slope'), yaxis: Object.assign(ax(''), { type: 'category' }),
         shapes: [{ type: 'line', x0: 0, x1: 0, y0: -0.5, y1: 7.5, line: { color: '#ffb74d', width: 1.5, dash: 'dash' } }] }), MC);
+    }
+
+    // Caterpillar Plot - ranked random effects with CI
+    if (document.getElementById('hlm-caterpillar')) {
+      const nGroups = 20;
+      const effects = [], ses = [];
+      for (let j = 0; j < nGroups; j++) { effects.push((rng() - 0.5) * 2); ses.push(0.15 + rng() * 0.25); }
+      const sorted = effects.map((e, i) => ({ e, se: ses[i], i })).sort((a, b) => a.e - b.e);
+      const y = sorted.map((_, i) => i + 1);
+      const x = sorted.map(d => d.e);
+      const errLo = sorted.map(d => 1.96 * d.se);
+      const errHi = sorted.map(d => 1.96 * d.se);
+      const colors = sorted.map(d => (d.e - 1.96 * d.se > 0 || d.e + 1.96 * d.se < 0) ? '#ff5d8f' : '#34e3cf');
+      Plotly.newPlot('hlm-caterpillar', [{
+        type: 'scatter', x: x, y: y, mode: 'markers',
+        error_x: { type: 'data', symmetric: false, array: errHi, arrayminus: errLo, thickness: 1.2, width: 0, color: '#6b7596' },
+        marker: { size: 7, color: colors },
+        hovertemplate: 'u = %{x:.2f}<extra></extra>'
+      }], Object.assign({}, ML, {
+        xaxis: ax('Random effect (u)'),
+        yaxis: Object.assign(ax('Group (ranked)'), { showticklabels: false }),
+        shapes: [{ type: 'line', x0: 0, x1: 0, y0: 0, y1: nGroups + 1, line: { color: '#ffb74d', width: 1, dash: 'dash' } }],
+        margin: { l: 50, r: 10, t: 10, b: 35 }
+      }), MC);
     }
 
     // IRT ICC
@@ -1046,25 +1087,90 @@
         Object.assign({}, ML, { xaxis: ax('θ'), yaxis: ax('I(θ)') }), MC);
     }
 
-    // Forest Plot
-    if (document.getElementById('meta-forest')) {
-      const studies = ['Study 1','Study 2','Study 3','Study 4','Study 5','Pooled'];
-      const effects = [0.35,0.52,0.28,0.61,0.40,0.43], ses = [0.12,0.15,0.10,0.18,0.11,0.05];
-      Plotly.newPlot('meta-forest', [{
-        type: 'scatter', x: effects, y: studies, mode: 'markers',
-        marker: { size: 10, color: studies.map((s,i) => i===5?'#ffb74d':'#34e3cf'), symbol: studies.map((s,i) => i===5?'diamond':'circle') },
-        error_x: { type: 'data', array: ses.map(s => 1.96*s), color: '#6b7596', thickness: 1.5 }
-      }], Object.assign({}, ML, { xaxis: ax("Cohen's d"), yaxis: Object.assign(ax(''), { type: 'category' }),
-        shapes: [{ type: 'line', x0: 0, x1: 0, y0: -0.5, y1: 5.5, line: { color: '#ff5d8f', width: 1, dash: 'dash' } }] }), MC);
+    // Ability Estimation - CAT convergence
+    if (document.getElementById('irt-theta')) {
+      const trueTheta = 1.2, K = 20;
+      const items = [];
+      for (let i = 0; i < 30; i++) items.push({ b: -2.5 + 5 * rng(), a: 0.8 + 1.2 * rng(), used: false });
+      let th = 0, administered = [];
+      const steps = [], estimates = [], ciLo = [], ciHi = [];
+      for (let k = 1; k <= K; k++) {
+        let bestInfo = -1, bestIdx = -1;
+        items.forEach((it, idx) => {
+          if (it.used) return;
+          const p = 1 / (1 + Math.exp(-it.a * (th - it.b)));
+          const info = it.a * it.a * p * (1 - p);
+          if (info > bestInfo) { bestInfo = info; bestIdx = idx; }
+        });
+        items[bestIdx].used = true;
+        const it = items[bestIdx];
+        const pTrue = 1 / (1 + Math.exp(-it.a * (trueTheta - it.b)));
+        const resp = rng() < pTrue ? 1 : 0;
+        administered.push({ a: it.a, b: it.b, u: resp });
+        for (let s = 0; s < 10; s++) {
+          let grad = -th, hess = 1;
+          administered.forEach(a => {
+            const p = 1 / (1 + Math.exp(-a.a * (th - a.b)));
+            grad += a.a * (a.u - p);
+            hess += a.a * a.a * p * (1 - p);
+          });
+          th += grad / hess;
+        }
+        let I = 1;
+        administered.forEach(a => { const p = 1 / (1 + Math.exp(-a.a * (th - a.b))); I += a.a * a.a * p * (1 - p); });
+        const se = 1 / Math.sqrt(I);
+        steps.push(k); estimates.push(th); ciLo.push(th - 1.96 * se); ciHi.push(th + 1.96 * se);
+      }
+      const band = { x: steps.concat(steps.slice().reverse()), y: ciHi.concat(ciLo.slice().reverse()), fill: 'toself', fillcolor: 'rgba(52,227,207,0.15)', line: { width: 0 }, hoverinfo: 'skip' };
+      const line = { x: steps, y: estimates, mode: 'lines+markers', line: { color: '#34e3cf', width: 2 }, marker: { size: 5, color: '#34e3cf' } };
+      const truth = { x: [1, K], y: [trueTheta, trueTheta], mode: 'lines', line: { color: '#ff5d8f', width: 1.5, dash: 'dash' } };
+      Plotly.newPlot('irt-theta', [band, line, truth], Object.assign({}, ML, {
+        xaxis: ax('Items'), yaxis: Object.assign(ax('θ̂'), { range: [-1.5, 2.5] }),
+        annotations: [{ x: K, y: trueTheta, text: 'True θ', showarrow: false, font: { size: 9, color: '#ff5d8f' }, xanchor: 'right' }]
+      }), MC);
     }
 
-    // Funnel
+    // Forest Plot
+    if (document.getElementById('meta-forest')) {
+      const studies = ['Chen 2018', 'Wang 2019', 'Liu 2020', 'Zhang 2021', 'Lin 2022', 'Pooled'];
+      const effects = [0.35, 0.52, 0.28, 0.61, 0.40, 0.43], ses = [0.12, 0.15, 0.10, 0.18, 0.11, 0.05];
+      const weights = ses.map(s => 1 / (s * s));
+      const maxW = Math.max(...weights.slice(0, -1));
+      const sizes = weights.map((w, i) => i === 5 ? 14 : 6 + 8 * (w / maxW));
+      Plotly.newPlot('meta-forest', [{
+        type: 'scatter', x: effects, y: studies, mode: 'markers',
+        marker: { size: sizes, color: studies.map((s, i) => i === 5 ? '#ffb74d' : '#34e3cf'), symbol: studies.map((s, i) => i === 5 ? 'diamond' : 'circle') },
+        error_x: { type: 'data', array: ses.map(s => 1.96 * s), color: '#6b7596', thickness: 1.5, width: 4 },
+        hovertemplate: '%{y}: d = %{x:.2f}<extra></extra>'
+      }], Object.assign({}, ML, { xaxis: ax("Cohen's d"), yaxis: Object.assign(ax(''), { type: 'category' }),
+        shapes: [{ type: 'line', x0: 0, x1: 0, y0: -0.5, y1: 5.5, line: { color: '#ff5d8f', width: 1, dash: 'dash' } }],
+        margin: { l: 70, r: 10, t: 10, b: 35 } }), MC);
+    }
+
+    // Funnel Plot
     if (document.getElementById('meta-funnel')) {
       const effs = [], ses = [];
-      for (let i = 0; i < 20; i++) { const se = 0.05+rng()*0.2; effs.push(0.4+(rng()-0.5)*se*2); ses.push(se); }
-      Plotly.newPlot('meta-funnel', [{ type: 'scatter', x: effs, y: ses, mode: 'markers', marker: { size: 7, color: '#34e3cf', opacity: 0.8 } }],
-        Object.assign({}, ML, { xaxis: ax('Effect'), yaxis: Object.assign(ax('SE'), { autorange: 'reversed' }),
-          shapes: [{ type: 'line', x0: 0.4, x1: 0.4, y0: 0, y1: 0.3, line: { color: '#ffb74d', width: 1.5, dash: 'dash' } }] }), MC);
+      for (let i = 0; i < 25; i++) { const se = 0.05 + rng() * 0.22; effs.push(0.4 + (rng() - 0.5) * se * 2.5); ses.push(se); }
+      const funnelX = [0.4 - 1.96 * 0.28, 0.4, 0.4 + 1.96 * 0.28];
+      const funnelY = [0.28, 0, 0.28];
+      Plotly.newPlot('meta-funnel', [
+        { type: 'scatter', x: funnelX, y: funnelY, mode: 'lines', fill: 'toself', fillcolor: 'rgba(124,140,255,0.08)', line: { color: 'rgba(124,140,255,0.4)', width: 1 }, hoverinfo: 'skip' },
+        { type: 'scatter', x: effs, y: ses, mode: 'markers', marker: { size: 8, color: '#34e3cf', opacity: 0.85, line: { color: '#0b1124', width: 1 } }, hovertemplate: 'd = %{x:.2f}, SE = %{y:.2f}<extra></extra>' }
+      ], Object.assign({}, ML, { xaxis: ax('Effect size'), yaxis: Object.assign(ax('SE'), { autorange: 'reversed', range: [0.32, 0] }),
+        shapes: [{ type: 'line', x0: 0.4, x1: 0.4, y0: 0, y1: 0.32, line: { color: '#ffb74d', width: 1.5, dash: 'dash' } }] }), MC);
+    }
+
+    // Cumulative Meta-Analysis
+    if (document.getElementById('meta-cumulative')) {
+      const years = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023];
+      const cumEff = [0.55, 0.48, 0.45, 0.42, 0.44, 0.43, 0.42, 0.43, 0.43];
+      const cumSE = [0.18, 0.14, 0.11, 0.09, 0.07, 0.06, 0.055, 0.05, 0.048];
+      const ciHi = cumEff.map((e, i) => e + 1.96 * cumSE[i]);
+      const ciLo = cumEff.map((e, i) => e - 1.96 * cumSE[i]);
+      Plotly.newPlot('meta-cumulative', [
+        { x: years.concat(years.slice().reverse()), y: ciHi.concat(ciLo.slice().reverse()), fill: 'toself', fillcolor: 'rgba(255,183,77,0.2)', line: { width: 0 }, hoverinfo: 'skip' },
+        { x: years, y: cumEff, mode: 'lines+markers', line: { color: '#ffb74d', width: 2.5 }, marker: { size: 7, color: '#ffb74d' }, hovertemplate: '%{x}: d = %{y:.2f}<extra></extra>' }
+      ], Object.assign({}, ML, { xaxis: ax('Year'), yaxis: Object.assign(ax('Cumulative d'), { range: [0, 0.9] }) }), MC);
     }
 
     // Topics - stacked horizontal bar for document-topic distribution
