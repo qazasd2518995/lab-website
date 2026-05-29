@@ -564,7 +564,11 @@
           `<span class="tn-num">${u.num}</span><span class="tn-title">${u.title}</span>` +
         `</a>`
       : `<span class="teach-nav-link ${dir} disabled"></span>`;
-    navEl.innerHTML = link(prev, 'prev') + link(next, 'next');
+    const backLink = `<a class="teach-nav-back" href="teaching.html#teaching">` +
+      `<span class="tn-back-icon">←</span>` +
+      `<span class="tn-back-text">All Units</span>` +
+    `</a>`;
+    navEl.innerHTML = link(prev, 'prev') + backLink + link(next, 'next');
   }
 
   function start() {
