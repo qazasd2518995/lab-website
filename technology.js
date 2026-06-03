@@ -277,6 +277,7 @@
     function size() {
       const r = canvas.getBoundingClientRect();
       W = r.width; H = r.height;
+      if (!W || !H) return;
       renderer.setSize(W, H, false);
       camera.aspect = W / H; camera.updateProjectionMatrix();
     }
