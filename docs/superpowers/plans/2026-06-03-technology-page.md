@@ -806,10 +806,10 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 在 `<link rel="stylesheet" href="styles.css">` 之後、`</head>` 之前加入：
 
 ```html
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r160/three.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
 ```
 
-（用 r160 固定版本，`defer` 確保在 technology.js 之前載入完成；technology.js 也是 defer，且 boot 在 DOMContentLoaded，Three.js 此時已就緒。）
+（用 0.160.0 固定版本，即 three.js r160；cdnjs 以 semver 路徑提供。`defer` 確保在 technology.js 之前載入完成；technology.js 也是 defer，且 boot 在 DOMContentLoaded，Three.js 此時已就緒。）
 
 - [ ] **Step 2: 在 technology.js 加入 VR 引擎（單場景版）**
 

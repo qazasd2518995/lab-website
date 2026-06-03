@@ -273,6 +273,8 @@
 
     let renderer, scene, camera, tutor, grid, raf = 0, running = false, t0 = 0;
     let W = 0, H = 0;
+    const vr = {}; // holds propsGroup / cardsGroup / beamMat across scenes
+    let curScene = -1;
 
     function size() {
       const r = canvas.getBoundingClientRect();
@@ -313,20 +315,95 @@
       tutor.position.set(0, 1.5, 0);
       scene.add(tutor);
 
+      // swappable props group (rebuilt per scene)
+      const propsGroup = new THREE.Group(); scene.add(propsGroup);
+      // floating vocabulary cards group
+      const cardsGroup = new THREE.Group(); scene.add(cardsGroup);
+      // transition light-beam plane (flashes between scenes)
+      const beamMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 });
+      const beam = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), beamMat);
+      beam.position.set(0, 1.5, 2.5);
+      scene.add(beam);
+      vr.propsGroup = propsGroup; vr.cardsGroup = cardsGroup; vr.beamMat = beamMat;
+
       size();
     }
 
-    // a single placeholder scene config; replaced by an array in Task 7
+    // parameterized scenes — edit freely to change demo content later.
+    // color = accent for grid/orb/cards; emissive = dimmed glow so the orb
+    // does not blow out against dark scenes; props/words drive the 3D content.
     const SCENES = [
-      { name: 'Café', color: 0x34e3cf, caption: 'Order a coffee in English.' },
+      { name: 'Café', color: 0x34e3cf, emissive: 0x0e6b63, caption: 'Order a coffee in English.',
+        props: 'tables', words: ['a flat white, please', 'for here or to go?'] },
+      { name: 'Airport', color: 0x7c8cff, emissive: 0x2a3270, caption: 'Check in for your flight.',
+        props: 'counter', words: ['window seat', 'boarding pass'] },
+      { name: 'Meeting', color: 0xffb74d, emissive: 0x6b4d12, caption: 'Introduce yourself professionally.',
+        props: 'screen', words: ['pleased to meet you', 'I lead the data team'] },
     ];
+    const SCENE_SECS = 13;          // seconds per scene
+    const TOTAL = SCENE_SECS * SCENES.length;
+
     function applyScene(s) {
       if (hud.scene) hud.scene.textContent = s.name;
       grid.material.color.setHex(s.color);
       tutor.userData.orbMat.color.setHex(s.color);
-      tutor.userData.orbMat.emissive.setHex(s.color);
+      tutor.userData.orbMat.emissive.setHex(s.emissive);
       tutor.userData.ringMat.color.setHex(s.color);
+      buildProps(s.props, s.color);
+      buildCards(s.words, s.color);
       typeCaption(s.caption);
+    }
+
+    // build low-poly props for a scene into vr.propsGroup
+    function buildProps(kind, colorHex) {
+      const g = vr.propsGroup;
+      while (g.children.length) g.remove(g.children[0]);
+      const mat = new THREE.MeshStandardMaterial({ color: colorHex, emissive: colorHex,
+        emissiveIntensity: 0.15, metalness: 0.2, roughness: 0.6, transparent: true, opacity: 0.9 });
+      const line = new THREE.MeshBasicMaterial({ color: colorHex, wireframe: true, transparent: true, opacity: 0.35 });
+      if (kind === 'tables') {
+        for (let i = 0; i < 4; i++) {
+          const top = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.08, 12), mat);
+          top.position.set(-3 + i * 2, 0.7, -3 - (i % 2)); g.add(top);
+          const leg = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.7, 0.08), mat);
+          leg.position.set(top.position.x, 0.35, top.position.z); g.add(leg);
+        }
+      } else if (kind === 'counter') {
+        const c = new THREE.Mesh(new THREE.BoxGeometry(5, 1, 1), mat);
+        c.position.set(0, 0.5, -3.5); g.add(c);
+        const board = new THREE.Mesh(new THREE.PlaneGeometry(4, 1.2), line);
+        board.position.set(0, 3, -5); g.add(board);
+      } else if (kind === 'screen') {
+        const table = new THREE.Mesh(new THREE.BoxGeometry(5, 0.15, 1.6), mat);
+        table.position.set(0, 0.75, -2); g.add(table);
+        const screen = new THREE.Mesh(new THREE.PlaneGeometry(3.4, 1.9), line);
+        screen.position.set(0, 2.4, -5); g.add(screen);
+      }
+    }
+
+    // build floating vocab cards as canvas-texture sprites
+    function makeCardTexture(text, colorHex) {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 160;
+      const cx = c.getContext('2d');
+      cx.fillStyle = 'rgba(14,21,48,0.85)'; cx.fillRect(0, 0, 512, 160);
+      cx.strokeStyle = '#' + colorHex.toString(16).padStart(6, '0');
+      cx.lineWidth = 4; cx.strokeRect(6, 6, 500, 148);
+      cx.fillStyle = '#e9e7dd'; cx.font = '600 40px Spectral, serif';
+      cx.textAlign = 'center'; cx.textBaseline = 'middle';
+      cx.fillText(text, 256, 84);
+      const tex = new THREE.CanvasTexture(c); tex.needsUpdate = true; return tex;
+    }
+    function buildCards(words, colorHex) {
+      const g = vr.cardsGroup;
+      while (g.children.length) g.remove(g.children[0]);
+      words.forEach((w, i) => {
+        const spr = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: makeCardTexture(w, colorHex), transparent: true, opacity: 0.95 }));
+        spr.scale.set(1.6, 0.5, 1);
+        spr.position.set(i === 0 ? -1.7 : 1.7, 1.9 - i * 0.2, 0.5);
+        spr.userData = { baseY: spr.position.y, ph: i * 1.7 };
+        g.add(spr);
+      });
     }
 
     // typewriter for the HUD caption
@@ -356,19 +433,47 @@
       if (!running) return;
       if (!t0) t0 = now;
       const t = (now - t0) / 1000;
+      const done = t >= TOTAL;
 
-      // breathing orb
-      const b = 1 + 0.06 * Math.sin(t * 2.2);
-      tutor.userData.orb.scale.setScalar(b);
-      tutor.userData.ring.scale.setScalar(1 + 0.12 * Math.abs(Math.sin(t * 4)));
+      // scene switching
+      const idx = Math.min(Math.floor(t / SCENE_SECS), SCENES.length - 1);
+      if (idx !== curScene) { curScene = idx; setDots(idx, SCENES.length); applyScene(SCENES[idx]); }
+      const localT = t - idx * SCENE_SECS;
+
+      // light-beam transition flash near the start of each scene (except the first)
+      let beamA = 0;
+      if (idx > 0 && localT < 1.0) beamA = Math.sin(Math.PI * localT) * 0.9;
+      vr.beamMat.opacity = beamA;
+
+      // breathing orb; ring pulses faster in the first seconds of a scene (tutor "talks")
+      const talk = localT < 4 ? Math.abs(Math.sin(t * 7)) : Math.abs(Math.sin(t * 3));
+      tutor.userData.orb.scale.setScalar(1 + 0.06 * Math.sin(t * 2.2));
+      tutor.userData.ring.scale.setScalar(1 + 0.18 * talk);
+      tutor.userData.ringMat.opacity = 0.4 + 0.4 * talk;
       tutor.rotation.y = t * 0.4;
       tutor.position.y = 1.5 + 0.05 * Math.sin(t * 1.5);
 
-      // slow camera dolly-in
-      camera.position.z = lerp(6, 4.2, easeInOut(clamp01(t / 6)));
+      // floating cards bob
+      vr.cardsGroup.children.forEach(spr => {
+        spr.position.y = spr.userData.baseY + 0.08 * Math.sin(t * 1.6 + spr.userData.ph);
+        spr.material.rotation = 0.04 * Math.sin(t + spr.userData.ph);
+      });
+
+      // camera: gentle dolly within a scene, plus a small lateral orbit
+      camera.position.x = Math.sin(t * 0.15) * 0.8;
+      camera.position.z = done ? lerp(camera.position.z, 9, 0.05) : lerp(6, 4.4, easeInOut(clamp01(localT / 5)));
+      camera.position.y = 1.4;
       camera.lookAt(0, 1.5, 0);
 
       if (hud.immersion) hud.immersion.textContent = (90 + Math.floor(8 * Math.abs(Math.sin(t)))) + '%';
+
+      // ending: collapse the journey into the manifold caption, keep the orb breathing
+      if (done) {
+        if (hud.scene) hud.scene.textContent = 'Manifold';
+        if (hud.caption && hud.caption.textContent !== 'One manifold. Many worlds.')
+          typeCaption('One manifold. Many worlds.');
+        vr.beamMat.opacity = 0;
+      }
 
       renderer.render(scene, camera);
       raf = requestAnimationFrame(frame);
@@ -376,9 +481,8 @@
 
     function start() {
       build();
-      if (prefersReduced) { applyScene(SCENES[0]); renderer.render(scene, camera); return; }
-      setDots(0, 3);
-      applyScene(SCENES[0]);
+      if (prefersReduced) { curScene = 0; applyScene(SCENES[0]); renderer.render(scene, camera); return; }
+      curScene = -1;
       running = true; t0 = 0; raf = requestAnimationFrame(frame);
     }
 
