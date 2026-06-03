@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technology · L-DAHS</title>
+  <meta name="description" content="Applied language technology demonstrations at L-DAHS: VR + AI language learning and multilingual live interpretation, rendered live in the browser.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="wrap">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-mark"></span>
+        <span>L-DAHS</span>
+        <span class="brand-tag">Latent Manifold Lab</span>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="framework.html">Framework</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="technology.html">Technology</a></li>
+        <li><a href="teaching.html">Teaching</a></li>
+        <li><a href="visuals.html">Figures</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="publications.html">Publications</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <!-- § 00 HERO -->
+    <header class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow" data-rise>§ 00 — Applied Language Technology · Live Demonstrations</div>
+          <h1 class="hero-title" data-rise>Where the latent manifold <em>meets the user</em>.</h1>
+          <p class="hero-sub" data-rise>
+            The lab's quantitative methods become things people can hold and speak to. Two
+            systems run live in your browser, rendered frame by frame from code: an immersive
+            language tutor that moves through 3D scenes, and a multilingual interpreter that
+            turns speech into speech across languages.
+          </p>
+          <div class="cta-row" data-rise>
+            <a class="btn primary" href="#demo-vr">↓ VR Language Learning</a>
+            <a class="btn" href="#demo-interpreter">↓ Live Interpreter</a>
+          </div>
+        </div>
+
+        <div class="eq-card" data-rise>
+          <div class="tag">The stack at a glance</div>
+          <div class="tech-chipwall">
+            <span>WebGL</span><span>Three.js</span><span>Spatial Audio</span>
+            <span>ASR</span><span>Neural MT</span><span>TTS</span>
+            <span>Transformer</span><span>Seq2Seq</span><span>Canvas 2D</span>
+          </div>
+          <p class="eq-note mono">rendered live · no recordings · no servers</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- § 01 DEMO ONE: VR + AI LANGUAGE LEARNING -->
+    <section id="demo-vr" class="section-lg">
+      <div class="wrap">
+        <div class="section-marker" data-rise><span class="marker-dot"></span><span class="marker-id">§ 01</span> Immersive learning · VR + AI tutor</div>
+        <div class="sec-head" data-rise>
+          <div class="sec-index">§ 01</div>
+          <div class="sec-body">
+            <div class="eyebrow">Demonstration one</div>
+            <h2>VR + AI language learning</h2>
+            <p class="lead">A learner walks through three rendered worlds with an AI tutor at their side. Café, airport, meeting room. Each scene sets a task, surfaces the vocabulary, and gives feedback in real time.</p>
+          </div>
+        </div>
+
+        <div class="demo-stage demo-stage-vr" data-rise>
+          <canvas id="vr-canvas" class="demo-canvas"></canvas>
+          <div class="demo-hud" id="vr-hud" hidden>
+            <div class="hud-topleft"><span class="hud-scene" id="vr-scene-name">Café</span>
+              <span class="hud-dots" id="vr-dots"><i class="on"></i><i></i><i></i></span></div>
+            <div class="hud-topright mono"><span>IMMERSION <b id="vr-immersion">98%</b></span><span>LATENCY <b>12ms</b></span></div>
+            <div class="hud-caption" id="vr-caption"></div>
+          </div>
+          <button class="demo-start" id="vr-start" type="button">
+            <span class="start-glyph">▶</span><span>Start Immersive Demo</span>
+          </button>
+        </div>
+
+        <div class="tech-capsules" data-rise>
+          <div class="capsule"><div class="cap-k">WebXR</div><p>Head-tracked scenes place the learner inside the language, not in front of it.</p></div>
+          <div class="capsule"><div class="cap-k">3D Spatial Audio</div><p>Voices come from where the speaker stands, so listening trains direction and distance too.</p></div>
+          <div class="capsule"><div class="cap-k">AI Tutor NLU</div><p>The tutor parses each utterance, scores pronunciation, and adapts the next prompt.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- § 02 DEMO TWO: MULTILINGUAL LIVE INTERPRETER -->
+    <section id="demo-interpreter" class="section-lg">
+      <div class="wrap">
+        <div class="section-marker" data-rise><span class="marker-dot"></span><span class="marker-id">§ 02</span> Speech to speech · multilingual interpreter</div>
+        <div class="sec-head" data-rise>
+          <div class="sec-index">§ 02</div>
+          <div class="sec-body">
+            <div class="eyebrow">Demonstration two</div>
+            <h2>Multilingual live interpreter</h2>
+            <p class="lead">One device, many tongues. Speech enters on the left, runs through the recognition and translation pipeline, and leaves as a new voice on the right. Watch it relay across English, Chinese, and Japanese.</p>
+          </div>
+        </div>
+
+        <div class="demo-stage demo-stage-interp" data-rise>
+          <canvas id="interp-canvas" class="demo-canvas"></canvas>
+          <div class="demo-hud" id="interp-hud" hidden>
+            <div class="hud-langpair mono"><span id="interp-src-lang">EN</span><span class="hud-arrow">→</span><span id="interp-tgt-lang">中</span></div>
+            <div class="hud-pipeline" id="interp-pipeline">
+              <i data-stage="vad">VAD</i><i data-stage="asr">ASR</i><i data-stage="mt">MT</i><i data-stage="tts">TTS</i>
+            </div>
+            <div class="hud-latency mono">latency <b id="interp-latency">000</b>ms</div>
+          </div>
+          <button class="demo-start" id="interp-start" type="button">
+            <span class="start-glyph">▶</span><span>Start Live Interpretation</span>
+          </button>
+        </div>
+
+        <div class="pipeline-map" data-rise>
+          <div class="pmap-node"><div class="pmap-k">Voice Activity Detection</div><p class="mono">segment speech from silence</p></div>
+          <div class="pmap-arrow">→</div>
+          <div class="pmap-node"><div class="pmap-k">Speech Recognition</div><p class="mono">ASR · acoustic + language model</p></div>
+          <div class="pmap-arrow">→</div>
+          <div class="pmap-node"><div class="pmap-k">Neural Machine Translation</div><p class="mono">encoder · decoder · attention</p></div>
+          <div class="pmap-arrow">→</div>
+          <div class="pmap-node"><div class="pmap-k">Speech Synthesis</div><p class="mono">TTS · neural vocoder</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- § 03 TECH STACK SUMMARY -->
+    <section id="tech-stack" class="section-sm">
+      <div class="wrap">
+        <div class="section-marker" data-rise><span class="marker-dot"></span><span class="marker-id">§ 03</span> Under the hood · rendering &amp; models</div>
+        <div class="sec-head" data-rise>
+          <div class="sec-index">§ 03</div>
+          <div class="sec-body">
+            <div class="eyebrow">Toolchain</div>
+            <h2>Rendered in the open</h2>
+            <p class="lead">Every frame on this page is computed live in the browser. Nothing here is a recording.</p>
+          </div>
+        </div>
+        <div class="stack" data-rise>
+          <span>WebGL · Three.js</span><span>Canvas 2D</span><span>Web Audio</span>
+          <span>requestAnimationFrame</span><span>GLSL shaders</span><span>ASR</span>
+          <span>Transformer</span><span>Seq2Seq attention</span><span>Neural TTS</span>
+          <span>WebXR-ready</span><span>zero backend</span><span>zero recordings</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap foot-grid">
+      <div>
+        <h4>L-DAHS · Latent Manifold Lab</h4>
+        <p>Department of Applied Foreign Languages<br>National Taiwan University of Science and Technology<br>T4-816, No. 43, Sec. 4, Keelung Rd., Taipei 10607</p>
+      </div>
+      <div>
+        <h4>People</h4>
+        <p><a href="team.html">Director &amp; PI</a><br><a href="team.html">Research assistants</a></p>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <p><a href="publications.html">Publications</a><br><a href="mailto:wenta.tseng@mail.ntust.edu.tw">wenta.tseng@mail.ntust.edu.tw</a></p>
+      </div>
+    </div>
+    <div class="wrap fine"><span id="copyright-year">2026</span> · L-DAHS · Latent Manifold Lab · National Taiwan University of Science and Technology</div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="script.js"></script>
+  <script defer src="technology.js"></script>
+</body>
+</html>
