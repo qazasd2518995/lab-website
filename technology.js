@@ -53,17 +53,21 @@
     };
     const rng = mulberry32(73019);
 
-    // three relay segments: source text, target text, language labels, theme color
+    // three relay segments. Each carries a source clip and a translation clip,
+    // spoken by different macOS `say` voices so the relay sounds like two people.
     const SCRIPT = [
       { srcLang: 'EN', tgtLang: '中', color: '#34e3cf',
         src: 'Could you tell me where the nearest station is?',
-        tgt: '請問最近的車站在哪裡？' },
+        tgt: '請問最近的車站在哪裡？',
+        srcAudio: 'audio/s1_src.mp3', tgtAudio: 'audio/s1_tgt.mp3' },
       { srcLang: '中', tgtLang: 'EN', color: '#ffb74d',
         src: '這道菜會不會太辣？',
-        tgt: 'Is this dish too spicy?' },
+        tgt: 'Is this dish too spicy?',
+        srcAudio: 'audio/s2_src.mp3', tgtAudio: 'audio/s2_tgt.mp3' },
       { srcLang: '日', tgtLang: '中', color: '#ff5d8f',
         src: '写真を撮ってもいいですか？',
-        tgt: '可以幫我拍張照嗎？' },
+        tgt: '可以幫我拍張照嗎？',
+        srcAudio: 'audio/s3_src.mp3', tgtAudio: 'audio/s3_tgt.mp3' },
     ];
 
     // device pixel handling
@@ -76,12 +80,60 @@
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     }
 
-    // ── per-segment timeline (seconds) ──
-    // 0.0 listen+ASR  →  2.6 translate  →  4.4 speak target  →  6.2 done/hold
-    const T_ASR = 2.6, T_MT = 1.8, T_TTS = 1.8, T_HOLD = 1.0;
-    const SEG = T_ASR + T_MT + T_TTS + T_HOLD; // 7.2s per segment
+    /* ── Web Audio: real amplitude drives the side waveforms ──
+       One AudioContext, one analyser. The currently playing <audio> element is
+       routed through a MediaElementSource into the analyser, so liveAmp() reads
+       the true loudness of the speech being played. If Web Audio is unavailable,
+       audioOK stays false and the visuals fall back to a synthetic envelope. */
+    let actx = null, analyser = null, freqData = null, audioOK = false;
+    const elements = new Map();   // audio-url -> { el, node }
+    function ensureAudio() {
+      if (actx) return;
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) { audioOK = false; return; }
+      try {
+        actx = new AC();
+        analyser = actx.createAnalyser();
+        analyser.fftSize = 256;
+        analyser.smoothingTimeConstant = 0.7;
+        analyser.connect(actx.destination);
+        freqData = new Uint8Array(analyser.frequencyBinCount);
+        audioOK = true;
+      } catch (e) { audioOK = false; }
+    }
+    // preload one <audio> per clip and wire it to the analyser once
+    function getClip(url) {
+      let rec = elements.get(url);
+      if (rec) return rec;
+      const el = new Audio(url);
+      el.preload = 'auto';
+      el.crossOrigin = 'anonymous';
+      rec = { el, node: null };
+      if (audioOK) {
+        try {
+          rec.node = actx.createMediaElementSource(el);
+          rec.node.connect(analyser);
+        } catch (e) { /* element already bound or blocked; play() still works */ }
+      }
+      elements.set(url, rec);
+      return rec;
+    }
+    // current loudness 0..1 from the analyser (RMS of the time-ish data)
+    function liveAmp() {
+      if (!audioOK || !playing) return 0;
+      analyser.getByteFrequencyData(freqData);
+      let sum = 0;
+      for (let i = 0; i < freqData.length; i++) sum += freqData[i];
+      const avg = sum / freqData.length / 255;       // 0..1
+      return clamp01(avg * 2.2);                      // lift quiet speech
+    }
 
-    let raf = 0, running = false, t0 = 0;
+    let raf = 0, running = false;
+    let segIndex = 0, phase = 'idle';   // idle | listen | translate | speak | done
+    let phaseStart = 0;                 // performance.now() at phase entry
+    let playing = null;                 // the <audio> element currently playing
+    let clipProgress = 0;               // 0..1 progress of the playing clip
+    const T_TRANSLATE = 1.1;            // seconds of MT "thinking" between clips
 
     function litStages(stages) {
       if (!hud.pipeline) return;
@@ -91,7 +143,7 @@
     }
 
     // draw a waveform band on one side; amp 0..1 gates the motion
-    function drawWave(cx, cy, half, color, amp, phase) {
+    function drawWave(cx, cy, half, color, amp, phaseShift) {
       ctx.save();
       ctx.strokeStyle = color; ctx.globalAlpha = 0.85; ctx.lineWidth = 2;
       ctx.beginPath();
@@ -100,7 +152,7 @@
         const x = cx - span + (2 * span) * (i / N);
         const env = Math.sin(Math.PI * i / N); // taper at ends
         const a = amp * env * (0.5 + 0.5 * rng());
-        const y = cy + Math.sin(i * 0.5 + phase) * a * (H * 0.16);
+        const y = cy + Math.sin(i * 0.5 + phaseShift) * a * (H * 0.16);
         i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
       }
       ctx.stroke();
@@ -146,7 +198,7 @@
       }
       if (line) lines.push(line);
       lines.forEach((ln, i) => {
-        // last 2 chars flicker grey to mimic re-decoding
+        // last chars flicker grey to mimic re-decoding while the clip plays
         ctx.fillStyle = (i === lines.length - 1 && prog < 1 && rng() > 0.6)
           ? 'rgba(160,170,200,0.6)' : color;
         ctx.fillText(ln, cx, topY + i * 26);
@@ -154,58 +206,117 @@
       ctx.restore();
     }
 
+    /* ── audio-driven state machine ──
+       listen: play source clip, source wave + ASR text track its progress.
+       translate: brief MT pause, pipeline shows MT, particles flow.
+       speak: play translation clip (different voice), target wave + text track it. */
+    function playClip(url, onProgress, onEnded) {
+      const clip = getClip(url);
+      const el = clip.el;
+      playing = el;
+      clipProgress = 0;
+      el.currentTime = 0;
+      const onTime = () => { clipProgress = el.duration ? clamp01(el.currentTime / el.duration) : 0; };
+      el.addEventListener('timeupdate', onTime);
+      const done = () => {
+        el.removeEventListener('timeupdate', onTime);
+        el.removeEventListener('ended', done);
+        clipProgress = 1;
+        if (playing === el) playing = null;
+        onEnded();
+      };
+      el.addEventListener('ended', done);
+      const p = el.play();
+      if (p && p.catch) p.catch(() => { /* autoplay edge; advance anyway */ setTimeout(done, 1200); });
+      // safety net if 'ended' never fires (e.g. load error): advance after duration+1s
+      const guard = setTimeout(() => { if (playing === el) done(); }, ((el.duration || 3) + 1.5) * 1000);
+      el._guard = guard;
+    }
+
+    function enterPhase(name) {
+      phase = name;
+      phaseStart = performance.now();
+      const seg = SCRIPT[segIndex];
+      if (name === 'listen') {
+        if (audioOK) playClip(seg.srcAudio, null, () => enterPhase('translate'));
+        else { /* no audio: fixed 2.4s listen */ }
+      } else if (name === 'speak') {
+        if (audioOK) playClip(seg.tgtAudio, null, () => advanceSegment());
+        else { /* no audio: fixed 2.0s speak */ }
+      }
+    }
+
+    function advanceSegment() {
+      if (segIndex < SCRIPT.length - 1) { segIndex++; enterPhase('listen'); }
+      else { phase = 'done'; }
+    }
+
+    // when audio is unavailable, drive phases purely by elapsed time
+    const FALLBACK = { listen: 2.4, translate: T_TRANSLATE, speak: 2.0 };
+    function fallbackAdvance(localT) {
+      const dur = FALLBACK[phase];
+      if (dur && localT >= dur) {
+        if (phase === 'listen') enterPhase('translate');
+        else if (phase === 'translate') enterPhase('speak');
+        else if (phase === 'speak') advanceSegment();
+      }
+    }
+
     function frame(now) {
       if (!running) return;
-      if (!t0) t0 = now;
-      const elapsed = (now - t0) / 1000;
-      const segIndex = Math.min(Math.floor(elapsed / SEG), SCRIPT.length - 1);
-      const lt = elapsed - segIndex * SEG; // local time within segment
       const seg = SCRIPT[segIndex];
-      const finished = elapsed >= SEG * SCRIPT.length;
+      const localT = (now - phaseStart) / 1000;
 
-      // phase progress
-      const asrP = clamp01(lt / T_ASR);
-      const mtP = clamp01((lt - T_ASR) / T_MT);
-      const ttsP = clamp01((lt - T_ASR - T_MT) / T_TTS);
+      // translate phase is always a short timed pause
+      if (phase === 'translate' && localT >= T_TRANSLATE) enterPhase('speak');
+      if (!audioOK) fallbackAdvance(localT);
 
-      // HUD updates
+      // progress of the active text (audio progress when available, else timed)
+      let asrP = 0, ttsP = 0;
+      if (phase === 'listen') asrP = audioOK ? clipProgress : clamp01(localT / FALLBACK.listen);
+      else if (phase === 'translate') asrP = 1;
+      else if (phase === 'speak') { asrP = 1; ttsP = audioOK ? clipProgress : clamp01(localT / FALLBACK.speak); }
+      else if (phase === 'done') { asrP = 1; ttsP = 1; }
+
+      // HUD
       if (hud.srcLang) hud.srcLang.textContent = seg.srcLang;
       if (hud.tgtLang) hud.tgtLang.textContent = seg.tgtLang;
-      const stages = [];
-      stages.push('vad');
-      if (lt > 0.3) stages.push('asr');
-      if (mtP > 0) stages.push('mt');
-      if (ttsP > 0) stages.push('tts');
-      litStages(finished ? [] : stages);
+      const stages = ['vad'];
+      if (phase === 'listen') stages.push('asr');
+      if (phase === 'translate') stages.push('asr', 'mt');
+      if (phase === 'speak') stages.push('mt', 'tts');
+      litStages(phase === 'done' ? [] : stages);
+      const tnow = now / 1000;
       if (hud.latency) hud.latency.textContent =
-        String(180 + Math.floor(60 * Math.sin(elapsed * 3) + 60 * rng())).padStart(3, '0');
+        String(180 + Math.floor(60 * Math.sin(tnow * 3) + 60 * rng())).padStart(3, '0');
 
-      // clear
+      // clear + scene
       ctx.clearRect(0, 0, W, H);
-
       const cx = W / 2, cy = H / 2;
-      const pulse = 0.5 + 0.5 * Math.sin(elapsed * 2.2);
-      const srcAmp = asrP < 1 ? (0.5 + 0.5 * Math.sin(elapsed * 9)) : 0.04;
-      const tgtAmp = ttsP > 0 && ttsP < 1 ? (0.5 + 0.5 * Math.sin(elapsed * 9 + 1)) : 0.04;
+      const pulse = 0.5 + 0.5 * Math.sin(tnow * 2.2);
 
-      // side waveforms
+      // real amplitude when a clip is playing, synthetic shimmer otherwise
+      const amp = audioOK ? liveAmp() : 0;
+      const srcAmp = phase === 'listen' ? (audioOK ? Math.max(amp, 0.06) : 0.5 + 0.5 * Math.sin(tnow * 9)) : 0.04;
+      const tgtAmp = phase === 'speak' ? (audioOK ? Math.max(amp, 0.06) : 0.5 + 0.5 * Math.sin(tnow * 9 + 1)) : 0.04;
+
       const sideHalf = W * 0.20;
-      drawWave(W * 0.22, cy, sideHalf, seg.color, srcAmp, elapsed * 6);
-      drawWave(W * 0.78, cy, sideHalf, seg.color, tgtAmp, elapsed * 6 + 2);
+      drawWave(W * 0.22, cy, sideHalf, seg.color, srcAmp, tnow * 6);
+      drawWave(W * 0.78, cy, sideHalf, seg.color, tgtAmp, tnow * 6 + 2);
 
-      // device
-      drawDevice(cx, cy, seg.color, pulse);
+      // device pulses harder with live loudness
+      drawDevice(cx, cy, seg.color, clamp01(pulse * 0.6 + amp * 0.8));
 
-      // texts: source under left wave, target under right wave
+      // texts under each wave
       drawTyped(seg.src, W * 0.22, cy + H * 0.22, W * 0.34, asrP, '#e9e7dd', true);
-      if (mtP > 0)
-        drawTyped(seg.tgt, W * 0.78, cy + H * 0.22, W * 0.34, ttsP > 0 ? ttsP : mtP, seg.color, false);
+      if (phase === 'translate' || phase === 'speak' || phase === 'done')
+        drawTyped(seg.tgt, W * 0.78, cy + H * 0.22, W * 0.34, phase === 'translate' ? 0.15 : ttsP, seg.color, false);
 
-      // flowing particles from device to target while translating
-      if (mtP > 0 && ttsP < 1) {
+      // particles flow device → target during translate/speak
+      if (phase === 'translate' || (phase === 'speak' && ttsP < 1)) {
         ctx.save();
         for (let p = 0; p < 14; p++) {
-          const fp = ((elapsed * 0.8 + p / 14) % 1);
+          const fp = ((tnow * 0.8 + p / 14) % 1);
           const x = lerp(cx, W * 0.78, easeInOut(fp));
           const y = cy + Math.sin(fp * TAU + p) * 10;
           ctx.globalAlpha = (1 - fp) * 0.8;
@@ -215,7 +326,7 @@
         ctx.restore();
       }
 
-      if (finished) { running = false; drawReplay(cx, cy); return; }
+      if (phase === 'done') { running = false; drawReplay(cx, cy); return; }
       raf = requestAnimationFrame(frame);
     }
 
@@ -231,11 +342,13 @@
     function restart() {
       cancelAnimationFrame(raf);
       canvas.style.cursor = 'default';
-      t0 = 0; running = true; raf = requestAnimationFrame(frame);
+      segIndex = 0; running = true;
+      enterPhase('listen');
+      raf = requestAnimationFrame(frame);
     }
 
     function renderStatic() {
-      // reduced-motion: show a representative relay (first segment), no animation
+      // reduced-motion: show a representative relay (first segment), no animation, no audio
       resize();
       ctx.clearRect(0, 0, W, H);
       const seg = SCRIPT[0];
@@ -249,7 +362,13 @@
     function start() {
       resize();
       if (prefersReduced) { renderStatic(); return; }
-      running = true; t0 = 0; raf = requestAnimationFrame(frame);
+      ensureAudio();
+      if (actx && actx.state === 'suspended') actx.resume();
+      // warm up the element→analyser graph so the first clip is wired
+      if (audioOK) SCRIPT.forEach(s => { getClip(s.srcAudio); getClip(s.tgtAudio); });
+      segIndex = 0; running = true;
+      enterPhase('listen');
+      raf = requestAnimationFrame(frame);
     }
 
     window.addEventListener('resize', () => { if (W) resize(); });
