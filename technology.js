@@ -256,8 +256,137 @@
     wireStart('interp-start', 'interp-hud', start);
   }
 
+  /* ============================================================
+     VR DEMO — Three.js, scene journey with an AI tutor orb
+     ============================================================ */
+  function initVR() {
+    const canvas = document.getElementById('vr-canvas');
+    if (!canvas) return;
+    if (typeof THREE === 'undefined') { console.warn('[tech] THREE not loaded'); return; }
+
+    const hud = {
+      scene: document.getElementById('vr-scene-name'),
+      caption: document.getElementById('vr-caption'),
+      dots: document.getElementById('vr-dots'),
+      immersion: document.getElementById('vr-immersion'),
+    };
+
+    let renderer, scene, camera, tutor, grid, raf = 0, running = false, t0 = 0;
+    let W = 0, H = 0;
+
+    function size() {
+      const r = canvas.getBoundingClientRect();
+      W = r.width; H = r.height;
+      renderer.setSize(W, H, false);
+      camera.aspect = W / H; camera.updateProjectionMatrix();
+    }
+
+    function build() {
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x070b16, 0.06);
+      camera = new THREE.PerspectiveCamera(55, 1, 0.1, 100);
+      camera.position.set(0, 1.4, 6);
+
+      scene.add(new THREE.AmbientLight(0x4455aa, 0.6));
+      const key = new THREE.PointLight(0x7c8cff, 40, 30); key.position.set(2, 4, 3); scene.add(key);
+
+      // perspective floor grid (shared across scenes, recolored per scene)
+      grid = new THREE.GridHelper(40, 40, 0x34e3cf, 0x1b2550);
+      grid.material.transparent = true; grid.material.opacity = 0.35;
+      scene.add(grid);
+
+      // AI tutor: breathing energy orb with a "mouth" ring that pulses while speaking
+      const orbGeo = new THREE.IcosahedronGeometry(0.6, 3);
+      const orbMat = new THREE.MeshStandardMaterial({
+        color: 0x34e3cf, emissive: 0x0e6b63, metalness: 0.3, roughness: 0.2,
+        wireframe: false, transparent: true, opacity: 0.92,
+      });
+      tutor = new THREE.Group();
+      const orb = new THREE.Mesh(orbGeo, orbMat); tutor.add(orb);
+      const ringGeo = new THREE.TorusGeometry(0.85, 0.02, 8, 64);
+      const ringMat = new THREE.MeshBasicMaterial({ color: 0x34e3cf, transparent: true, opacity: 0.6 });
+      const ring = new THREE.Mesh(ringGeo, ringMat); ring.rotation.x = Math.PI / 2; tutor.add(ring);
+      tutor.userData = { orb, orbMat, ring, ringMat };
+      tutor.position.set(0, 1.5, 0);
+      scene.add(tutor);
+
+      size();
+    }
+
+    // a single placeholder scene config; replaced by an array in Task 7
+    const SCENES = [
+      { name: 'Café', color: 0x34e3cf, caption: 'Order a coffee in English.' },
+    ];
+    function applyScene(s) {
+      if (hud.scene) hud.scene.textContent = s.name;
+      grid.material.color.setHex(s.color);
+      tutor.userData.orbMat.color.setHex(s.color);
+      tutor.userData.orbMat.emissive.setHex(s.color);
+      tutor.userData.ringMat.color.setHex(s.color);
+      typeCaption(s.caption);
+    }
+
+    // typewriter for the HUD caption
+    let typeTimer = 0;
+    function typeCaption(text) {
+      if (!hud.caption) return;
+      clearInterval(typeTimer);
+      hud.caption.textContent = '';
+      let i = 0;
+      typeTimer = setInterval(() => {
+        hud.caption.textContent = text.slice(0, ++i);
+        if (i >= text.length) clearInterval(typeTimer);
+      }, 38);
+    }
+
+    function setDots(active, total) {
+      if (!hud.dots) return;
+      hud.dots.innerHTML = '';
+      for (let i = 0; i < total; i++) {
+        const el = document.createElement('i');
+        if (i === active) el.className = 'on';
+        hud.dots.appendChild(el);
+      }
+    }
+
+    function frame(now) {
+      if (!running) return;
+      if (!t0) t0 = now;
+      const t = (now - t0) / 1000;
+
+      // breathing orb
+      const b = 1 + 0.06 * Math.sin(t * 2.2);
+      tutor.userData.orb.scale.setScalar(b);
+      tutor.userData.ring.scale.setScalar(1 + 0.12 * Math.abs(Math.sin(t * 4)));
+      tutor.rotation.y = t * 0.4;
+      tutor.position.y = 1.5 + 0.05 * Math.sin(t * 1.5);
+
+      // slow camera dolly-in
+      camera.position.z = lerp(6, 4.2, easeInOut(clamp01(t / 6)));
+      camera.lookAt(0, 1.5, 0);
+
+      if (hud.immersion) hud.immersion.textContent = (90 + Math.floor(8 * Math.abs(Math.sin(t)))) + '%';
+
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(frame);
+    }
+
+    function start() {
+      build();
+      if (prefersReduced) { applyScene(SCENES[0]); renderer.render(scene, camera); return; }
+      setDots(0, 3);
+      applyScene(SCENES[0]);
+      running = true; t0 = 0; raf = requestAnimationFrame(frame);
+    }
+
+    window.addEventListener('resize', () => { if (renderer) size(); });
+    wireStart('vr-start', 'vr-hud', start);
+  }
+
   /* ── expose internals to later-task engines via a page namespace ── */
-  window.LDAHS_TECH = { mulberry32, prefersReduced, TAU, lerp, clamp01, easeInOut, wireStart, initInterpreter };
+  window.LDAHS_TECH = { mulberry32, prefersReduced, TAU, lerp, clamp01, easeInOut, wireStart, initInterpreter, initVR };
 
   /* ── boot ── */
   function boot() {
