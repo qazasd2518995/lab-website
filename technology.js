@@ -229,12 +229,13 @@
       canvas.addEventListener('click', restart, { once: true });
     }
     function restart() {
+      cancelAnimationFrame(raf);
       canvas.style.cursor = 'default';
       t0 = 0; running = true; raf = requestAnimationFrame(frame);
     }
 
     function renderStatic() {
-      // reduced-motion: show final relay state, no animation
+      // reduced-motion: show a representative relay (first segment), no animation
       resize();
       ctx.clearRect(0, 0, W, H);
       const seg = SCRIPT[0];
