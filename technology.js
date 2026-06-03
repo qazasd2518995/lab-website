@@ -210,7 +210,7 @@
        listen: play source clip, source wave + ASR text track its progress.
        translate: brief MT pause, pipeline shows MT, particles flow.
        speak: play translation clip (different voice), target wave + text track it. */
-    function playClip(url, onProgress, onEnded) {
+    function playClip(url, onEnded) {
       const clip = getClip(url);
       const el = clip.el;
       playing = el;
@@ -219,6 +219,7 @@
       const onTime = () => { clipProgress = el.duration ? clamp01(el.currentTime / el.duration) : 0; };
       el.addEventListener('timeupdate', onTime);
       const done = () => {
+        clearTimeout(el._guard);
         el.removeEventListener('timeupdate', onTime);
         el.removeEventListener('ended', done);
         clipProgress = 1;
@@ -238,10 +239,10 @@
       phaseStart = performance.now();
       const seg = SCRIPT[segIndex];
       if (name === 'listen') {
-        if (audioOK) playClip(seg.srcAudio, null, () => enterPhase('translate'));
+        if (audioOK) playClip(seg.srcAudio, () => enterPhase('translate'));
         else { /* no audio: fixed 2.4s listen */ }
       } else if (name === 'speak') {
-        if (audioOK) playClip(seg.tgtAudio, null, () => advanceSegment());
+        if (audioOK) playClip(seg.tgtAudio, () => advanceSegment());
         else { /* no audio: fixed 2.0s speak */ }
       }
     }
