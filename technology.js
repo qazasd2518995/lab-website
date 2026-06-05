@@ -209,29 +209,58 @@
     /* ── audio-driven state machine ──
        listen: play source clip, source wave + ASR text track its progress.
        translate: brief MT pause, pipeline shows MT, particles flow.
-       speak: play translation clip (different voice), target wave + text track it. */
+       speak: play translation clip (different voice), target wave + text track it.
+
+       activeClip holds teardown for whatever is playing right now. Starting a new
+       clip (or restarting) first tears the old one down, so a stale 'ended' event,
+       guard timer, or paused-but-still-tracked element can never advance the new
+       run. This is what stops two clips overlapping on segment switches and replay. */
+    let activeClip = null;
+
+    function stopPlaying() {
+      if (activeClip) { activeClip.teardown(); activeClip = null; }
+      playing = null;
+    }
+
     function playClip(url, onEnded) {
+      stopPlaying();                       // never let a previous clip keep running
       const clip = getClip(url);
       const el = clip.el;
       playing = el;
       clipProgress = 0;
-      el.currentTime = 0;
+      try { el.pause(); } catch (e) {}
+      try { el.currentTime = 0; } catch (e) {}
+
+      let finished = false;
+      let guardTimer = 0;
       const onTime = () => { clipProgress = el.duration ? clamp01(el.currentTime / el.duration) : 0; };
-      el.addEventListener('timeupdate', onTime);
-      const done = () => {
-        clearTimeout(el._guard);
+      const teardown = () => {
+        clearTimeout(guardTimer);
         el.removeEventListener('timeupdate', onTime);
-        el.removeEventListener('ended', done);
+        el.removeEventListener('ended', onEndedEvt);
+        try { el.pause(); } catch (e) {}
+      };
+      const done = () => {
+        if (finished) return;              // ended + guard can both fire: run once
+        finished = true;
+        teardown();
         clipProgress = 1;
+        if (activeClip && activeClip.el === el) activeClip = null;
         if (playing === el) playing = null;
         onEnded();
       };
-      el.addEventListener('ended', done);
+      const onEndedEvt = () => done();
+
+      activeClip = { el, teardown: () => { teardown(); finished = true; } };
+      el.addEventListener('timeupdate', onTime);
+      el.addEventListener('ended', onEndedEvt);
+
       const p = el.play();
-      if (p && p.catch) p.catch(() => { /* autoplay edge; advance anyway */ setTimeout(done, 1200); });
-      // safety net if 'ended' never fires (e.g. load error): advance after duration+1s
-      const guard = setTimeout(() => { if (playing === el) done(); }, ((el.duration || 3) + 1.5) * 1000);
-      el._guard = guard;
+      if (p && p.catch) p.catch(() => { /* autoplay blocked: advance after a beat */ guardTimer = setTimeout(done, 1200); });
+      // safety net if 'ended' never fires (load error / metadata missing). duration
+      // is often NaN at play() time, so read it lazily and fall back generously.
+      const guardMs = ((el.duration && isFinite(el.duration) ? el.duration : 4) + 1.5) * 1000;
+      guardTimer = setTimeout(() => { if (playing === el) done(); }, guardMs);
     }
 
     function enterPhase(name) {
@@ -342,6 +371,7 @@
     }
     function restart() {
       cancelAnimationFrame(raf);
+      stopPlaying();               // kill any clip/timer still in flight from last run
       canvas.style.cursor = 'default';
       segIndex = 0; running = true;
       enterPhase('listen');
@@ -367,6 +397,7 @@
       if (actx && actx.state === 'suspended') actx.resume();
       // warm up the element→analyser graph so the first clip is wired
       if (audioOK) SCRIPT.forEach(s => { getClip(s.srcAudio); getClip(s.tgtAudio); });
+      stopPlaying();
       segIndex = 0; running = true;
       enterPhase('listen');
       raf = requestAnimationFrame(frame);
