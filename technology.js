@@ -454,17 +454,32 @@
     // does not blow out against dark scenes; props/words drive the 3D content.
     const SCENES = [
       { name: 'Café', color: 0x34e3cf, emissive: 0x0e6b63, caption: 'Order a coffee in English.',
-        props: 'tables', words: ['a flat white, please', 'for here or to go?'] },
+        props: 'tables', words: ['a flat white, please', 'for here or to go?'], bg: 'images/vr-cafe.jpg' },
       { name: 'Airport', color: 0x7c8cff, emissive: 0x2a3270, caption: 'Check in for your flight.',
-        props: 'counter', words: ['window seat', 'boarding pass'] },
+        props: 'counter', words: ['window seat', 'boarding pass'], bg: 'images/vr-airport.jpg' },
       { name: 'Meeting', color: 0xffb74d, emissive: 0x6b4d12, caption: 'Introduce yourself professionally.',
-        props: 'screen', words: ['pleased to meet you', 'I lead the data team'] },
+        props: 'screen', words: ['pleased to meet you', 'I lead the data team'], bg: 'images/vr-meeting.jpg' },
     ];
     const SCENE_SECS = 13;          // seconds per scene
     const TOTAL = SCENE_SECS * SCENES.length;
 
+    // lazy texture cache for scene backdrops; falls back to plain fog colour
+    const bgCache = {};
+    const bgLoader = new THREE.TextureLoader();
+    function setSceneBackground(url) {
+      if (!url) { scene.background = null; return; }
+      if (bgCache[url]) { scene.background = bgCache[url]; return; }
+      bgLoader.load(url, tex => {
+        if (tex.colorSpace !== undefined) tex.colorSpace = THREE.SRGBColorSpace;
+        bgCache[url] = tex;
+        // only apply if this scene is still the current one
+        if (SCENES[curScene] && SCENES[curScene].bg === url) scene.background = tex;
+      }, undefined, () => { /* missing image: keep fog backdrop, demo still works */ });
+    }
+
     function applyScene(s) {
       if (hud.scene) hud.scene.textContent = s.name;
+      setSceneBackground(s.bg);
       grid.material.color.setHex(s.color);
       tutor.userData.orbMat.color.setHex(s.color);
       tutor.userData.orbMat.emissive.setHex(s.emissive);
