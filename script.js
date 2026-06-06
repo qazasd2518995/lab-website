@@ -29,6 +29,7 @@
     const A = hexToRgb(a), B = hexToRgb(b);
     return `rgb(${Math.round(A[0] + (B[0] - A[0]) * t)},${Math.round(A[1] + (B[1] - A[1]) * t)},${Math.round(A[2] + (B[2] - A[2]) * t)})`;
   }
+  function clamp01(x) { return Math.max(0, Math.min(1, x)); }
 
   const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
   const CONF = {
@@ -443,6 +444,76 @@
     Plotly.newPlot('gH', [ncM, ncA, ...trajTraces, eqpt], lay, CONF);
   }
 
+  /* Sentiment classification scatter (Plotly) — simulated learner feedback */
+  function buildSentiment() {
+    const rng = mulberry32(50607);
+    const POS = [
+      'Speaking practice really boosted my confidence.',
+      'The vocabulary games made learning fun.',
+      'I finally understand the grammar rules.',
+      'My listening improved a lot this term.',
+      'The teacher feedback was clear and helpful.',
+      'Group discussion made me more fluent.',
+      'I enjoy reading short stories in English now.',
+      'Pronunciation drills paid off.',
+    ];
+    const NEU = [
+      'The class covered tenses and articles.',
+      'We submitted a writing assignment weekly.',
+      'The textbook has ten units.',
+      'Lectures are on Monday and Wednesday.',
+      'I used a dictionary app for new words.',
+      'The exam had reading and listening parts.',
+    ];
+    const NEG = [
+      'The pace was too fast for me.',
+      'I felt anxious during oral tests.',
+      'Too much homework this semester.',
+      'The grammar explanations confused me.',
+      'I struggle to follow native speakers.',
+      'Speaking in front of class made me nervous.',
+    ];
+    const classes = [
+      { name: 'Positive', color: '#34e3cf', center: 0.55, spread: 0.28, n: 56, texts: POS },
+      { name: 'Neutral',  color: '#7c8cff', center: 0.0,  spread: 0.18, n: 40, texts: NEU },
+      { name: 'Negative', color: '#ff5d8f', center: -0.55, spread: 0.28, n: 48, texts: NEG },
+    ];
+    const traces = classes.map(c => {
+      const xs = [], ys = [], sizes = [], hover = [];
+      for (let i = 0; i < c.n; i++) {
+        let x = c.center + (rng() - 0.5) * 2 * c.spread + 0.5 * (rng() - 0.5) * c.spread;
+        x = Math.max(-1, Math.min(1, x));
+        const y = clamp01(0.45 + 0.4 * (rng() - 0.5) + 0.25 * Math.abs(x));
+        const txt = c.texts[Math.floor(rng() * c.texts.length)];
+        xs.push(x); ys.push(y);
+        sizes.push(7 + Math.round(8 * (0.4 + 0.6 * rng())));
+        hover.push(`"${txt}"<br>polarity ${x>=0?'+':''}${x.toFixed(2)} · subjectivity ${y.toFixed(2)}`);
+      }
+      return {
+        x: xs, y: ys, mode: 'markers', type: 'scatter', name: c.name,
+        marker: { size: sizes, color: c.color, line: { color: 'rgba(7,11,22,0.6)', width: 1 }, opacity: 0.85 },
+        text: hover, hovertemplate: '%{text}<extra></extra>',
+      };
+    });
+    const bands = [
+      { x0: -1, x1: -0.2, color: 'rgba(255,93,143,0.07)' },
+      { x0: -0.2, x1: 0.2, color: 'rgba(124,140,255,0.07)' },
+      { x0: 0.2, x1: 1, color: 'rgba(52,227,207,0.07)' },
+    ];
+    const shapes = bands.map(b => ({
+      type: 'rect', xref: 'x', yref: 'paper', x0: b.x0, x1: b.x1, y0: 0, y1: 1,
+      fillcolor: b.color, line: { width: 0 }, layer: 'below',
+    }));
+    const lay = LAYOUT2D('Sentiment polarity', 'Subjectivity', {
+      xaxis: Object.assign(ax2('Sentiment polarity'), { range: [-1.05, 1.05], zeroline: false }),
+      yaxis: Object.assign(ax2('Subjectivity'), { range: [0, 1] }),
+      shapes,
+      showlegend: true,
+      legend: { font: { family: 'JetBrains Mono', size: 10, color: '#a9b2cc' }, bgcolor: 'rgba(0,0,0,0)', orientation: 'h', y: 1.08 },
+    });
+    Plotly.newPlot('fig-sentiment', traces, lay, CONF);
+  }
+
   /* ───────── nav active state & mobile menu ───────── */
   function setupNav() {
     const path = window.location.pathname.split('/').pop() || 'index.html';
@@ -612,7 +683,8 @@
   /* ───────── figure builders dispatcher ───────── */
   const FIGURE_BUILDERS = {
     fig1: buildFig1, fig2: buildFig2, fig3: buildFig3,
-    gA, gB, gC, gD, gE, gF, gG, gH
+    gA, gB, gC, gD, gE, gF, gG, gH,
+    'fig-sentiment': buildSentiment
   };
 
   /* ───────── touch UX for interactive figures ───────── */
