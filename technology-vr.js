@@ -328,6 +328,33 @@
     }
 
     // build clickable hotspots (glowing node + ring) for a scene
+    // a small "tap me" bubble label drawn on a canvas, used as a sprite above a hotspot
+    function makeBubbleTexture(label, colorHex) {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 200;
+      const cx = c.getContext('2d');
+      const col = '#' + colorHex.toString(16).padStart(6, '0');
+      // rounded bubble body
+      const x = 16, y = 14, w = 480, h = 120, r = 28;
+      cx.beginPath();
+      cx.moveTo(x + r, y);
+      cx.arcTo(x + w, y, x + w, y + h, r);
+      cx.arcTo(x + w, y + h, x, y + h, r);
+      cx.arcTo(x, y + h, x, y, r);
+      cx.arcTo(x, y, x + w, y, r);
+      cx.closePath();
+      cx.fillStyle = 'rgba(11,17,36,0.92)'; cx.fill();
+      cx.lineWidth = 4; cx.strokeStyle = col; cx.stroke();
+      // little pointer triangle at the bottom centre
+      cx.beginPath(); cx.moveTo(236, y + h); cx.lineTo(276, y + h); cx.lineTo(256, y + h + 34); cx.closePath();
+      cx.fillStyle = 'rgba(11,17,36,0.92)'; cx.fill();
+      cx.strokeStyle = col; cx.lineWidth = 4; cx.stroke();
+      // text: object label + a tap hint
+      cx.textAlign = 'center';
+      cx.fillStyle = '#e9e7dd'; cx.font = '600 34px Fraunces, serif'; cx.fillText(label, 256, y + 50);
+      cx.fillStyle = col; cx.font = '600 22px "JetBrains Mono", monospace'; cx.fillText('▶ Tap to learn', 256, y + 92);
+      const tex = new THREE.CanvasTexture(c); tex.needsUpdate = true; return tex;
+    }
+
     function buildInteractives(sceneName, colorHex) {
       const g = vr.hotspotGroup;
       while (g.children.length) g.remove(g.children[0]);
@@ -338,8 +365,15 @@
         const ringMat = new THREE.MeshBasicMaterial({ color: colorHex, transparent: true, opacity: 0.5, side: THREE.DoubleSide });
         const ring = new THREE.Mesh(new THREE.RingGeometry(0.18, 0.22, 24), ringMat);
         ring.position.copy(node.position);
-        node.userData = { item, ring, ringMat, baseOpacity: 0.5 };
-        g.add(node); g.add(ring);
+        // floating "tap me" bubble above the node (billboarded sprite)
+        const bubble = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: makeBubbleTexture(item.label, colorHex), transparent: true, opacity: 0.95, depthTest: false }));
+        bubble.scale.set(1.3, 0.52, 1);
+        bubble.position.set(node.position.x, node.position.y + 0.55, node.position.z);
+        node.userData = { item, ring, ringMat, bubble, baseOpacity: 0.5 };
+        // clicking the bubble counts as clicking the object (proxies to node)
+        bubble.userData = { item, ring, ringMat, proxyFor: node, baseY: bubble.position.y };
+        g.add(node); g.add(ring); g.add(bubble);
       });
     }
 
@@ -353,7 +387,9 @@
       raycaster.setFromCamera(pointer, camera);
       const hits = raycaster.intersectObjects(vr.hotspotGroup.children, false);
       const hit = hits.find(h => h.object.userData && h.object.userData.item);
-      return hit ? hit.object : null;
+      if (!hit) return null;
+      // a bubble proxies to its node, so clicking the label focuses the object
+      return hit.object.userData.proxyFor || hit.object;
     }
     function onPointerMove(e) {
       if (mode !== 'interactive') return;
@@ -542,12 +578,18 @@
         const k = clamp01((now - (spr.userData.fadeStart || now)) / 400);
         spr.material.opacity = k;
       });
-      // pulse hotspots; brighten the hovered one, and face the rings to the camera
+      // animate hotspots: nodes pulse their ring; bubbles bob and face the camera
       vr.hotspotGroup.children.forEach(o => {
-        if (o.userData && o.userData.ringMat) {
-          const isHover = hovered && hovered === o;
-          o.userData.ringMat.opacity = o.userData.baseOpacity + 0.3 * Math.abs(Math.sin(t * 3)) + (isHover ? 0.3 : 0);
-          o.userData.ring.lookAt(camera.position);
+        const ud = o.userData; if (!ud) return;
+        if (ud.bubble) {              // this is a node (it owns a bubble)
+          const isHover = hovered === o;
+          ud.ringMat.opacity = ud.baseOpacity + 0.3 * Math.abs(Math.sin(t * 3)) + (isHover ? 0.3 : 0);
+          ud.ring.lookAt(camera.position);
+        } else if (ud.proxyFor) {     // this is a bubble sprite
+          const isHover = hovered === ud.proxyFor;
+          o.position.y = ud.baseY + 0.04 * Math.sin(t * 2 + o.position.x);
+          o.material.opacity = isHover ? 1 : 0.9;
+          o.scale.set(isHover ? 1.45 : 1.3, isHover ? 0.58 : 0.52, 1);
         }
       });
       if (hud.immersion) hud.immersion.textContent = (90 + Math.floor(8 * Math.abs(Math.sin(t)))) + '%';
