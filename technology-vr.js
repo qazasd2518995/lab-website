@@ -49,17 +49,30 @@
     window.addEventListener('pointermove', onMove);
     window.addEventListener('pointerup', onUp);
     dom.addEventListener('wheel', onWheel, { passive: false });
+    let focus = null;  // { fromT, toT, fromRad, toRad, start, dur }
     function update() {
-      state.az += state.vAz; state.pol += state.vPol;
-      state.vAz *= (1 - state.damp); state.vPol *= (1 - state.damp);
+      if (focus) {
+        const k = Math.min(1, (performance.now() - focus.start) / focus.dur);
+        const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        state.target.lerpVectors(focus.fromT, focus.toT, e);
+        state.rad = focus.fromRad + (focus.toRad - focus.fromRad) * e;
+        if (k >= 1) focus = null;
+      } else {
+        state.az += state.vAz; state.pol += state.vPol;
+        state.vAz *= (1 - state.damp); state.vPol *= (1 - state.damp);
+      }
       state.pol = Math.min(state.maxPol, Math.max(state.minPol, state.pol));
       apply();
     }
     function reset(az, pol, rad) {
-      state.az = az; state.pol = pol; state.rad = rad; state.vAz = 0; state.vPol = 0; apply();
+      state.az = az; state.pol = pol; state.rad = rad; state.vAz = 0; state.vPol = 0; focus = null; apply();
+    }
+    function focusOn(point, dur) {
+      focus = { fromT: state.target.clone(), toT: point.clone(),
+        fromRad: state.rad, toRad: 3.2, start: performance.now(), dur: dur || 900 };
     }
     return {
-      update, reset, apply,
+      update, reset, apply, focusOn,
       get target() { return state.target; },
       set enabled(v) { state.enabled = v; },
       get enabled() { return state.enabled; },
@@ -296,8 +309,36 @@
       if (obj) onHotspotClick(obj.userData.item, obj);
     }
     function onHotspotClick(item, obj) {
-      // expanded in Task 4 (focus camera + card + tutor). For now: pulse the ring.
-      obj.userData.ring.scale.setScalar(1.6);
+      controls.focusOn(obj.position, 900);
+      showObjectCard(item, obj);
+      tutorSay(item);
+    }
+
+    // a trilingual card (EN / 中 / 日) floating above the clicked object
+    function makeTriCard(item, colorHex) {
+      const c = document.createElement('canvas'); c.width = 640; c.height = 260;
+      const cx = c.getContext('2d');
+      cx.fillStyle = 'rgba(14,21,48,0.92)'; cx.fillRect(0, 0, 640, 260);
+      cx.strokeStyle = '#' + colorHex.toString(16).padStart(6, '0'); cx.lineWidth = 4; cx.strokeRect(6, 6, 628, 248);
+      cx.textAlign = 'center';
+      cx.fillStyle = '#e9e7dd'; cx.font = '600 38px Fraunces, serif'; cx.fillText(item.word, 320, 70);
+      cx.fillStyle = '#a9b2cc'; cx.font = '400 32px Spectral, serif'; cx.fillText(item.zh, 320, 140);
+      cx.fillStyle = '#6b7596'; cx.font = '400 30px Spectral, serif'; cx.fillText(item.ja, 320, 205);
+      const tex = new THREE.CanvasTexture(c); tex.needsUpdate = true; return tex;
+    }
+    function showObjectCard(item, obj) {
+      const g = vr.cardsGroup;
+      while (g.children.length) g.remove(g.children[0]);
+      const spr = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: makeTriCard(item, SCENES[curScene].color), transparent: true, opacity: 0 }));
+      spr.scale.set(2.2, 0.9, 1);
+      spr.position.set(obj.position.x, obj.position.y + 0.8, obj.position.z);
+      spr.userData = { fadeStart: performance.now() };
+      g.add(spr);
+    }
+    function tutorSay(item) {
+      if (item.tutor) typeCaption(item.tutor);
+      vr._tutorTalkUntil = performance.now() + 1600;
     }
 
     // typewriter for the HUD caption
@@ -379,11 +420,18 @@
       if (!t0) t0 = now;
       const t = (now - t0) / 1000;
       controls.update();
+      // tutor breathes; ring pulses faster while the tutor is "talking"
+      const talking = performance.now() < (vr._tutorTalkUntil || 0);
       tutor.userData.orb.scale.setScalar(1 + 0.06 * Math.sin(t * 2.2));
-      tutor.userData.ring.scale.setScalar(1 + 0.1 * Math.abs(Math.sin(t * 3)));
-      tutor.userData.ringMat.opacity = 0.45 + 0.25 * Math.abs(Math.sin(t * 3));
+      tutor.userData.ring.scale.setScalar(1 + (talking ? 0.2 : 0.1) * Math.abs(Math.sin(t * (talking ? 7 : 3))));
+      tutor.userData.ringMat.opacity = 0.45 + 0.25 * Math.abs(Math.sin(t * (talking ? 7 : 3)));
       tutor.rotation.y = t * 0.2;
       tutor.position.y = 1.5 + 0.05 * Math.sin(t * 1.5);
+      // trilingual card fades in above the focused object
+      vr.cardsGroup.children.forEach(spr => {
+        const k = clamp01((now - (spr.userData.fadeStart || now)) / 400);
+        spr.material.opacity = k;
+      });
       // pulse hotspots; brighten the hovered one, and face the rings to the camera
       vr.hotspotGroup.children.forEach(o => {
         if (o.userData && o.userData.ringMat) {
@@ -414,7 +462,10 @@
         controls.enabled = true;
         controls.reset(0, Math.PI * 0.46, 6);
         if (curScene < 0) { curScene = 0; applyScene(SCENES[0]); }
+        // interactive mode reveals a card only when an object is clicked
+        while (vr.cardsGroup.children.length) vr.cardsGroup.remove(vr.cardsGroup.children[0]);
         if (hud.scene) hud.scene.textContent = SCENES[curScene].name;
+        typeCaption('Look around. Tap a glowing object to learn it.');
         if (prefersReduced) { renderer.render(scene, camera); return; }
         raf = requestAnimationFrame(interactiveFrame);
       } else {
