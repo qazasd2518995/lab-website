@@ -133,6 +133,7 @@
     let phaseStart = 0;                 // performance.now() at phase entry
     let playing = null;                 // the <audio> element currently playing
     let clipProgress = 0;               // 0..1 progress of the playing clip
+    let tailTimer = 0;                  // pending speak-tail advance timer
     const T_TRANSLATE = 1.1;            // seconds of MT "thinking" between clips
 
     function litStages(stages) {
@@ -219,6 +220,7 @@
 
     function stopPlaying() {
       if (activeClip) { activeClip.teardown(); activeClip = null; }
+      clearTimeout(tailTimer);     // drop any pending speak-tail advance
       playing = null;
     }
 
@@ -263,6 +265,12 @@
       guardTimer = setTimeout(() => { if (playing === el) done(); }, guardMs);
     }
 
+    // The 'ended' event can fire a little before the speech is fully audible
+    // (MediaElementSource + network audio jitter), and advancing immediately
+    // pauses the clip and cuts the tail. Hold a short tail before moving on so
+    // the TTS finishes cleanly. tailTimer is cleared on stopPlaying/replay.
+    const T_SPEAK_TAIL = 0.4;   // seconds to let the TTS tail ring out
+
     function enterPhase(name) {
       phase = name;
       phaseStart = performance.now();
@@ -271,7 +279,11 @@
         if (audioOK) playClip(seg.srcAudio, () => enterPhase('translate'));
         else { /* no audio: fixed 2.4s listen */ }
       } else if (name === 'speak') {
-        if (audioOK) playClip(seg.tgtAudio, () => advanceSegment());
+        if (audioOK) playClip(seg.tgtAudio, () => {
+          // let the tail ring out, then advance (clip already ended, so no cut)
+          clearTimeout(tailTimer);
+          tailTimer = setTimeout(advanceSegment, T_SPEAK_TAIL * 1000);
+        });
         else { /* no audio: fixed 2.0s speak */ }
       }
     }
