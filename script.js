@@ -830,10 +830,15 @@
     node.append('text').text(d => d.id).attr('x', d => 8 + d.freq * 0.6).attr('y', 4)
       .attr('font-size', d => 10 + d.freq * 0.15);
 
+    // forceX/forceY pull nodes toward the centre so the graph stays inside this
+    // wide, short container (about 2.4:1) instead of drifting to the edges. Y is
+    // pulled harder because the vertical room is tight.
     const sim = d3.forceSimulation(nodes)
-      .force('link', d3.forceLink(links).id(d => d.id).distance(70).strength(0.5))
-      .force('charge', d3.forceManyBody().strength(-220))
+      .force('link', d3.forceLink(links).id(d => d.id).distance(58).strength(0.5))
+      .force('charge', d3.forceManyBody().strength(-180))
       .force('center', d3.forceCenter(W / 2, H / 2))
+      .force('x', d3.forceX(W / 2).strength(0.06))
+      .force('y', d3.forceY(H / 2).strength(0.18))
       .force('collide', d3.forceCollide().radius(d => 14 + d.freq * 0.6));
 
     sim.on('tick', () => {
