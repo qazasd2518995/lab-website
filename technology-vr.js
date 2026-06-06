@@ -32,6 +32,8 @@
       if (!state.enabled) return;
       state.dragging = true;
       state.lastX = e.clientX; state.lastY = e.clientY;
+      // keep receiving move events through the drag, including touch
+      try { dom.setPointerCapture && dom.setPointerCapture(e.pointerId); } catch (err) {}
     }
     function onMove(e) {
       if (!state.enabled || !state.dragging) return;
@@ -616,6 +618,7 @@
       if (sceneBar) sceneBar.style.display = (m === 'interactive') ? 'flex' : 'none';
       if (m === 'interactive') {
         controls.enabled = true;
+        canvas.classList.add('is-looking');   // touch drags rotate, not scroll
         controls.reset(0, Math.PI * 0.46, 6);
         if (curScene < 0) { curScene = 0; applyScene(SCENES[0]); }
         // interactive mode reveals a card only when an object is clicked
@@ -627,6 +630,7 @@
         raf = requestAnimationFrame(interactiveFrame);
       } else {
         controls.enabled = false;
+        canvas.classList.remove('is-looking');
         curScene = -1;
         if (prefersReduced) { curScene = 0; applyScene(SCENES[0]); renderer.render(scene, camera); return; }
         raf = requestAnimationFrame(frame);

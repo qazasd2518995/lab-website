@@ -2554,6 +2554,9 @@ body.tm-lock { overflow: hidden; }
   .demo-stage-interp { aspect-ratio: 3 / 4; }
 }
 .demo-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+/* while VR look-around is active, the canvas eats touch drags (no page scroll);
+   the page still scrolls normally everywhere outside the stage */
+.demo-canvas.is-looking { touch-action: none; }
 
 /* big start button, centered over the stage */
 .demo-start {
@@ -2655,3 +2658,30 @@ body.tm-lock { overflow: hidden; }
 .vr-scene-btn:hover { color: var(--ink); background: rgba(124,140,255,0.14); }
 .vr-scene-btn.is-active { color: var(--bg); background: var(--d1); box-shadow: 0 0 12px rgba(52,227,207,0.5); }
 @media (max-width: 720px) { .vr-scene-btn { padding: 5px 10px; font-size: 10px; } }
+
+/* ============================================================
+   === TECHNOLOGY PAGE — mobile experience (<= 720px) ===
+   ============================================================ */
+@media (max-width: 720px) {
+  /* taller stages so the 3D scene and waveforms are usable on a phone */
+  .demo-stage-vr { aspect-ratio: 3 / 4; }
+  .demo-stage-interp { aspect-ratio: 4 / 5; }
+
+  /* scene switcher: move below the top-row data, smaller pills, can wrap */
+  .vr-scenes { top: auto; bottom: 56px; left: 50%; flex-wrap: wrap; justify-content: center;
+    max-width: calc(100% - 24px); }
+  .hud-topright { font-size: 9px; gap: 8px; }
+  .hud-scene { font-size: 13px; }
+
+  /* dialog: full width across the bottom, larger tap targets */
+  .vr-dialog { left: 10px; right: 10px; bottom: 10px; width: auto; padding: 12px 14px; }
+  .vr-dialog-line { font-size: 14px; margin-bottom: 8px; }
+  .vr-opt { font-size: 14px; padding: 10px 12px; }
+  .vr-back { font-size: 12px; padding: 7px 12px; }
+
+  /* mode button clear of the scene bar */
+  .hud-mode-btn { bottom: 12px; right: 12px; font-size: 10px; padding: 5px 10px; }
+
+  /* caption sits higher so it does not collide with the scene bar */
+  .hud-caption { bottom: 92px; font-size: 15px; max-width: 88%; }
+}
