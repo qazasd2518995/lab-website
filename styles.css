@@ -2618,3 +2618,10 @@ body.tm-lock { overflow: hidden; }
 .pmap-node p { font-size: 11px; color: var(--ink-faint); margin: 0; }
 .pmap-arrow { align-self: center; color: var(--eig); font-size: 20px; }
 @media (max-width: 720px) { .pmap-arrow { transform: rotate(90deg); align-self: center; } }
+
+/* VR interactive: mode toggle button (interactive <-> auto tour) */
+.hud-mode-btn { position: absolute; right: 16px; bottom: 14px; pointer-events: auto;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink);
+  background: rgba(124,140,255,0.15); border: 1px solid rgba(124,140,255,0.5);
+  border-radius: 999px; padding: 6px 12px; cursor: pointer; transition: background .15s; }
+.hud-mode-btn:hover { background: rgba(124,140,255,0.28); }

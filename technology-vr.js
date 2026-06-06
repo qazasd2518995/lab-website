@@ -6,6 +6,66 @@
 (() => {
   'use strict';
 
+  /* ── OrbitLook: a small self-contained orbit controller ──
+     three.js r160 dropped the UMD examples/js build, and the ESM OrbitControls
+     can't load via a plain <script>. We only need look-around + zoom with
+     damping and angle/distance limits, so this covers it in ~50 lines, with no
+     external dependency. Drag rotates the camera around `target`; wheel zooms. */
+  function makeOrbitLook(camera, dom, target) {
+    const state = {
+      enabled: false, target,
+      az: 0, pol: Math.PI * 0.46, rad: 6,      // spherical around target
+      minPol: Math.PI * 0.25, maxPol: Math.PI * 0.62,
+      minRad: 2.5, maxRad: 8,
+      damp: 0.12, vAz: 0, vPol: 0,
+      dragging: false, lastX: 0, lastY: 0,
+    };
+    function apply() {
+      const x = state.target.x + state.rad * Math.sin(state.pol) * Math.sin(state.az);
+      const y = state.target.y + state.rad * Math.cos(state.pol);
+      const z = state.target.z + state.rad * Math.sin(state.pol) * Math.cos(state.az);
+      camera.position.set(x, y, z);
+      camera.lookAt(state.target);
+    }
+    function onDown(e) {
+      if (!state.enabled) return;
+      state.dragging = true;
+      state.lastX = e.clientX; state.lastY = e.clientY;
+    }
+    function onMove(e) {
+      if (!state.enabled || !state.dragging) return;
+      const dx = e.clientX - state.lastX, dy = e.clientY - state.lastY;
+      state.lastX = e.clientX; state.lastY = e.clientY;
+      state.vAz += -dx * 0.005;
+      state.vPol += -dy * 0.005;
+    }
+    function onUp() { state.dragging = false; }
+    function onWheel(e) {
+      if (!state.enabled) return;
+      e.preventDefault();
+      state.rad = Math.min(state.maxRad, Math.max(state.minRad, state.rad + e.deltaY * 0.002));
+    }
+    dom.addEventListener('pointerdown', onDown);
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+    dom.addEventListener('wheel', onWheel, { passive: false });
+    function update() {
+      state.az += state.vAz; state.pol += state.vPol;
+      state.vAz *= (1 - state.damp); state.vPol *= (1 - state.damp);
+      state.pol = Math.min(state.maxPol, Math.max(state.minPol, state.pol));
+      apply();
+    }
+    function reset(az, pol, rad) {
+      state.az = az; state.pol = pol; state.rad = rad; state.vAz = 0; state.vPol = 0; apply();
+    }
+    return {
+      update, reset, apply,
+      get target() { return state.target; },
+      set enabled(v) { state.enabled = v; },
+      get enabled() { return state.enabled; },
+    };
+  }
+
   function initVR() {
     const T = window.LDAHS_TECH || {};
     const { lerp, clamp01, easeInOut, TAU, wireStart, prefersReduced } = T;
@@ -20,8 +80,9 @@
       immersion: document.getElementById('vr-immersion'),
     };
 
-    let renderer, scene, camera, tutor, grid, raf = 0, running = false, t0 = 0;
+    let renderer, scene, camera, tutor, grid, controls, raf = 0, running = false, t0 = 0;
     let W = 0, H = 0;
+    let mode = 'interactive';   // 'interactive' | 'auto'
     const vr = {}; // holds propsGroup / cardsGroup / beamMat across scenes
     let curScene = -1;
 
@@ -74,6 +135,9 @@
       beam.position.set(0, 1.5, 2.5);
       scene.add(beam);
       vr.propsGroup = propsGroup; vr.cardsGroup = cardsGroup; vr.beamMat = beamMat;
+
+      // free-look controller for interactive mode (around the tutor)
+      controls = makeOrbitLook(camera, renderer.domElement, new THREE.Vector3(0, 1.5, 0));
 
       size();
     }
@@ -243,15 +307,56 @@
       raf = requestAnimationFrame(frame);
     }
 
+    // interactive mode: user drives the camera; orb keeps breathing
+    function interactiveFrame(now) {
+      if (!running) return;
+      if (!t0) t0 = now;
+      const t = (now - t0) / 1000;
+      controls.update();
+      tutor.userData.orb.scale.setScalar(1 + 0.06 * Math.sin(t * 2.2));
+      tutor.userData.ring.scale.setScalar(1 + 0.1 * Math.abs(Math.sin(t * 3)));
+      tutor.userData.ringMat.opacity = 0.45 + 0.25 * Math.abs(Math.sin(t * 3));
+      tutor.rotation.y = t * 0.2;
+      tutor.position.y = 1.5 + 0.05 * Math.sin(t * 1.5);
+      if (hud.immersion) hud.immersion.textContent = (90 + Math.floor(8 * Math.abs(Math.sin(t)))) + '%';
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(interactiveFrame);
+    }
+
     function start() {
       build();
-      if (prefersReduced) { curScene = 0; applyScene(SCENES[0]); renderer.render(scene, camera); return; }
-      curScene = -1;
-      running = true; t0 = 0; raf = requestAnimationFrame(frame);
+      curScene = 0;
+      applyScene(SCENES[0]);
+      running = true; t0 = 0;
+      setMode('interactive');
+    }
+
+    function setMode(m) {
+      mode = m;
+      cancelAnimationFrame(raf);
+      t0 = 0;
+      if (m === 'interactive') {
+        controls.enabled = true;
+        controls.reset(0, Math.PI * 0.46, 6);
+        if (hud.scene) hud.scene.textContent = SCENES[curScene < 0 ? 0 : curScene].name;
+        if (prefersReduced) { renderer.render(scene, camera); return; }
+        raf = requestAnimationFrame(interactiveFrame);
+      } else {
+        controls.enabled = false;
+        curScene = -1;
+        if (prefersReduced) { curScene = 0; applyScene(SCENES[0]); renderer.render(scene, camera); return; }
+        raf = requestAnimationFrame(frame);
+      }
     }
 
     window.addEventListener('resize', () => { if (renderer) size(); });
     wireStart('vr-start', 'vr-hud', start);
+
+    const modeBtn = document.getElementById('vr-mode-btn');
+    if (modeBtn) modeBtn.addEventListener('click', () => {
+      if (mode === 'interactive') { setMode('auto'); modeBtn.textContent = '✋ Explore'; }
+      else { setMode('interactive'); modeBtn.textContent = '▶ Auto tour'; }
+    });
   }
 
   // register + run after LDAHS_TECH exists (technology.js defines it)
