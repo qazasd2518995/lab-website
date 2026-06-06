@@ -369,13 +369,26 @@
       canvas.style.cursor = 'pointer';
       canvas.addEventListener('click', restart, { once: true });
     }
-    function restart() {
+    // The single clean entry into a run. start() (first play) and restart()
+    // (replay) both go through here so a replay is the same launch as the first
+    // play: audio context resumed, all shared state reset, no stale clip, timer
+    // or listener left from the previous run.
+    function beginRun() {
       cancelAnimationFrame(raf);
-      stopPlaying();               // kill any clip/timer still in flight from last run
-      canvas.style.cursor = 'default';
-      segIndex = 0; running = true;
+      stopPlaying();                       // tear down any clip/timer still in flight
+      ensureAudio();
+      if (actx && actx.state === 'suspended') actx.resume();   // replay needs this too
+      if (audioOK) SCRIPT.forEach(s => { getClip(s.srcAudio); getClip(s.tgtAudio); });
+      // reset every piece of shared state to a first-play baseline
+      segIndex = 0; phase = 'idle'; phaseStart = 0; clipProgress = 0; playing = null;
+      running = true;
       enterPhase('listen');
       raf = requestAnimationFrame(frame);
+    }
+
+    function restart() {
+      canvas.style.cursor = 'default';
+      beginRun();
     }
 
     function renderStatic() {
@@ -393,14 +406,7 @@
     function start() {
       resize();
       if (prefersReduced) { renderStatic(); return; }
-      ensureAudio();
-      if (actx && actx.state === 'suspended') actx.resume();
-      // warm up the element→analyser graph so the first clip is wired
-      if (audioOK) SCRIPT.forEach(s => { getClip(s.srcAudio); getClip(s.tgtAudio); });
-      stopPlaying();
-      segIndex = 0; running = true;
-      enterPhase('listen');
-      raf = requestAnimationFrame(frame);
+      beginRun();   // first play and replay share one clean launch path
     }
 
     window.addEventListener('resize', () => { if (W) resize(); });
