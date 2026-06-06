@@ -2685,3 +2685,26 @@ body.tm-lock { overflow: hidden; }
   /* caption sits higher so it does not collide with the scene bar */
   .hud-caption { bottom: 92px; font-size: 15px; max-width: 88%; }
 }
+
+/* ============================================================
+   === FIGURES — N-gram network (D3) ===
+   ============================================================ */
+.ngram-controls { margin: 0 0 10px; }
+.ngram-search {
+  width: min(280px, 100%); font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  color: var(--ink); background: rgba(11,17,36,0.7); border: 1px solid var(--line);
+  border-radius: 999px; padding: 9px 16px; outline: none; transition: border-color .15s;
+}
+.ngram-search:focus { border-color: rgba(124,140,255,0.6); }
+.ngram-search::placeholder { color: var(--ink-faint); }
+#fig-ngram svg { width: 100%; height: 100%; display: block; cursor: grab; }
+#fig-ngram .ng-link { stroke: rgba(150,170,220,0.22); transition: stroke .2s, stroke-opacity .2s; }
+#fig-ngram .ng-link.hot { stroke: var(--d1); stroke-opacity: 0.9; }
+#fig-ngram .ng-node circle { stroke: rgba(7,11,22,0.7); stroke-width: 1.5; cursor: pointer; transition: opacity .2s; }
+#fig-ngram .ng-node text { font-family: 'JetBrains Mono', monospace; fill: var(--ink-soft); pointer-events: none; transition: fill .2s, opacity .2s; }
+#fig-ngram .dim { opacity: 0.12; }
+.ng-tooltip {
+  position: absolute; pointer-events: none; z-index: 5; padding: 7px 11px; border-radius: 8px;
+  background: rgba(11,17,36,0.95); border: 1px solid var(--line); color: var(--ink);
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.5; opacity: 0; transition: opacity .15s;
+}

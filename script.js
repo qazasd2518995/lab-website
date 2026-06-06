@@ -108,6 +108,13 @@
     return !!window.Plotly;
   }
 
+  async function ensureD3() {
+    if (window.d3) return true;
+    try { await loadScript('https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js'); } catch (e) { /* may already be loading via the defer tag */ }
+    for (let i = 0; i < 20 && !window.d3; i++) { await new Promise(r => setTimeout(r, 50)); }
+    return !!window.d3;
+  }
+
   function setPlotMsg(ids, txt) {
     ids.forEach(id => {
       const el = document.getElementById(id);
@@ -769,6 +776,21 @@
     });
   }
 
+  async function setupNgramNetwork() {
+    const el = document.getElementById('fig-ngram');
+    if (!el) return;
+    const ok = await ensureD3();
+    if (!ok) {
+      el.innerHTML = `<div style="height:100%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.82rem;color:#6b7596;text-align:center;padding:24px">Network figure needs an internet connection to load D3.<br>Reconnect and refresh.</div>`;
+      return;
+    }
+    el.innerHTML = '';
+    drawNgramNetwork(el);
+  }
+  function drawNgramNetwork(el) {
+    el.innerHTML = '<div style="height:100%;display:flex;align-items:center;justify-content:center;color:#6b7596;font-family:monospace">d3 ready</div>';
+  }
+
   /* ───────── teaching cards ───────── */
   const TEACH_CARDS = [
     {
@@ -1350,6 +1372,7 @@
     setupCopyright();
     renderMath();
     setupFigures();
+    setupNgramNetwork();
     setupTeaching();
     setupResearchFigures();
   }
