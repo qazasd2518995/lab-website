@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 </head>
 <body>
   <a href="#main" class="skip-link">Skip to main content</a>
@@ -212,6 +213,56 @@
           </div>
         </div>
 
+      </div>
+    </section>
+
+    <!-- TEXT MINING / NLP -->
+    <section id="nlp" class="section-lg">
+      <div class="wrap">
+        <div class="section-marker" data-rise><span class="marker-dot"></span><span class="marker-id">§ 05</span> Text mining · NLP · two interactive figures</div>
+        <div class="sec-head" data-rise>
+          <div class="sec-index">§ 05</div>
+          <div class="sec-body">
+            <div class="eyebrow">From the text mining course</div>
+            <h2>Text mining &amp; <em style="background:linear-gradient(100deg,var(--d1),var(--eig) 45%,var(--d3));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-style:italic;font-weight:500">NLP</em></h2>
+            <p class="lead">Two interactive figures from the lab's text mining work on learner language: a co-occurrence network you can pull apart and a sentiment map you can read point by point.</p>
+          </div>
+        </div>
+
+        <!-- Figure I -->
+        <div class="viz" data-rise>
+          <div class="viz-head"><div><div class="fignum">Figure I</div><h3>N-gram co-occurrence network</h3></div></div>
+          <p class="viz-desc">
+            A bigram co-occurrence network built from a simulated corpus of English-learning text. Each node is a word sized by frequency, each link a pair that co-occurs, and the colours mark three themes the lab tracks: skills, affect, and instruction. Drag a node to pull the web apart, hover to light up its strongest collocates, or search for a word to find it.
+          </p>
+          <div class="ngram-controls">
+            <input type="search" id="ngram-search" class="ngram-search" placeholder="Search a word…" autocomplete="off" aria-label="Search a word in the network">
+          </div>
+          <div id="fig-ngram" class="plot"></div>
+          <div class="viz-eq">\[ \mathrm{PMI}(w_1,w_2)=\log\dfrac{P(w_1,w_2)}{P(w_1)\,P(w_2)} \]</div>
+          <div class="viz-foot">
+            <span class="chip"><span class="dot" style="background:var(--d1)"></span>Skills</span>
+            <span class="chip"><span class="dot" style="background:var(--eig)"></span>Affect</span>
+            <span class="chip"><span class="dot" style="background:var(--d2)"></span>Instruction</span>
+            <span class="chip"><span class="dot" style="background:var(--ink-faint)"></span>link — co-occurrence</span>
+          </div>
+        </div>
+
+        <!-- Figure J -->
+        <div class="viz" data-rise>
+          <div class="viz-head"><div><div class="fignum">Figure J</div><h3>Sentiment classification of learner feedback</h3></div></div>
+          <p class="viz-desc">
+            A simulated set of learner feedback comments, each placed by sentiment polarity and subjectivity, then classified positive, neutral, or negative. The shaded bands are the decision regions a classifier learns. Hover a point to read the comment and its score, or use the legend to isolate a class.
+          </p>
+          <div id="fig-sentiment" class="plot"></div>
+          <div class="viz-eq">\[ P(\text{class}\mid\mathbf{x})=\operatorname{softmax}(\mathbf{W}\mathbf{x}+\mathbf{b}) \]</div>
+          <div class="viz-foot">
+            <span class="chip"><span class="dot" style="background:var(--d1)"></span>Positive</span>
+            <span class="chip"><span class="dot" style="background:var(--eig)"></span>Neutral</span>
+            <span class="chip"><span class="dot" style="background:var(--d3)"></span>Negative</span>
+            <span class="chip"><span class="dot" style="background:var(--ink-faint)"></span>x — polarity · y — subjectivity</span>
+          </div>
+        </div>
       </div>
     </section>
   </main>
