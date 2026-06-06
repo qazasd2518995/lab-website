@@ -19,6 +19,7 @@
       minRad: 2.5, maxRad: 8,
       damp: 0.12, vAz: 0, vPol: 0,
       dragging: false, lastX: 0, lastY: 0,
+      homeTarget: target.clone(), homeRad: 6,  // the look-around home view to return to
     };
     function apply() {
       const x = state.target.x + state.rad * Math.sin(state.pol) * Math.sin(state.az);
@@ -65,14 +66,24 @@
       apply();
     }
     function reset(az, pol, rad) {
-      state.az = az; state.pol = pol; state.rad = rad; state.vAz = 0; state.vPol = 0; focus = null; apply();
+      state.az = az; state.pol = pol; state.rad = rad; state.vAz = 0; state.vPol = 0; focus = null;
+      state.homeTarget = state.target.clone(); state.homeRad = rad;   // remember this as home
+      apply();
     }
     function focusOn(point, dur) {
       focus = { fromT: state.target.clone(), toT: point.clone(),
         fromRad: state.rad, toRad: 3.2, start: performance.now(), dur: dur || 900 };
     }
+    function unfocus(dur) {
+      focus = { fromT: state.target.clone(), toT: state.homeTarget.clone(),
+        fromRad: state.rad, toRad: state.homeRad, start: performance.now(), dur: dur || 800 };
+    }
+    function isFocused() {
+      // focused = target has drifted from home (an object was clicked)
+      return state.target.distanceTo(state.homeTarget) > 0.05 || Math.abs(state.rad - state.homeRad) > 0.05;
+    }
     return {
-      update, reset, apply, focusOn,
+      update, reset, apply, focusOn, unfocus, isFocused,
       get target() { return state.target; },
       set enabled(v) { state.enabled = v; },
       get enabled() { return state.enabled; },
@@ -97,6 +108,7 @@
       line: document.getElementById('vr-dialog-line'),
       opts: document.getElementById('vr-dialog-opts'),
       xpEl: document.getElementById('vr-xp'),
+      back: document.getElementById('vr-back'),
     };
     let xp = 0;
 
@@ -379,6 +391,14 @@
       vr._tutorTalkUntil = performance.now() + 1600;
     }
 
+    // return from a focused object to the look-around home view
+    function backToRoom() {
+      controls.unfocus(800);
+      if (dlg.box) dlg.box.hidden = true;
+      while (vr.cardsGroup.children.length) vr.cardsGroup.remove(vr.cardsGroup.children[0]);
+      typeCaption('Tap another glowing object to keep learning.');
+    }
+
     // typewriter for the HUD caption
     let typeTimer = 0;
     function typeCaption(text) {
@@ -518,6 +538,7 @@
     window.addEventListener('resize', () => { if (renderer) size(); });
     canvas.addEventListener('pointermove', onPointerMove);
     canvas.addEventListener('pointerdown', onPointerDown);
+    if (dlg.back) dlg.back.addEventListener('click', backToRoom);
     wireStart('vr-start', 'vr-hud', start);
 
     const modeBtn = document.getElementById('vr-mode-btn');

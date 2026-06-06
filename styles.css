@@ -2639,3 +2639,7 @@ body.tm-lock { overflow: hidden; }
 .vr-opt:hover { background: rgba(124,140,255,0.26); }
 .vr-score { margin-top: 10px; font-size: 11px; color: var(--ink-faint); }
 .vr-score b { color: var(--d1); }
+.vr-back { display: inline-flex; margin-bottom: 10px; font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--ink-soft); background: transparent; border: 1px solid var(--line);
+  border-radius: 999px; padding: 5px 11px; cursor: pointer; transition: all .15s; }
+.vr-back:hover { color: var(--ink); border-color: rgba(124,140,255,0.5); background: rgba(124,140,255,0.12); }
