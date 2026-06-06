@@ -2625,3 +2625,17 @@ body.tm-lock { overflow: hidden; }
   background: rgba(124,140,255,0.15); border: 1px solid rgba(124,140,255,0.5);
   border-radius: 999px; padding: 6px 12px; cursor: pointer; transition: background .15s; }
 .hud-mode-btn:hover { background: rgba(124,140,255,0.28); }
+
+/* VR interactive: scripted tutor dialog box (bottom-left overlay) */
+.vr-dialog { position: absolute; left: 16px; bottom: 16px; width: min(360px, 42%);
+  pointer-events: auto; background: rgba(11,17,36,0.82); border: 1px solid rgba(124,140,255,0.4);
+  border-radius: 14px; padding: 14px 16px; backdrop-filter: blur(6px); }
+.vr-dialog[hidden] { display: none; }
+.vr-dialog-line { font-family: 'Spectral', serif; font-size: 15px; color: var(--ink); margin-bottom: 10px; line-height: 1.5; }
+.vr-dialog-opts { display: flex; flex-direction: column; gap: 8px; }
+.vr-opt { text-align: left; font-family: 'Spectral', serif; font-size: 14px; color: var(--ink);
+  background: rgba(124,140,255,0.12); border: 1px solid rgba(124,140,255,0.35); border-radius: 8px;
+  padding: 8px 12px; cursor: pointer; transition: background .15s; }
+.vr-opt:hover { background: rgba(124,140,255,0.26); }
+.vr-score { margin-top: 10px; font-size: 11px; color: var(--ink-faint); }
+.vr-score b { color: var(--d1); }

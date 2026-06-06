@@ -92,6 +92,13 @@
       dots: document.getElementById('vr-dots'),
       immersion: document.getElementById('vr-immersion'),
     };
+    const dlg = {
+      box: document.getElementById('vr-dialog'),
+      line: document.getElementById('vr-dialog-line'),
+      opts: document.getElementById('vr-dialog-opts'),
+      xpEl: document.getElementById('vr-xp'),
+    };
+    let xp = 0;
 
     let renderer, scene, camera, tutor, grid, controls, raf = 0, running = false, t0 = 0;
     let W = 0, H = 0;
@@ -181,10 +188,18 @@
       'Café': [
         { id: 'cup', label: 'Coffee cup', pos: [-1.2, 0.85, -1.5],
           word: 'a flat white, please', zh: '一杯小白咖啡，謝謝', ja: 'カフェラテをください',
-          tutor: 'Tap the cup, then order a flat white.' },
+          tutor: 'Tap the cup, then order a flat white.',
+          opts: [
+            { text: 'A flat white, please.', reply: 'Great. Clear and polite.', xp: 10 },
+            { text: 'Give me coffee.', reply: 'Understandable, though a please goes a long way.', xp: 4 },
+          ] },
         { id: 'menu', label: 'Menu board', pos: [1.4, 1.6, -2.2],
           word: 'for here or to go?', zh: '內用還是外帶？', ja: 'こちらで召し上がりますか',
-          tutor: 'The barista may ask: for here or to go?' },
+          tutor: 'The barista may ask: for here or to go?',
+          opts: [
+            { text: 'For here, thanks.', reply: 'Good. Now find a seat.', xp: 10 },
+            { text: 'To go.', reply: 'Sure, they will use a paper cup.', xp: 8 },
+          ] },
       ],
     };
 
@@ -312,6 +327,7 @@
       controls.focusOn(obj.position, 900);
       showObjectCard(item, obj);
       tutorSay(item);
+      showDialog(item);
     }
 
     // a trilingual card (EN / 中 / 日) floating above the clicked object
@@ -338,6 +354,28 @@
     }
     function tutorSay(item) {
       if (item.tutor) typeCaption(item.tutor);
+      vr._tutorTalkUntil = performance.now() + 1600;
+    }
+
+    // scripted dialog: show the tutor line + choice buttons; choosing scores XP
+    function showDialog(item) {
+      if (!dlg.box) return;
+      dlg.box.hidden = false;
+      dlg.line.textContent = item.tutor || item.label;
+      dlg.opts.innerHTML = '';
+      (item.opts || []).forEach(o => {
+        const b = document.createElement('button');
+        b.className = 'vr-opt'; b.type = 'button'; b.textContent = o.text;
+        b.addEventListener('click', () => chooseOpt(o));
+        dlg.opts.appendChild(b);
+      });
+    }
+    function chooseOpt(o) {
+      xp += o.xp;
+      if (dlg.xpEl) dlg.xpEl.textContent = xp;
+      dlg.line.textContent = o.reply;
+      dlg.opts.innerHTML = '';
+      typeCaption(o.reply);
       vr._tutorTalkUntil = performance.now() + 1600;
     }
 
@@ -458,6 +496,7 @@
       cancelAnimationFrame(raf);
       t0 = 0;
       if (vr.hotspotGroup) vr.hotspotGroup.visible = (m === 'interactive');
+      if (dlg.box) dlg.box.hidden = true;   // dialog appears only after clicking an object
       if (m === 'interactive') {
         controls.enabled = true;
         controls.reset(0, Math.PI * 0.46, 6);
