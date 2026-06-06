@@ -213,6 +213,38 @@
             { text: 'To go.', reply: 'Sure, they will use a paper cup.', xp: 8 },
           ] },
       ],
+      'Airport': [
+        { id: 'desk', label: 'Check-in desk', pos: [-1.3, 1.2, -3.2],
+          word: "I'd like to check in.", zh: '我要辦理報到', ja: 'チェックインをお願いします',
+          tutor: 'Step up to the desk and ask to check in.',
+          opts: [
+            { text: "I'd like to check in, please.", reply: 'Passport and ticket, please.', xp: 10 },
+            { text: 'Check in.', reply: 'A full sentence sounds friendlier.', xp: 5 },
+          ] },
+        { id: 'board', label: 'Departures board', pos: [1.3, 2.8, -4.6],
+          word: 'a window seat, please', zh: '請給我靠窗的位子', ja: '窓側の席をお願いします',
+          tutor: 'Ask for the seat you prefer.',
+          opts: [
+            { text: 'A window seat, please.', reply: 'Sure, seat 12A.', xp: 10 },
+            { text: 'Any seat is fine.', reply: 'No problem, here is 18C.', xp: 7 },
+          ] },
+      ],
+      'Meeting': [
+        { id: 'seat', label: 'Your seat', pos: [-1.4, 1.0, -1.6],
+          word: 'Pleased to meet you.', zh: '很高興認識你', ja: 'はじめまして',
+          tutor: 'Greet the room before you sit.',
+          opts: [
+            { text: 'Pleased to meet you all.', reply: 'Warm and professional.', xp: 10 },
+            { text: 'Hi.', reply: 'Fine, though a touch casual for a meeting.', xp: 5 },
+          ] },
+        { id: 'screen', label: 'Presentation screen', pos: [1.2, 2.4, -4.6],
+          word: 'I lead the data team.', zh: '我負責資料團隊', ja: 'データチームを率いています',
+          tutor: 'Introduce your role to the room.',
+          opts: [
+            { text: 'I lead the data team.', reply: 'Clear and confident.', xp: 10 },
+            { text: 'I work with data.', reply: 'Good, you can be more specific too.', xp: 7 },
+          ] },
+      ],
     };
 
     // lazy texture cache for scene backdrops; falls back to plain fog colour
@@ -399,6 +431,23 @@
       typeCaption('Tap another glowing object to keep learning.');
     }
 
+    // switch to a scene from the HUD scene buttons (interactive mode)
+    function switchScene(idx) {
+      if (idx === curScene) return;
+      curScene = idx;
+      applyScene(SCENES[idx]);                 // backdrop, props, hotspots, colour
+      controls.reset(0, Math.PI * 0.46, 6);    // back to that scene's look-around view
+      if (dlg.box) dlg.box.hidden = true;
+      while (vr.cardsGroup.children.length) vr.cardsGroup.remove(vr.cardsGroup.children[0]);
+      vr._beamUntil = performance.now() + 600;  // light-beam flash through the cut
+      typeCaption('Look around. Tap a glowing object to learn it.');
+      updateSceneButtons();
+    }
+    function updateSceneButtons() {
+      if (!vr.sceneBtns) return;
+      vr.sceneBtns.forEach((b, i) => b.classList.toggle('is-active', i === curScene));
+    }
+
     // typewriter for the HUD caption
     let typeTimer = 0;
     function typeCaption(text) {
@@ -478,6 +527,9 @@
       if (!t0) t0 = now;
       const t = (now - t0) / 1000;
       controls.update();
+      // light-beam flash when switching scenes
+      const beamLeft = (vr._beamUntil || 0) - performance.now();
+      vr.beamMat.opacity = beamLeft > 0 ? Math.sin((beamLeft / 600) * Math.PI) * 0.9 : 0;
       // tutor breathes; ring pulses faster while the tutor is "talking"
       const talking = performance.now() < (vr._tutorTalkUntil || 0);
       tutor.userData.orb.scale.setScalar(1 + 0.06 * Math.sin(t * 2.2));
@@ -517,6 +569,9 @@
       t0 = 0;
       if (vr.hotspotGroup) vr.hotspotGroup.visible = (m === 'interactive');
       if (dlg.box) dlg.box.hidden = true;   // dialog appears only after clicking an object
+      // scene switcher only makes sense in interactive mode
+      const sceneBar = document.getElementById('vr-scenes');
+      if (sceneBar) sceneBar.style.display = (m === 'interactive') ? 'flex' : 'none';
       if (m === 'interactive') {
         controls.enabled = true;
         controls.reset(0, Math.PI * 0.46, 6);
@@ -524,6 +579,7 @@
         // interactive mode reveals a card only when an object is clicked
         while (vr.cardsGroup.children.length) vr.cardsGroup.remove(vr.cardsGroup.children[0]);
         if (hud.scene) hud.scene.textContent = SCENES[curScene].name;
+        updateSceneButtons();
         typeCaption('Look around. Tap a glowing object to learn it.');
         if (prefersReduced) { renderer.render(scene, camera); return; }
         raf = requestAnimationFrame(interactiveFrame);
@@ -539,6 +595,12 @@
     canvas.addEventListener('pointermove', onPointerMove);
     canvas.addEventListener('pointerdown', onPointerDown);
     if (dlg.back) dlg.back.addEventListener('click', backToRoom);
+
+    // scene switcher buttons (interactive mode)
+    const sceneBar = document.getElementById('vr-scenes');
+    vr.sceneBtns = sceneBar ? Array.from(sceneBar.querySelectorAll('.vr-scene-btn')) : [];
+    vr.sceneBtns.forEach(b => b.addEventListener('click', () => switchScene(+b.dataset.scene)));
+
     wireStart('vr-start', 'vr-hud', start);
 
     const modeBtn = document.getElementById('vr-mode-btn');

@@ -2643,3 +2643,15 @@ body.tm-lock { overflow: hidden; }
   font-size: 11px; color: var(--ink-soft); background: transparent; border: 1px solid var(--line);
   border-radius: 999px; padding: 5px 11px; cursor: pointer; transition: all .15s; }
 .vr-back:hover { color: var(--ink); border-color: rgba(124,140,255,0.5); background: rgba(124,140,255,0.12); }
+
+/* VR interactive: scene switcher (segmented buttons, top-centre of the stage) */
+.vr-scenes { position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 4px; pointer-events: auto; padding: 4px;
+  background: rgba(11,17,36,0.7); border: 1px solid var(--line); border-radius: 999px;
+  backdrop-filter: blur(6px); }
+.vr-scene-btn { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .03em;
+  color: var(--ink-soft); background: transparent; border: 0; border-radius: 999px;
+  padding: 6px 14px; cursor: pointer; transition: all .15s; }
+.vr-scene-btn:hover { color: var(--ink); background: rgba(124,140,255,0.14); }
+.vr-scene-btn.is-active { color: var(--bg); background: var(--d1); box-shadow: 0 0 12px rgba(52,227,207,0.5); }
+@media (max-width: 720px) { .vr-scene-btn { padding: 5px 10px; font-size: 10px; } }
