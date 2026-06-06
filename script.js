@@ -788,7 +788,102 @@
     drawNgramNetwork(el);
   }
   function drawNgramNetwork(el) {
-    el.innerHTML = '<div style="height:100%;display:flex;align-items:center;justify-content:center;color:#6b7596;font-family:monospace">d3 ready</div>';
+    const rng = mulberry32(81321);
+    const GROUPS = { skills: '#34e3cf', affect: '#7c8cff', instr: '#ffb74d' };
+    const WORDS = [
+      ['speaking','skills'],['listening','skills'],['reading','skills'],['writing','skills'],
+      ['vocabulary','skills'],['grammar','skills'],['pronunciation','skills'],['fluency','skills'],
+      ['practice','skills'],['language','skills'],['English','skills'],['learning','skills'],
+      ['motivation','affect'],['confidence','affect'],['anxiety','affect'],['interest','affect'],
+      ['enjoyment','affect'],['effort','affect'],['attitude','affect'],
+      ['teacher','instr'],['feedback','instr'],['classroom','instr'],['student','instr'],
+      ['lesson','instr'],['homework','instr'],['exam','instr'],['textbook','instr'],['course','instr'],
+    ];
+    const nodes = WORDS.map(([id, group]) => ({ id, group, color: GROUPS[group], freq: 6 + Math.floor(rng() * 18) }));
+    const byId = Object.fromEntries(nodes.map(n => [n.id, n]));
+    const PAIRS = [
+      ['language','learning',9],['English','learning',8],['speaking','practice',7],
+      ['listening','practice',6],['vocabulary','grammar',6],['reading','writing',5],
+      ['speaking','fluency',6],['pronunciation','speaking',5],['language','English',7],
+      ['motivation','effort',6],['confidence','speaking',6],['anxiety','speaking',5],
+      ['motivation','interest',6],['enjoyment','motivation',5],['attitude','motivation',5],
+      ['teacher','feedback',7],['feedback','student',6],['classroom','teacher',6],
+      ['homework','course',5],['exam','course',5],['lesson','classroom',5],['textbook','course',4],
+      ['practice','confidence',5],['feedback','learning',5],['grammar','exam',4],
+      ['vocabulary','reading',5],['fluency','confidence',4],['student','motivation',4],
+    ];
+    const links = PAIRS.filter(([a,b]) => byId[a] && byId[b]).map(([a,b,w]) => ({ source: a, target: b, w }));
+
+    const rect = el.getBoundingClientRect();
+    const W = Math.max(320, rect.width), H = Math.max(360, rect.height || 460);
+    const d3 = window.d3;
+
+    const svg = d3.select(el).append('svg')
+      .attr('viewBox', `0 0 ${W} ${H}`).attr('preserveAspectRatio', 'xMidYMid meet');
+    const tip = d3.select(el).append('div').attr('class', 'ng-tooltip');
+
+    const link = svg.append('g').selectAll('line').data(links).join('line')
+      .attr('class', 'ng-link').attr('stroke-width', d => Math.sqrt(d.w));
+
+    const node = svg.append('g').selectAll('g').data(nodes).join('g').attr('class', 'ng-node');
+    node.append('circle').attr('r', d => 5 + d.freq * 0.6).attr('fill', d => d.color);
+    node.append('text').text(d => d.id).attr('x', d => 8 + d.freq * 0.6).attr('y', 4)
+      .attr('font-size', d => 10 + d.freq * 0.15);
+
+    const sim = d3.forceSimulation(nodes)
+      .force('link', d3.forceLink(links).id(d => d.id).distance(70).strength(0.5))
+      .force('charge', d3.forceManyBody().strength(-220))
+      .force('center', d3.forceCenter(W / 2, H / 2))
+      .force('collide', d3.forceCollide().radius(d => 14 + d.freq * 0.6));
+
+    sim.on('tick', () => {
+      link.attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+          .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+      node.attr('transform', d => `translate(${d.x},${d.y})`);
+    });
+
+    node.call(d3.drag()
+      .on('start', (e, d) => { if (!e.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+      .on('drag', (e, d) => { d.fx = e.x; d.fy = e.y; })
+      .on('end', (e, d) => { if (!e.active) sim.alphaTarget(0); d.fx = null; d.fy = null; }));
+
+    const nbr = {};
+    nodes.forEach(n => nbr[n.id] = new Set([n.id]));
+    links.forEach(l => {
+      const s = l.source.id || l.source, t = l.target.id || l.target;
+      nbr[s].add(t); nbr[t].add(s);
+    });
+
+    function highlight(id) {
+      if (!id) { node.classed('dim', false); link.classed('hot', false).classed('dim', false); return; }
+      node.classed('dim', d => !nbr[id].has(d.id));
+      link.classed('hot', l => (l.source.id === id || l.target.id === id))
+          .classed('dim', l => !(l.source.id === id || l.target.id === id));
+    }
+
+    node.on('mouseenter', (e, d) => {
+      highlight(d.id);
+      const best = links.filter(l => l.source.id === d.id || l.target.id === d.id).sort((a, b) => b.w - a.w)[0];
+      const mate = best ? (best.source.id === d.id ? best.target.id : best.source.id) : '—';
+      tip.style('opacity', 1).html(`<b style="color:${d.color}">${d.id}</b><br>top collocate: ${mate}`);
+    }).on('mousemove', (e) => {
+      const r = el.getBoundingClientRect();
+      tip.style('left', (e.clientX - r.left + 12) + 'px').style('top', (e.clientY - r.top + 12) + 'px');
+    }).on('mouseleave', () => { highlight(null); tip.style('opacity', 0); });
+
+    const search = document.getElementById('ngram-search');
+    if (search) search.addEventListener('input', () => {
+      const q = search.value.trim().toLowerCase();
+      if (!q) { highlight(null); return; }
+      const hit = nodes.find(n => n.id.toLowerCase().includes(q));
+      if (hit) {
+        highlight(hit.id);
+        hit.fx = W / 2; hit.fy = H / 2; sim.alphaTarget(0.3).restart();
+        setTimeout(() => { hit.fx = null; hit.fy = null; sim.alphaTarget(0); }, 1200);
+      } else { node.classed('dim', true); link.classed('dim', true); }
+    });
+
+    sim.alpha(1).restart();
   }
 
   /* ───────── teaching cards ───────── */
