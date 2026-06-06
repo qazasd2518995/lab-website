@@ -83,8 +83,11 @@
     let renderer, scene, camera, tutor, grid, controls, raf = 0, running = false, t0 = 0;
     let W = 0, H = 0;
     let mode = 'interactive';   // 'interactive' | 'auto'
-    const vr = {}; // holds propsGroup / cardsGroup / beamMat across scenes
+    const vr = {}; // holds propsGroup / cardsGroup / beamMat / hotspotGroup across scenes
     let curScene = -1;
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+    let hovered = null;
 
     function size() {
       const r = canvas.getBoundingClientRect();
@@ -134,7 +137,10 @@
       const beam = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), beamMat);
       beam.position.set(0, 1.5, 2.5);
       scene.add(beam);
+      // clickable hotspots group (rebuilt per scene)
+      const hotspotGroup = new THREE.Group(); scene.add(hotspotGroup);
       vr.propsGroup = propsGroup; vr.cardsGroup = cardsGroup; vr.beamMat = beamMat;
+      vr.hotspotGroup = hotspotGroup;
 
       // free-look controller for interactive mode (around the tutor)
       controls = makeOrbitLook(camera, renderer.domElement, new THREE.Vector3(0, 1.5, 0));
@@ -155,6 +161,19 @@
     ];
     const SCENE_SECS = 13;          // seconds per scene
     const TOTAL = SCENE_SECS * SCENES.length;
+
+    // interactive objects per scene: id, label, 3D position, the vocab it teaches,
+    // plus a tutor line. Click a hotspot to focus and learn it.
+    const INTERACTIVES = {
+      'Café': [
+        { id: 'cup', label: 'Coffee cup', pos: [-1.2, 0.85, -1.5],
+          word: 'a flat white, please', zh: '一杯小白咖啡，謝謝', ja: 'カフェラテをください',
+          tutor: 'Tap the cup, then order a flat white.' },
+        { id: 'menu', label: 'Menu board', pos: [1.4, 1.6, -2.2],
+          word: 'for here or to go?', zh: '內用還是外帶？', ja: 'こちらで召し上がりますか',
+          tutor: 'The barista may ask: for here or to go?' },
+      ],
+    };
 
     // lazy texture cache for scene backdrops; falls back to plain fog colour
     const bgCache = {};
@@ -179,6 +198,8 @@
       tutor.userData.ringMat.color.setHex(s.color);
       buildProps(s.props, s.color);
       buildCards(s.words, s.color);
+      buildInteractives(s.name, s.color);
+      if (vr.hotspotGroup) vr.hotspotGroup.visible = (mode === 'interactive');
       typeCaption(s.caption);
     }
 
@@ -232,6 +253,51 @@
         spr.userData = { baseY: spr.position.y, ph: i * 1.7 };
         g.add(spr);
       });
+    }
+
+    // build clickable hotspots (glowing node + ring) for a scene
+    function buildInteractives(sceneName, colorHex) {
+      const g = vr.hotspotGroup;
+      while (g.children.length) g.remove(g.children[0]);
+      (INTERACTIVES[sceneName] || []).forEach(item => {
+        const node = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16),
+          new THREE.MeshBasicMaterial({ color: colorHex, transparent: true, opacity: 0.9 }));
+        node.position.set(item.pos[0], item.pos[1], item.pos[2]);
+        const ringMat = new THREE.MeshBasicMaterial({ color: colorHex, transparent: true, opacity: 0.5, side: THREE.DoubleSide });
+        const ring = new THREE.Mesh(new THREE.RingGeometry(0.18, 0.22, 24), ringMat);
+        ring.position.copy(node.position);
+        node.userData = { item, ring, ringMat, baseOpacity: 0.5 };
+        g.add(node); g.add(ring);
+      });
+    }
+
+    // ── pointer + raycast picking (interactive mode only) ──
+    function updatePointer(e) {
+      const r = canvas.getBoundingClientRect();
+      pointer.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+      pointer.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+    }
+    function pickHotspot() {
+      raycaster.setFromCamera(pointer, camera);
+      const hits = raycaster.intersectObjects(vr.hotspotGroup.children, false);
+      const hit = hits.find(h => h.object.userData && h.object.userData.item);
+      return hit ? hit.object : null;
+    }
+    function onPointerMove(e) {
+      if (mode !== 'interactive') return;
+      updatePointer(e);
+      hovered = pickHotspot();
+      canvas.style.cursor = hovered ? 'pointer' : 'grab';
+    }
+    function onPointerDown(e) {
+      if (mode !== 'interactive') return;
+      updatePointer(e);
+      const obj = pickHotspot();
+      if (obj) onHotspotClick(obj.userData.item, obj);
+    }
+    function onHotspotClick(item, obj) {
+      // expanded in Task 4 (focus camera + card + tutor). For now: pulse the ring.
+      obj.userData.ring.scale.setScalar(1.6);
     }
 
     // typewriter for the HUD caption
@@ -318,6 +384,14 @@
       tutor.userData.ringMat.opacity = 0.45 + 0.25 * Math.abs(Math.sin(t * 3));
       tutor.rotation.y = t * 0.2;
       tutor.position.y = 1.5 + 0.05 * Math.sin(t * 1.5);
+      // pulse hotspots; brighten the hovered one, and face the rings to the camera
+      vr.hotspotGroup.children.forEach(o => {
+        if (o.userData && o.userData.ringMat) {
+          const isHover = hovered && hovered === o;
+          o.userData.ringMat.opacity = o.userData.baseOpacity + 0.3 * Math.abs(Math.sin(t * 3)) + (isHover ? 0.3 : 0);
+          o.userData.ring.lookAt(camera.position);
+        }
+      });
       if (hud.immersion) hud.immersion.textContent = (90 + Math.floor(8 * Math.abs(Math.sin(t)))) + '%';
       renderer.render(scene, camera);
       raf = requestAnimationFrame(interactiveFrame);
@@ -335,10 +409,12 @@
       mode = m;
       cancelAnimationFrame(raf);
       t0 = 0;
+      if (vr.hotspotGroup) vr.hotspotGroup.visible = (m === 'interactive');
       if (m === 'interactive') {
         controls.enabled = true;
         controls.reset(0, Math.PI * 0.46, 6);
-        if (hud.scene) hud.scene.textContent = SCENES[curScene < 0 ? 0 : curScene].name;
+        if (curScene < 0) { curScene = 0; applyScene(SCENES[0]); }
+        if (hud.scene) hud.scene.textContent = SCENES[curScene].name;
         if (prefersReduced) { renderer.render(scene, camera); return; }
         raf = requestAnimationFrame(interactiveFrame);
       } else {
@@ -350,6 +426,8 @@
     }
 
     window.addEventListener('resize', () => { if (renderer) size(); });
+    canvas.addEventListener('pointermove', onPointerMove);
+    canvas.addEventListener('pointerdown', onPointerDown);
     wireStart('vr-start', 'vr-hud', start);
 
     const modeBtn = document.getElementById('vr-mode-btn');
