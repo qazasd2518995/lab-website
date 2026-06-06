@@ -80,52 +80,29 @@
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     }
 
-    /* ── Web Audio: real amplitude drives the side waveforms ──
-       One AudioContext, one analyser. The currently playing <audio> element is
-       routed through a MediaElementSource into the analyser, so liveAmp() reads
-       the true loudness of the speech being played. If Web Audio is unavailable,
-       audioOK stays false and the visuals fall back to a synthetic envelope. */
-    let actx = null, analyser = null, freqData = null, audioOK = false;
-    const elements = new Map();   // audio-url -> { el, node }
-    function ensureAudio() {
-      if (actx) return;
-      const AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) { audioOK = false; return; }
-      try {
-        actx = new AC();
-        analyser = actx.createAnalyser();
-        analyser.fftSize = 256;
-        analyser.smoothingTimeConstant = 0.7;
-        analyser.connect(actx.destination);
-        freqData = new Uint8Array(analyser.frequencyBinCount);
-        audioOK = true;
-      } catch (e) { audioOK = false; }
-    }
-    // preload one <audio> per clip and wire it to the analyser once
+    /* ── Audio playback (plain <audio>, no Web Audio graph) ──
+       Earlier this routed each clip through a MediaElementSource into an
+       AnalyserNode for a real-amplitude waveform. That graph was fragile: once
+       an element is bound to a source it only plays through the AudioContext,
+       so a suspended context (common on replay) gave "plays, fires events, no
+       sound", and reused elements cut the TTS tail. We now play each clip with
+       a fresh Audio() straight to the speakers, so sound is reliable and replay
+       is always clean. The side waveforms use a synthetic envelope keyed to
+       playback (see synthAmp), which looks nearly identical. */
+    const audioOK = true;   // plain <audio> is effectively always available
+
+    // a fresh element every play: never carries stale state, always audible
     function getClip(url) {
-      let rec = elements.get(url);
-      if (rec) return rec;
       const el = new Audio(url);
       el.preload = 'auto';
-      el.crossOrigin = 'anonymous';
-      rec = { el, node: null };
-      if (audioOK) {
-        try {
-          rec.node = actx.createMediaElementSource(el);
-          rec.node.connect(analyser);
-        } catch (e) { /* element already bound or blocked; play() still works */ }
-      }
-      elements.set(url, rec);
-      return rec;
+      return { el };
     }
-    // current loudness 0..1 from the analyser (RMS of the time-ish data)
-    function liveAmp() {
-      if (!audioOK || !playing) return 0;
-      analyser.getByteFrequencyData(freqData);
-      let sum = 0;
-      for (let i = 0; i < freqData.length; i++) sum += freqData[i];
-      const avg = sum / freqData.length / 255;       // 0..1
-      return clamp01(avg * 2.2);                      // lift quiet speech
+    // synthetic loudness 0..1 while a clip plays (no analyser needed)
+    function synthAmp(tnow) {
+      if (!playing) return 0;
+      const a = 0.55 + 0.45 * Math.sin(tnow * 13.0);
+      const b = 0.5 + 0.5 * Math.sin(tnow * 7.3 + 1.1);
+      return clamp01(Math.abs(a * b) + 0.12);
     }
 
     let raf = 0, running = false;
@@ -337,10 +314,10 @@
       const cx = W / 2, cy = H / 2;
       const pulse = 0.5 + 0.5 * Math.sin(tnow * 2.2);
 
-      // real amplitude when a clip is playing, synthetic shimmer otherwise
-      const amp = audioOK ? liveAmp() : 0;
-      const srcAmp = phase === 'listen' ? (audioOK ? Math.max(amp, 0.06) : 0.5 + 0.5 * Math.sin(tnow * 9)) : 0.04;
-      const tgtAmp = phase === 'speak' ? (audioOK ? Math.max(amp, 0.06) : 0.5 + 0.5 * Math.sin(tnow * 9 + 1)) : 0.04;
+      // synthetic loudness while a clip plays; flat line otherwise
+      const amp = synthAmp(tnow);
+      const srcAmp = phase === 'listen' ? Math.max(amp, 0.06) : 0.04;
+      const tgtAmp = phase === 'speak' ? Math.max(amp, 0.06) : 0.04;
 
       const sideHalf = W * 0.20;
       drawWave(W * 0.22, cy, sideHalf, seg.color, srcAmp, tnow * 6);
@@ -382,15 +359,11 @@
       canvas.addEventListener('click', restart, { once: true });
     }
     // The single clean entry into a run. start() (first play) and restart()
-    // (replay) both go through here so a replay is the same launch as the first
-    // play: audio context resumed, all shared state reset, no stale clip, timer
-    // or listener left from the previous run.
+    // (replay) both go through here, so a replay is the same launch as the first
+    // play: all shared state reset, no stale clip, timer or listener left over.
     function beginRun() {
       cancelAnimationFrame(raf);
       stopPlaying();                       // tear down any clip/timer still in flight
-      ensureAudio();
-      if (actx && actx.state === 'suspended') actx.resume();   // replay needs this too
-      if (audioOK) SCRIPT.forEach(s => { getClip(s.srcAudio); getClip(s.tgtAudio); });
       // reset every piece of shared state to a first-play baseline
       segIndex = 0; phase = 'idle'; phaseStart = 0; clipProgress = 0; playing = null;
       running = true;
