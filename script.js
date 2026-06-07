@@ -576,6 +576,39 @@
     Plotly.newPlot('fig-topic', [heat, ...barTraces], lay, CONF);
   }
 
+  /* Affect and topic time series (Plotly lines) — sixteen-week term */
+  function buildTimeSeries() {
+    const rng = mulberry32(42607);
+    const weeks = Array.from({ length: 16 }, (_, i) => i + 1);
+    const noise = (a) => (rng() - 0.5) * 2 * a;
+    const confidence = weeks.map(w => clamp01(0.35 + 0.035 * w + noise(0.04)));
+    const joy = weeks.map(w => clamp01(0.45 + 0.025 * w + noise(0.05)));
+    const anxiety = weeks.map(w => clamp01(0.7 - 0.03 * w + (w === 8 ? 0.12 : 0) + noise(0.04)));
+    const speaking = weeks.map(w => clamp01(0.4 + 0.18 * Math.sin(w / 2.2) + 0.012 * w + noise(0.03)));
+    const series = [
+      { name: 'Confidence', color: '#34e3cf', y: confidence },
+      { name: 'Joy', color: '#ffb74d', y: joy },
+      { name: 'Anxiety', color: '#ff5d8f', y: anxiety },
+      { name: 'Speaking topic', color: '#7c8cff', y: speaking },
+    ];
+    const traces = series.map(s => ({
+      type: 'scatter', mode: 'lines+markers', name: s.name,
+      x: weeks, y: s.y,
+      line: { color: s.color, width: 2.5, shape: 'spline' },
+      marker: { color: s.color, size: 5 },
+      hovertemplate: s.name + '<br>week %{x}: %{y:.2f}<extra></extra>',
+    }));
+    const lay = LAYOUT2D('Week of term', 'Index (0 to 1)', {
+      xaxis: Object.assign(ax2('Week of term'), { range: [0.5, 16.5], dtick: 2 }),
+      yaxis: Object.assign(ax2('Index (0 to 1)'), { range: [0, 1] }),
+      showlegend: true,
+      legend: { font: { family: 'JetBrains Mono', size: 10, color: '#a9b2cc' }, bgcolor: 'rgba(0,0,0,0)', orientation: 'h', y: 1.1 },
+      shapes: [{ type: 'line', x0: 8, x1: 8, yref: 'paper', y0: 0, y1: 1, line: { color: 'rgba(233,231,221,0.4)', width: 1, dash: 'dash' } }],
+      annotations: [{ x: 8, y: 1.02, yref: 'paper', text: 'midterm', showarrow: false, font: { family: 'JetBrains Mono', size: 10, color: '#a9b2cc' } }],
+    });
+    Plotly.newPlot('fig-timeseries', traces, lay, CONF);
+  }
+
   /* ───────── nav active state & mobile menu ───────── */
   function setupNav() {
     const path = window.location.pathname.split('/').pop() || 'index.html';
@@ -747,7 +780,8 @@
     fig1: buildFig1, fig2: buildFig2, fig3: buildFig3,
     gA, gB, gC, gD, gE, gF, gG, gH,
     'fig-sentiment': buildNRC,
-    'fig-topic': buildTopicModel
+    'fig-topic': buildTopicModel,
+    'fig-timeseries': buildTimeSeries
   };
 
   /* ───────── touch UX for interactive figures ───────── */
