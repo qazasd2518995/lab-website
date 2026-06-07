@@ -609,6 +609,67 @@
     Plotly.newPlot('fig-timeseries', traces, lay, CONF);
   }
 
+  /* Speech spectrogram (Plotly heatmap) + pitch contour (scatter) — simulated phrase */
+  function buildSpectrogram() {
+    const rng = mulberry32(53607);
+    const nT = 90, nF = 64;
+    const tMax = 2.0, fMax = 8000;
+    const times = Array.from({ length: nT }, (_, i) => +(i / (nT - 1) * tMax).toFixed(3));
+    const freqs = Array.from({ length: nF }, (_, i) => Math.round(i / (nF - 1) * fMax));
+    const segs = [
+      { t0: 0.05, t1: 0.40, f: [600, 1000, 2400] },
+      { t0: 0.45, t1: 0.75, f: [400, 1800, 2600] },
+      { t0: 0.80, t1: 1.10, f: [700, 1200, 2300] },
+      { t0: 1.15, t1: 1.50, f: [500, 1600, 2700] },
+      { t0: 1.55, t1: 1.95, f: [650, 1100, 2500] },
+    ];
+    const z = freqs.map(() => new Array(nT).fill(0));
+    for (let ti = 0; ti < nT; ti++) {
+      const t = times[ti];
+      const seg = segs.find(s => t >= s.t0 && t <= s.t1);
+      for (let fi = 0; fi < nF; fi++) {
+        const f = freqs[fi];
+        let e = 0.04 + 0.05 * rng();
+        if (seg) {
+          const glide = (t - seg.t0) / (seg.t1 - seg.t0);
+          seg.f.forEach((f0, k) => {
+            const fc = f0 + glide * 120 * (k + 1) - 60 * (k + 1);
+            const bw = 220 + 60 * k;
+            e += (0.85 - 0.18 * k) * Math.exp(-((f - fc) ** 2) / (2 * bw * bw));
+          });
+          e += 0.3 * Math.exp(-(f ** 2) / (2 * 400 * 400));
+        } else {
+          if (rng() > 0.6 && f > 3000) e += 0.4 * rng();
+        }
+        z[fi][ti] = Math.min(1, e);
+      }
+    }
+    const heat = {
+      type: 'heatmap', z, x: times, y: freqs, zsmooth: 'best',
+      colorscale: [[0, 'rgba(7,11,22,1)'], [0.3, '#27314f'], [0.6, '#7c8cff'], [0.85, '#ffb74d'], [1, '#ffe1a8']],
+      colorbar: { title: { text: 'energy', font: { color: '#a9b2cc', family: 'JetBrains Mono', size: 10 } },
+        tickfont: { color: '#6b7596', family: 'JetBrains Mono', size: 9 }, thickness: 10, len: 0.9 },
+      hovertemplate: 'time %{x}s<br>freq %{y} Hz<br>energy %{z:.2f}<extra></extra>',
+    };
+    const pitch = times.map(t => {
+      const seg = segs.find(s => t >= s.t0 && t <= s.t1);
+      const base = 180 + 60 * Math.sin(t * 3.0) + 30 * Math.sin(t * 7.0);
+      return seg ? Math.round(base) : null;
+    });
+    const pitchTrace = {
+      type: 'scatter', mode: 'lines', name: 'pitch F0', x: times, y: pitch.map(p => p == null ? null : p * 6),
+      connectgaps: false, line: { color: '#ffffff', width: 2 },
+      hovertemplate: 'pitch %{customdata} Hz<extra></extra>',
+      customdata: pitch,
+    };
+    const lay = LAYOUT2D('Time (s)', 'Frequency (Hz)', {
+      xaxis: Object.assign(ax2('Time (s)'), { range: [0, tMax] }),
+      yaxis: Object.assign(ax2('Frequency (Hz)'), { range: [0, fMax] }),
+      showlegend: false,
+    });
+    Plotly.newPlot('fig-spectrogram', [heat, pitchTrace], lay, CONF);
+  }
+
   /* ───────── nav active state & mobile menu ───────── */
   function setupNav() {
     const path = window.location.pathname.split('/').pop() || 'index.html';
@@ -781,7 +842,8 @@
     gA, gB, gC, gD, gE, gF, gG, gH,
     'fig-sentiment': buildNRC,
     'fig-topic': buildTopicModel,
-    'fig-timeseries': buildTimeSeries
+    'fig-timeseries': buildTimeSeries,
+    'fig-spectrogram': buildSpectrogram
   };
 
   /* ───────── touch UX for interactive figures ───────── */
