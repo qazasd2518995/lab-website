@@ -791,26 +791,54 @@
     const rng = mulberry32(81321);
     const GROUPS = { skills: '#34e3cf', affect: '#7c8cff', instr: '#ffb74d' };
     const WORDS = [
+      // skills (24)
       ['speaking','skills'],['listening','skills'],['reading','skills'],['writing','skills'],
       ['vocabulary','skills'],['grammar','skills'],['pronunciation','skills'],['fluency','skills'],
       ['practice','skills'],['language','skills'],['English','skills'],['learning','skills'],
+      ['accuracy','skills'],['comprehension','skills'],['spelling','skills'],['accent','skills'],
+      ['conversation','skills'],['translation','skills'],['idiom','skills'],['phrase','skills'],
+      ['sentence','skills'],['word','skills'],['dialogue','skills'],['expression','skills'],
+      // affect (20)
       ['motivation','affect'],['confidence','affect'],['anxiety','affect'],['interest','affect'],
-      ['enjoyment','affect'],['effort','affect'],['attitude','affect'],
+      ['enjoyment','affect'],['effort','affect'],['attitude','affect'],['curiosity','affect'],
+      ['frustration','affect'],['boredom','affect'],['engagement','affect'],['persistence','affect'],
+      ['willingness','affect'],['nervousness','affect'],['pride','affect'],['satisfaction','affect'],
+      ['stress','affect'],['comfort','affect'],['encouragement','affect'],['belief','affect'],
+      // instruction (22)
       ['teacher','instr'],['feedback','instr'],['classroom','instr'],['student','instr'],
       ['lesson','instr'],['homework','instr'],['exam','instr'],['textbook','instr'],['course','instr'],
+      ['quiz','instr'],['grade','instr'],['assignment','instr'],['lecture','instr'],['tutor','instr'],
+      ['curriculum','instr'],['discussion','instr'],['group','instr'],['project','instr'],
+      ['presentation','instr'],['correction','instr'],['rubric','instr'],['syllabus','instr'],
     ];
-    const nodes = WORDS.map(([id, group]) => ({ id, group, color: GROUPS[group], freq: 6 + Math.floor(rng() * 18) }));
+    const nodes = WORDS.map(([id, group]) => ({ id, group, color: GROUPS[group], freq: 5 + Math.floor(rng() * 16) }));
     const byId = Object.fromEntries(nodes.map(n => [n.id, n]));
     const PAIRS = [
+      // skills core
       ['language','learning',9],['English','learning',8],['speaking','practice',7],
       ['listening','practice',6],['vocabulary','grammar',6],['reading','writing',5],
       ['speaking','fluency',6],['pronunciation','speaking',5],['language','English',7],
+      ['vocabulary','reading',5],['comprehension','listening',6],['comprehension','reading',6],
+      ['accuracy','grammar',5],['spelling','writing',5],['accent','pronunciation',5],
+      ['conversation','speaking',6],['conversation','fluency',5],['translation','vocabulary',5],
+      ['idiom','expression',5],['phrase','expression',5],['sentence','grammar',5],
+      ['word','vocabulary',6],['dialogue','conversation',5],['expression','speaking',4],
+      // affect core
       ['motivation','effort',6],['confidence','speaking',6],['anxiety','speaking',5],
       ['motivation','interest',6],['enjoyment','motivation',5],['attitude','motivation',5],
+      ['curiosity','interest',6],['frustration','grammar',4],['boredom','homework',4],
+      ['engagement','discussion',5],['persistence','effort',5],['willingness','speaking',5],
+      ['nervousness','exam',5],['satisfaction','feedback',5],['stress','exam',6],
+      ['comfort','classroom',4],['encouragement','teacher',6],['belief','confidence',5],
+      ['anxiety','nervousness',5],['confidence','fluency',4],['pride','confidence',4],
+      // instruction core
       ['teacher','feedback',7],['feedback','student',6],['classroom','teacher',6],
       ['homework','course',5],['exam','course',5],['lesson','classroom',5],['textbook','course',4],
-      ['practice','confidence',5],['feedback','learning',5],['grammar','exam',4],
-      ['vocabulary','reading',5],['fluency','confidence',4],['student','motivation',4],
+      ['quiz','grade',5],['grade','exam',5],['assignment','homework',6],['lecture','course',5],
+      ['tutor','student',5],['curriculum','course',5],['discussion','group',6],['group','project',6],
+      ['presentation','project',5],['correction','feedback',6],['rubric','grade',5],
+      ['syllabus','course',5],['feedback','learning',5],['grammar','exam',4],
+      ['vocabulary','quiz',4],['practice','confidence',5],['student','motivation',4],
     ];
     const links = PAIRS.filter(([a,b]) => byId[a] && byId[b]).map(([a,b,w]) => ({ source: a, target: b, w }));
 
@@ -826,20 +854,20 @@
       .attr('class', 'ng-link').attr('stroke-width', d => Math.sqrt(d.w));
 
     const node = svg.append('g').selectAll('g').data(nodes).join('g').attr('class', 'ng-node');
-    node.append('circle').attr('r', d => 5 + d.freq * 0.6).attr('fill', d => d.color);
-    node.append('text').text(d => d.id).attr('x', d => 8 + d.freq * 0.6).attr('y', 4)
-      .attr('font-size', d => 10 + d.freq * 0.15);
+    node.append('circle').attr('r', d => 4 + d.freq * 0.45).attr('fill', d => d.color);
+    node.append('text').text(d => d.id).attr('x', d => 6 + d.freq * 0.45).attr('y', 3.5)
+      .attr('font-size', d => 9 + d.freq * 0.12);
 
-    // forceX/forceY pull nodes toward the centre so the graph stays inside this
-    // wide, short container (about 2.4:1) instead of drifting to the edges. Y is
-    // pulled harder because the vertical room is tight.
+    // forceX/forceY pull nodes toward the centre so the ~65-node graph stays
+    // inside this wide, short container (about 2.4:1) instead of drifting to the
+    // edges. Y is pulled harder because the vertical room is tight.
     const sim = d3.forceSimulation(nodes)
-      .force('link', d3.forceLink(links).id(d => d.id).distance(58).strength(0.5))
-      .force('charge', d3.forceManyBody().strength(-180))
+      .force('link', d3.forceLink(links).id(d => d.id).distance(46).strength(0.55))
+      .force('charge', d3.forceManyBody().strength(-150))
       .force('center', d3.forceCenter(W / 2, H / 2))
-      .force('x', d3.forceX(W / 2).strength(0.06))
-      .force('y', d3.forceY(H / 2).strength(0.18))
-      .force('collide', d3.forceCollide().radius(d => 14 + d.freq * 0.6));
+      .force('x', d3.forceX(W / 2).strength(0.07))
+      .force('y', d3.forceY(H / 2).strength(0.22))
+      .force('collide', d3.forceCollide().radius(d => 11 + d.freq * 0.45));
 
     sim.on('tick', () => {
       link.attr('x1', d => d.source.x).attr('y1', d => d.source.y)
