@@ -524,6 +524,58 @@
     Plotly.newPlot('fig-sentiment', traces, lay, CONF);
   }
 
+  /* Topic model (Plotly heatmap + doc-topic bars) — simulated LDA over learner writing */
+  function buildTopicModel() {
+    const rng = mulberry32(31607);
+    const topics = ['Speaking & Fluency', 'Grammar & Accuracy', 'Motivation & Affect', 'Assessment & Feedback', 'Reading & Vocabulary'];
+    const words = ['speaking','fluency','practice','grammar','accuracy','error','motivation','confidence','anxiety','feedback','exam','reading','vocabulary'];
+    const peaks = {
+      'Speaking & Fluency': ['speaking','fluency','practice'],
+      'Grammar & Accuracy': ['grammar','accuracy','error'],
+      'Motivation & Affect': ['motivation','confidence','anxiety'],
+      'Assessment & Feedback': ['feedback','exam','error'],
+      'Reading & Vocabulary': ['reading','vocabulary','practice'],
+    };
+    const z = topics.map(t => words.map(w => {
+      const base = peaks[t].includes(w) ? 0.7 + 0.25 * rng() : 0.05 + 0.18 * rng();
+      return Math.round(base * 100) / 100;
+    }));
+    const heat = {
+      type: 'heatmap', z, x: words, y: topics, xgap: 2, ygap: 2,
+      colorscale: [[0, 'rgba(11,17,36,0.2)'], [0.5, '#7c8cff'], [1, '#34e3cf']],
+      colorbar: { title: { text: 'β', font: { color: '#a9b2cc', family: 'JetBrains Mono', size: 11 } },
+        tickfont: { color: '#6b7596', family: 'JetBrains Mono', size: 9 }, thickness: 10, len: 0.9 },
+      hovertemplate: 'topic %{y}<br>word %{x}<br>weight %{z}<extra></extra>',
+      xaxis: 'x', yaxis: 'y',
+    };
+    const docs = ['Doc 1', 'Doc 2', 'Doc 3'];
+    const theta = [
+      [0.45, 0.10, 0.20, 0.15, 0.10],
+      [0.10, 0.40, 0.10, 0.25, 0.15],
+      [0.15, 0.15, 0.35, 0.10, 0.25],
+    ];
+    const tColors = ['#34e3cf', '#ffb74d', '#ff5d8f', '#7c8cff', '#9aa6d8'];
+    const barTraces = topics.map((t, ti) => ({
+      type: 'bar', orientation: 'h', name: t,
+      y: docs, x: docs.map((_, di) => theta[di][ti]),
+      marker: { color: tColors[ti] },
+      xaxis: 'x2', yaxis: 'y2', showlegend: false,
+      hovertemplate: t + '<br>%{y}: %{x:.0%}<extra></extra>',
+    }));
+    const lay = {
+      paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
+      font: { family: 'Spectral', color: '#e9e7dd' },
+      margin: { l: 130, r: 20, t: 20, b: 80 },
+      barmode: 'stack',
+      grid: { rows: 1, columns: 2, pattern: 'independent', columnorder: [1, 2] },
+      xaxis: { domain: [0, 0.66], tickfont: { family: 'JetBrains Mono', size: 9, color: '#6b7596' }, tickangle: -45 },
+      yaxis: { domain: [0, 1], tickfont: { family: 'JetBrains Mono', size: 10, color: '#a9b2cc' }, automargin: true },
+      xaxis2: { domain: [0.76, 1], range: [0, 1], tickformat: '.0%', tickfont: { family: 'JetBrains Mono', size: 9, color: '#6b7596' }, title: { text: 'doc-topic θ', font: { color: '#a9b2cc', family: 'JetBrains Mono', size: 10 } } },
+      yaxis2: { domain: [0, 1], tickfont: { family: 'JetBrains Mono', size: 10, color: '#a9b2cc' } },
+    };
+    Plotly.newPlot('fig-topic', [heat, ...barTraces], lay, CONF);
+  }
+
   /* ───────── nav active state & mobile menu ───────── */
   function setupNav() {
     const path = window.location.pathname.split('/').pop() || 'index.html';
@@ -694,7 +746,8 @@
   const FIGURE_BUILDERS = {
     fig1: buildFig1, fig2: buildFig2, fig3: buildFig3,
     gA, gB, gC, gD, gE, gF, gG, gH,
-    'fig-sentiment': buildNRC
+    'fig-sentiment': buildNRC,
+    'fig-topic': buildTopicModel
   };
 
   /* ───────── touch UX for interactive figures ───────── */
