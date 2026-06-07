@@ -263,6 +263,51 @@
             <span class="chip"><span class="dot" style="background:var(--ink-faint)"></span>radius — emotion intensity</span>
           </div>
         </div>
+
+        <!-- Figure K -->
+        <div class="viz" data-rise>
+          <div class="viz-head"><div><div class="fignum">Figure K</div><h3>Topic model of the learner corpus</h3></div></div>
+          <p class="viz-desc">
+            A latent Dirichlet allocation over simulated learner writing. The left heatmap shows how strongly each word loads on each of five topics, and the right bars show how three sample documents split across those topics. Hover a cell to read its topic, word, and weight.
+          </p>
+          <div id="fig-topic" class="plot"></div>
+          <div class="viz-eq">\[ \theta_d\sim\mathrm{Dir}(\alpha),\quad z_{dn}\sim\mathrm{Mult}(\theta_d),\quad w_{dn}\sim\mathrm{Mult}(\beta_{z_{dn}}) \]</div>
+          <div class="viz-foot">
+            <span class="chip"><span class="dot" style="background:var(--d1)"></span>topic-word weight β</span>
+            <span class="chip"><span class="dot" style="background:var(--ink-faint)"></span>rows — topics · cols — words</span>
+          </div>
+        </div>
+
+        <!-- Figure L -->
+        <div class="viz" data-rise>
+          <div class="viz-head"><div><div class="fignum">Figure L</div><h3>Affect and topics over a term</h3></div></div>
+          <p class="viz-desc">
+            Four indices tracked across a sixteen-week term: confidence and joy climbing, anxiety easing, and the speaking topic rising and falling around assessment. The dashed marker is the midterm week. Click a legend entry to toggle a line, or hover to read a week.
+          </p>
+          <div id="fig-timeseries" class="plot"></div>
+          <div class="viz-eq">\[ \bar{x}_t=\frac{1}{k}\sum_{i=0}^{k-1}x_{t-i} \]</div>
+          <div class="viz-foot">
+            <span class="chip"><span class="dot" style="background:var(--d1)"></span>Confidence</span>
+            <span class="chip"><span class="dot" style="background:var(--d2)"></span>Joy</span>
+            <span class="chip"><span class="dot" style="background:var(--d3)"></span>Anxiety</span>
+            <span class="chip"><span class="dot" style="background:var(--eig)"></span>Speaking topic</span>
+          </div>
+        </div>
+
+        <!-- Figure M -->
+        <div class="viz" data-rise>
+          <div class="viz-head"><div><div class="fignum">Figure M</div><h3>Speech spectrogram with pitch contour</h3></div></div>
+          <p class="viz-desc">
+            A simulated spectrogram of a short spoken phrase: time runs left to right, frequency bottom to top, and colour is energy. The bright horizontal bands are vowel formants, the brief broadband flecks are consonants, and the white curve traces the pitch (F0) as intonation rises and falls. Hover to read frequency and energy.
+          </p>
+          <div id="fig-spectrogram" class="plot"></div>
+          <div class="viz-eq">\[ X(t,f)=\Big|\sum_n x[n]\,w[n-t]\,e^{-j2\pi f n}\Big|^2 \]</div>
+          <div class="viz-foot">
+            <span class="chip"><span class="dot" style="background:var(--d2)"></span>energy (dB)</span>
+            <span class="chip"><span class="dot" style="background:#ffffff"></span>pitch F0</span>
+            <span class="chip"><span class="dot" style="background:var(--ink-faint)"></span>x — time · y — frequency</span>
+          </div>
+        </div>
       </div>
     </section>
   </main>
