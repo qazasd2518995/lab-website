@@ -452,72 +452,75 @@
   }
 
   /* Sentiment classification scatter (Plotly) — simulated learner feedback */
-  function buildSentiment() {
-    const rng = mulberry32(50607);
-    const POS = [
-      'Speaking practice really boosted my confidence.',
-      'The vocabulary games made learning fun.',
-      'I finally understand the grammar rules.',
-      'My listening improved a lot this term.',
-      'The teacher feedback was clear and helpful.',
-      'Group discussion made me more fluent.',
-      'I enjoy reading short stories in English now.',
-      'Pronunciation drills paid off.',
+  /* NRC emotion radar (Plotly scatterpolar) — eight-emotion profiles of
+     simulated learner feedback, switchable via a dropdown. */
+  function buildNRC() {
+    const EMO = ['anger', 'anticipation', 'disgust', 'fear', 'joy', 'sadness', 'surprise', 'trust'];
+    // each case: a learner comment and its NRC emotion intensities (0..1) over the 8 emotions
+    const CASES = [
+      { name: 'Whole corpus', color: '#7c8cff',
+        text: 'Average emotion profile across all learner feedback.',
+        v: [0.18, 0.62, 0.12, 0.34, 0.58, 0.22, 0.30, 0.66] },
+      { name: 'Confident learner', color: '#34e3cf',
+        text: '"Speaking practice really boosted my confidence and I enjoy class now."',
+        v: [0.05, 0.74, 0.04, 0.10, 0.86, 0.06, 0.28, 0.80] },
+      { name: 'Anxious learner', color: '#ff5d8f',
+        text: '"I feel nervous during oral tests and the fast pace stresses me out."',
+        v: [0.30, 0.40, 0.18, 0.82, 0.16, 0.55, 0.34, 0.28] },
+      { name: 'Frustrated learner', color: '#ffb74d',
+        text: '"The grammar explanations confused me and there is too much homework."',
+        v: [0.62, 0.30, 0.40, 0.45, 0.12, 0.50, 0.20, 0.22] },
+      { name: 'Curious learner', color: '#34e3cf',
+        text: '"I love discovering idioms and reading short stories in English."',
+        v: [0.06, 0.70, 0.05, 0.14, 0.72, 0.10, 0.66, 0.62] },
     ];
-    const NEU = [
-      'The class covered tenses and articles.',
-      'We submitted a writing assignment weekly.',
-      'The textbook has ten units.',
-      'Lectures are on Monday and Wednesday.',
-      'I used a dictionary app for new words.',
-      'The exam had reading and listening parts.',
-    ];
-    const NEG = [
-      'The pace was too fast for me.',
-      'I felt anxious during oral tests.',
-      'Too much homework this semester.',
-      'The grammar explanations confused me.',
-      'I struggle to follow native speakers.',
-      'Speaking in front of class made me nervous.',
-    ];
-    const classes = [
-      { name: 'Positive', color: '#34e3cf', center: 0.55, spread: 0.28, n: 56, texts: POS },
-      { name: 'Neutral',  color: '#7c8cff', center: 0.0,  spread: 0.18, n: 40, texts: NEU },
-      { name: 'Negative', color: '#ff5d8f', center: -0.55, spread: 0.28, n: 48, texts: NEG },
-    ];
-    const traces = classes.map(c => {
-      const xs = [], ys = [], sizes = [], hover = [];
-      for (let i = 0; i < c.n; i++) {
-        let x = c.center + (rng() - 0.5) * 2 * c.spread + 0.5 * (rng() - 0.5) * c.spread;
-        x = Math.max(-1, Math.min(1, x));
-        const y = clamp01(0.45 + 0.4 * (rng() - 0.5) + 0.25 * Math.abs(x));
-        const txt = c.texts[Math.floor(rng() * c.texts.length)];
-        xs.push(x); ys.push(y);
-        sizes.push(7 + Math.round(8 * (0.4 + 0.6 * rng())));
-        hover.push(`"${txt}"<br>polarity ${x>=0?'+':''}${x.toFixed(2)} · subjectivity ${y.toFixed(2)}`);
-      }
-      return {
-        x: xs, y: ys, mode: 'markers', type: 'scatter', name: c.name,
-        marker: { size: sizes, color: c.color, line: { color: 'rgba(7,11,22,0.6)', width: 1 }, opacity: 0.85 },
-        text: hover, hovertemplate: '%{text}<extra></extra>',
-      };
-    });
-    const bands = [
-      { x0: -1, x1: -0.2, color: 'rgba(255,93,143,0.07)' },
-      { x0: -0.2, x1: 0.2, color: 'rgba(124,140,255,0.07)' },
-      { x0: 0.2, x1: 1, color: 'rgba(52,227,207,0.07)' },
-    ];
-    const shapes = bands.map(b => ({
-      type: 'rect', xref: 'x', yref: 'paper', x0: b.x0, x1: b.x1, y0: 0, y1: 1,
-      fillcolor: b.color, line: { width: 0 }, layer: 'below',
+    // close the loop so each radar polygon is a closed shape
+    const theta = EMO.concat(EMO[0]).map(e => e.charAt(0).toUpperCase() + e.slice(1));
+    const traces = CASES.map((c, i) => ({
+      type: 'scatterpolar',
+      r: c.v.concat(c.v[0]),
+      theta,
+      mode: 'lines+markers',
+      name: c.name,
+      visible: i === 0,            // only the first case shown at first; dropdown switches
+      fill: 'toself',
+      fillcolor: c.color + '22',
+      line: { color: c.color, width: 2 },
+      marker: { color: c.color, size: 6 },
+      hovertemplate: '%{theta}: %{r:.2f}<extra>' + c.name + '</extra>',
     }));
-    const lay = LAYOUT2D('Sentiment polarity', 'Subjectivity', {
-      xaxis: Object.assign(ax2('Sentiment polarity'), { range: [-1.05, 1.05], zeroline: false }),
-      yaxis: Object.assign(ax2('Subjectivity'), { range: [0, 1] }),
-      shapes,
-      showlegend: true,
-      legend: { font: { family: 'JetBrains Mono', size: 10, color: '#a9b2cc' }, bgcolor: 'rgba(0,0,0,0)', orientation: 'h', y: 1.08 },
-    });
+    // dropdown to switch which case is visible
+    const buttons = CASES.map((c, i) => ({
+      method: 'update',
+      label: c.name,
+      args: [
+        { visible: CASES.map((_, j) => j === i) },
+        { 'annotations[0].text': c.text },
+      ],
+    }));
+    const lay = {
+      paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
+      font: { family: 'Spectral', color: '#e9e7dd' },
+      margin: { l: 60, r: 60, t: 60, b: 70 },
+      showlegend: false,
+      polar: {
+        bgcolor: 'rgba(11,17,36,0.45)',
+        radialaxis: { range: [0, 1], gridcolor: 'rgba(150,170,220,0.16)',
+          tickfont: { family: 'JetBrains Mono', size: 9, color: '#6b7596' }, angle: 90, tickangle: 90 },
+        angularaxis: { gridcolor: 'rgba(150,170,220,0.16)',
+          tickfont: { family: 'JetBrains Mono', size: 11, color: '#a9b2cc' } },
+      },
+      updatemenus: [{
+        buttons, direction: 'down', showactive: true, x: 0, xanchor: 'left', y: 1.12, yanchor: 'top',
+        bgcolor: 'rgba(11,17,36,0.9)', bordercolor: 'rgba(124,140,255,0.4)',
+        font: { family: 'JetBrains Mono', size: 11, color: '#e9e7dd' },
+      }],
+      annotations: [{
+        text: CASES[0].text, showarrow: false, xref: 'paper', yref: 'paper',
+        x: 0.5, y: -0.16, xanchor: 'center',
+        font: { family: 'Spectral', size: 13, color: '#a9b2cc' },
+      }],
+    };
     Plotly.newPlot('fig-sentiment', traces, lay, CONF);
   }
 
@@ -691,7 +694,7 @@
   const FIGURE_BUILDERS = {
     fig1: buildFig1, fig2: buildFig2, fig3: buildFig3,
     gA, gB, gC, gD, gE, gF, gG, gH,
-    'fig-sentiment': buildSentiment
+    'fig-sentiment': buildNRC
   };
 
   /* ───────── touch UX for interactive figures ───────── */

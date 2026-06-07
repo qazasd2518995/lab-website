@@ -250,17 +250,17 @@
 
         <!-- Figure J -->
         <div class="viz" data-rise>
-          <div class="viz-head"><div><div class="fignum">Figure J</div><h3>Sentiment classification of learner feedback</h3></div></div>
+          <div class="viz-head"><div><div class="fignum">Figure J</div><h3>NRC emotion radar of learner feedback</h3></div></div>
           <p class="viz-desc">
-            A simulated set of learner feedback comments, each placed by sentiment polarity and subjectivity, then classified positive, neutral, or negative. The shaded bands are the decision regions a classifier learns. Hover a point to read the comment and its score, or use the legend to isolate a class.
+            The NRC Emotion Lexicon scores text on eight emotions rather than a single positive or negative axis. Each radar here is the emotion profile of a simulated learner, from a confident voice rich in joy and trust to an anxious one driven by fear. Use the dropdown to switch between learner profiles and the whole corpus, and hover a vertex to read each emotion score.
           </p>
           <div id="fig-sentiment" class="plot"></div>
-          <div class="viz-eq">\[ P(\text{class}\mid\mathbf{x})=\operatorname{softmax}(\mathbf{W}\mathbf{x}+\mathbf{b}) \]</div>
+          <div class="viz-eq">\[ \mathbf{e}(d)=\frac{1}{|d|}\sum_{w\in d}\operatorname{NRC}(w),\quad \mathbf{e}\in[0,1]^{8} \]</div>
           <div class="viz-foot">
-            <span class="chip"><span class="dot" style="background:var(--d1)"></span>Positive</span>
-            <span class="chip"><span class="dot" style="background:var(--eig)"></span>Neutral</span>
-            <span class="chip"><span class="dot" style="background:var(--d3)"></span>Negative</span>
-            <span class="chip"><span class="dot" style="background:var(--ink-faint)"></span>x — polarity · y — subjectivity</span>
+            <span class="chip"><span class="dot" style="background:var(--d1)"></span>joy · trust · anticipation</span>
+            <span class="chip"><span class="dot" style="background:var(--d3)"></span>fear · sadness</span>
+            <span class="chip"><span class="dot" style="background:var(--d2)"></span>anger · disgust</span>
+            <span class="chip"><span class="dot" style="background:var(--ink-faint)"></span>radius — emotion intensity</span>
           </div>
         </div>
       </div>
